@@ -1,5 +1,13 @@
 <overview>
-Every assertion in an outcome spec must be one of four structured types. The type determines how the assertion is tested. See `<choosing_type>` for the decision tree.
+Every assertion in an outcome spec must be one of four structured types. The type determines how the assertion is tested.
+
+| Type            | Quantifier                      | Test strategy   | Use when                                      |
+| --------------- | ------------------------------- | --------------- | --------------------------------------------- |
+| **Scenario**    | There exists (this case works)  | Example-based   | Specific user journey or interaction          |
+| **Mapping**     | For all over a finite set       | Parameterized   | Input-output correspondence over known values |
+| **Conformance** | External oracle                 | Tool validation | Must match an external standard or schema     |
+| **Property**    | For all over a type/value space | Property-based  | Invariant that must hold for all valid inputs |
+
 </overview>
 
 <scenario>
