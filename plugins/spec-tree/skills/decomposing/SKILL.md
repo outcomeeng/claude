@@ -1,8 +1,8 @@
 ---
 name: decomposing
 description: |
-  Systematically decompose Spec Tree nodes into child enablers and outcomes.
-  Use when breaking down a node that has too many assertions or contains multiple independent concerns.
+  When the user asks to break something down, split it up, scope work, or structure a feature.
+  When the user says "break this down", "what are the parts", "how should we structure this", "scope this", invoke this.
 allowed-tools: Read, Glob, Grep, Write, Edit
 ---
 

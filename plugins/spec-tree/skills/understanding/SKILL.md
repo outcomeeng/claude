@@ -1,9 +1,8 @@
 ---
 name: understanding
 description: |
-  Load Spec Tree methodology, templates, and shared references.
-  Use when starting any spec-tree work, before authoring/decomposing/refactoring, or when asked about Spec Tree concepts.
-  Foundation skill loaded once per conversation.
+  Foundation skill — loaded automatically before any other spec-tree skill.
+  When the user asks about methodology, node types, or how specs work, invoke this first.
 allowed-tools: Read, Glob, Grep
 ---
 

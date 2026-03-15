@@ -1,8 +1,8 @@
 ---
 name: aligning
 description: |
-  Clarify, augment, align, and deconflict Spec Tree artifacts while preserving product truth.
-  Use when specs contradict each other, have gaps, or need cross-node consistency review.
+  When the user asks to review, check consistency, audit, or find gaps.
+  When the user says "does this make sense", "anything contradictory", "review", "anything missing", invoke this.
 allowed-tools: Read, Glob, Grep, Write, Edit
 ---
 
