@@ -202,13 +202,33 @@ Format the handoff in a clear, readable way:
 [Current state of deliverables]
 ```
 
-### 4. Offer Next Steps
+### 4. Build Proposals with Skill Plans
 
-After presenting the handoff, propose 2-3 concrete next steps using `AskUserQuestion`. Each proposal **must name the specific skills** the agent will invoke to carry it out.
+After presenting the handoff, build concrete proposals that tell the user exactly what the agent will do. Each proposal must name the skills the agent will invoke, so the user can evaluate the approach before work begins.
 
-**Format each option as:** `[action summary] → [/skill-1, /skill-2, ...]`
+**Step 4a: Inventory available skills**
 
-Example `AskUserQuestion` call:
+Read the list of available skills from the system prompt (the `Available skills` section). Note which skills are relevant to the handoff's remaining work.
+
+**Step 4b: For each proposal, plan the skill sequence**
+
+For each possible next step, determine:
+
+1. What is the goal? (one sentence)
+2. Which skills will be invoked, in what order?
+3. What will each skill produce?
+
+Write this out as a chain: `/skill-1` → `/skill-2` → `/skill-3`
+
+**Step 4c: Format proposals for `AskUserQuestion`**
+
+Each option's `description` field must contain the skill chain. Use the arrow format:
+
+```text
+{what will be done} → /skill-1, /skill-2, /skill-3
+```
+
+**Step 4d: Present using `AskUserQuestion`**
 
 ```json
 {
@@ -236,7 +256,7 @@ Example `AskUserQuestion` call:
 }
 ```
 
-**Why skills must be named:** The user needs to know what the agent will do and how, not just vaguely "continue work." Naming skills makes the proposal actionable and reviewable.
+**Validation before presenting:** Check each proposal. If any option's description does NOT contain a `/skill-name`, go back to Step 4b and add the skill chain. The only exception is purely conversational options like "Adjust the plan" that don't invoke skills.
 
 ---
 
