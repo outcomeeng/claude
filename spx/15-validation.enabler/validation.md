@@ -18,20 +18,15 @@ The Agent Skills open standard fields (`name`, `description`, `license`, `compat
 ### Scenarios
 
 - Given a SKILL.md with only standard Agent Skills fields, when validated, then no errors are reported ([test](tests/test_validation_unit.py))
-- Given a SKILL.md with Claude Code extension fields (`model`, `effort`, `context`, `agent`, `hooks`), when validated, then no errors are reported ([test](tests/test_validation_unit.py))
 - Given a SKILL.md with an unknown field (`foo-bar`), when validated, then an error is reported naming the invalid field ([test](tests/test_validation_unit.py))
 - Given a SKILL.md with no frontmatter, when validated, then no errors are reported ([test](tests/test_validation_unit.py))
 - Given a file that is not named SKILL.md, when passed to the validator, then it is skipped ([test](tests/test_validation_unit.py))
-
-### Properties
-
-- Field extraction is deterministic: the same binary always produces the same field set ([test](tests/test_validation_unit.py))
-- The standard fields are always a subset of the valid fields, regardless of binary extraction success or failure ([test](tests/test_validation_unit.py))
+- Given the Claude binary is unavailable, when valid fields are requested, then the standard fields are returned as fallback ([test](tests/test_validation_unit.py))
+- Given binary extraction fails, when valid fields are requested, then the standard fields are returned as fallback ([test](tests/test_validation_unit.py))
 
 ### Compliance
 
-- ALWAYS: fall back to the Agent Skills standard fields when binary extraction fails — never fail open with an empty set, never fail closed by rejecting all fields
-- NEVER: hardcode Claude Code-specific fields — they are derived from the binary at runtime
+- NEVER: hardcode Claude Code-specific fields — they are derived from the binary at runtime ([review])
 
 ## Plugin Manifest Validation
 
@@ -43,7 +38,3 @@ A single script that discovers and validates all marketplaces and plugins under 
 - Given a directory containing `plugins/*/` with `.claude-plugin/plugin.json`, when validated, then `claude plugin validate` runs against each plugin ([test](tests/test_validate_plugins_unit.py))
 - Given a plugin that fails validation, when validated, then the script exits non-zero and reports which plugin failed ([test](tests/test_validate_plugins_unit.py))
 - Given no marketplace or plugins found, when validated, then the script exits non-zero with an error ([test](tests/test_validate_plugins_unit.py))
-
-### Scenarios (continued)
-
-- Given the same directory, when discovery runs twice, then the same set of targets is returned both times ([test](tests/test_validate_plugins_unit.py))

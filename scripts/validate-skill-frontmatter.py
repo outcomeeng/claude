@@ -29,6 +29,7 @@ import re
 import shutil
 import subprocess
 import sys
+from collections.abc import Callable
 from pathlib import Path
 
 # Agent Skills open standard (agentskills.io/specification) — always valid.
@@ -151,15 +152,20 @@ def extract_fields_from_binary(binary: Path) -> frozenset[str] | None:
     return frozenset(fields) if fields else None
 
 
-def get_valid_fields() -> frozenset[str]:
+def get_valid_fields(
+    binary_finder: Callable[[], Path | None] = find_claude_binary,
+    field_extractor: Callable[
+        [Path], frozenset[str] | None
+    ] = extract_fields_from_binary,
+) -> frozenset[str]:
     """Get the set of valid SKILL.md frontmatter fields.
 
     Tries to extract from the Claude binary first, falls back to
     the Agent Skills standard if extraction fails.
     """
-    binary = find_claude_binary()
+    binary = binary_finder()
     if binary:
-        extracted = extract_fields_from_binary(binary)
+        extracted = field_extractor(binary)
         if extracted:
             return STANDARD_FIELDS | extracted
 
@@ -202,12 +208,18 @@ def validate_file(path: Path, valid_fields: frozenset[str]) -> list[str]:
     return errors
 
 
-def main() -> int:
-    valid_fields = get_valid_fields()
+def main(
+    argv: list[str] | None = None,
+    *,
+    valid_fields: frozenset[str] | None = None,
+) -> int:
+    args = argv if argv is not None else sys.argv[1:]
+    if valid_fields is None:
+        valid_fields = get_valid_fields()
 
     skill_files = [
         Path(arg)
-        for arg in sys.argv[1:]
+        for arg in args
         if Path(arg).name.lower() == "skill.md" and Path(arg).is_file()
     ]
 

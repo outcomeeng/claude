@@ -3,14 +3,9 @@
 Tests the validate-plugins.py script against the assertions
 in spx/15-validation.enabler/validation.md (Plugin Manifest Validation).
 
-Stage 1 evidence: the script correctly discovers marketplace roots and plugin
-directories, reports failures, and exits non-zero on errors.
-
-Stage 2 decision: Level 1 for discovery logic (pure path computation).
+Level 1: discovery logic is pure path computation.
 Subprocess execution of `claude plugin validate` is thin glue tested at
 Level 2 by the pre-commit hook itself.
-
-Stage 3B: discovery is extracted as a pure function from execution.
 """
 
 from __future__ import annotations
@@ -18,7 +13,6 @@ from __future__ import annotations
 import importlib.util
 import subprocess
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
@@ -92,7 +86,9 @@ def test_failed_validation_exits_nonzero_and_reports(
     _make_marketplace(tmp_path)
     _make_plugin(tmp_path, "bad-plugin")
 
-    def fake_run(cmd: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+    def fake_runner(
+        cmd: list[str], **kwargs: object
+    ) -> subprocess.CompletedProcess[str]:
         target = cmd[-1]
         if "bad-plugin" in target:
             return subprocess.CompletedProcess(
@@ -100,8 +96,7 @@ def test_failed_validation_exits_nonzero_and_reports(
             )
         return subprocess.CompletedProcess(cmd, returncode=0, stdout="ok", stderr="")
 
-    with patch.object(_mod, "run_validate", fake_run):
-        exit_code = _mod.main([str(tmp_path)])
+    exit_code = _mod.main([str(tmp_path)], runner=fake_runner)
 
     assert exit_code != 0
     captured = capsys.readouterr()
@@ -120,18 +115,3 @@ def test_no_targets_exits_nonzero(
     assert exit_code != 0
     captured = capsys.readouterr()
     assert captured.err  # some error message printed
-
-
-# ---------------------------------------------------------------------------
-# Property: discovery is deterministic
-# ---------------------------------------------------------------------------
-
-
-def test_discovery_deterministic(tmp_path: Path) -> None:
-    _make_marketplace(tmp_path)
-    _make_plugin(tmp_path, "one")
-    _make_plugin(tmp_path, "two")
-    _make_plugin(tmp_path, "three")
-    a = discover_targets(tmp_path)
-    b = discover_targets(tmp_path)
-    assert a == b

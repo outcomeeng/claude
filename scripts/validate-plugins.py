@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 
@@ -47,7 +49,11 @@ def run_validate(cmd: list[str], **kwargs: object) -> subprocess.CompletedProces
     return subprocess.run(cmd, capture_output=True, text=True, **kwargs)
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(
+    argv: list[str] | None = None,
+    *,
+    runner: Callable[..., subprocess.CompletedProcess[str]] = run_validate,
+) -> int:
     args = argv if argv is not None else sys.argv[1:]
     root = Path(args[0]) if args else Path(".")
 
@@ -61,13 +67,18 @@ def main(argv: list[str] | None = None) -> int:
 
     failures: list[tuple[Path, str]] = []
 
-    for target in targets:
+    def _validate(target: Path) -> tuple[Path, subprocess.CompletedProcess[str]]:
         cmd = ["claude", "plugin", "validate", str(target)]
-        result = run_validate(cmd)
-        if result.returncode != 0:
-            failures.append((target, result.stderr or result.stdout))
-        else:
-            print(result.stdout, end="")
+        return target, runner(cmd)
+
+    with ThreadPoolExecutor(max_workers=len(targets)) as pool:
+        futures = {pool.submit(_validate, t): t for t in targets}
+        for future in as_completed(futures):
+            target, result = future.result()
+            if result.returncode != 0:
+                failures.append((target, result.stderr or result.stdout))
+            else:
+                print(result.stdout, end="")
 
     for target, output in failures:
         print(f"error: validation failed for {target}", file=sys.stderr)
