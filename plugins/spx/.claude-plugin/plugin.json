@@ -1,6 +1,6 @@
 {
   "name": "spx",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "SPX core: commit workflow and session management",
   "author": {
     "name": "Simon Heimlicher"

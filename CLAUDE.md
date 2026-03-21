@@ -362,23 +362,25 @@ Spec-driven development with the Spec Tree framework. Supersedes `spx-legacy`.
 
 ## SPX Plugin
 
-Commands for spec-driven development projects.
+Commands and skills for spec-driven development projects.
 
 ### Skills
 
-| Skill                 | Purpose                                   |
-| --------------------- | ----------------------------------------- |
-| `/committing-changes` | Comprehensive git commit message guidance |
+| Skill                 | Purpose                                            |
+| --------------------- | -------------------------------------------------- |
+| `/coding`             | Spec-tree TDD flow: architect, test, code + review |
+| `/committing-changes` | Comprehensive git commit message guidance          |
 
 ### Commands
 
-| Command    | Purpose                                                    |
-| ---------- | ---------------------------------------------------------- |
-| `/commit`  | Git commit with Conventional Commits (auto-context)        |
-| `/handoff` | Create timestamped context handoff                         |
-| `/pickup`  | Load and continue from previous handoff                    |
-| `/rtfm`    | Load specs and testing methodology before writing any code |
-| `/clarify` | Clarify ambiguous requirements                             |
+| Command    | Purpose                                             |
+| ---------- | --------------------------------------------------- |
+| `/commit`  | Git commit with Conventional Commits (auto-context) |
+| `/handoff` | Create timestamped context handoff                  |
+| `/pickup`  | Load and continue from previous handoff             |
+| `/tdd`     | Start spec-tree TDD flow (invokes `/coding`)        |
+| `/rtfm`    | Stop ad hoc work and follow the methodology         |
+| `/clarify` | Clarify ambiguous requirements                      |
 
 ## SPX-Legacy Plugin (Deprecated)
 
@@ -891,14 +893,16 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │   └── skills/
 │   │       ├── managing-specs/
 │   │       └── understanding-specs/
-│   ├── spx/                      # Version: 0.10.0 — SPX commands
+│   ├── spx/                      # Version: 0.11.0 — SPX commands + coding
 │   │   ├── commands/
 │   │   │   ├── clarify.md
 │   │   │   ├── commit.md
 │   │   │   ├── handoff.md
 │   │   │   ├── pickup.md
-│   │   │   └── rtfm.md
+│   │   │   ├── rtfm.md
+│   │   │   └── tdd.md
 │   │   └── skills/
+│   │       ├── coding/
 │   │       └── committing-changes/
 │   ├── spx-legacy/               # Version: 0.1.3 (deprecated → spec-tree)
 │   │   └── skills/

@@ -1,67 +1,57 @@
 ---
-description: Load specs and testing methodology before writing any code
-allowed-tools: Skill
+description: Stop ad hoc work and follow the spec-tree methodology
 ---
 
 <objective>
-Gate all implementation work behind two mandatory skill invocations — in order, no exceptions. First load the full spec context hierarchy, then load testing methodology and write tests before touching any implementation code.
+You are doing ad hoc work — writing code without specs, debugging without tests, or skipping the methodology. Stop. This command exists because what you are doing right now will be thrown away.
 </objective>
 
-<context>
-**Current Branch:**
-!`git branch --show-current`
+<diagnosis>
+**What you did wrong:**
 
-**Git Status:**
-!`git status --short`
+You skipped the spec-tree TDD flow. One or more of these happened:
 
-**Recent Commits:**
-!`git log --oneline -5`
-</context>
+- You wrote implementation code before writing tests
+- You wrote a throwaway script to "see what's happening" instead of a test
+- You started debugging without checking the spec for the expected behavior
+- You made changes without loading the work item context first
+- You produced an ADR or tests without going through the review gate
+
+**Why it matters:**
+
+The ad hoc code you just wrote takes the same effort as a proper test, but the test stays and the script gets deleted. The debug session you just ran answered one question; a test answers that question every time CI runs. The implementation you wrote without specs will be reworked when the actual requirements surface.
+</diagnosis>
 
 <process>
 
-## Step 1: Understand the specs
+## Step 1: Stop what you are doing
 
-Invoke the understanding skill NOW:
+Do not finish the current ad hoc work. Do not "just quickly" wrap it up. Stop.
+
+## Step 2: Assess the damage
+
+Look at what you have produced so far:
+
+- If you wrote ad hoc scripts or debug code: delete them
+- If you wrote implementation without tests: keep the code but do not commit it
+- If you wrote tests without loading context: the tests may be wrong — verify after Step 3
+
+## Step 3: Start the proper flow
+
+Invoke the coding skill NOW:
 
 ```json
-Skill tool → { "skill": "spx:understanding-spx" }
+Skill tool → { "skill": "spx:coding" }
 ```
 
-This loads the full context hierarchy — PRDs, ADRs, capability and feature specs — for whatever you are about to implement. Without this, you will miss requirements, violate decisions, and produce work that has to be redone.
-
-**Do not proceed to Step 2 until you have completed this step.**
-
-## Step 2: Load testing methodology and write tests first
-
-Invoke the testing skill NOW:
-
-```json
-Skill tool → { "skill": "test:testing" }
-```
-
-Write proper tests before writing any implementation code.
-
-**Do not write any implementation code until you have written the tests.**
+This runs the full 8-phase TDD flow: methodology → context → architect → review → test → review → implement → review. Follow it from Phase 1.
 
 </process>
 
-<rationale>
-When something breaks or behaves unexpectedly, your instinct will be to write ad hoc code — a quick script, a throwaway snippet, a print-and-pray debugging session. That instinct is the symptom, not the fix. The problem you hit exists because your tests were insufficient. The ad hoc code patches over one instance; a proper test catches every future instance too.
-
-1. **Do not** write ad hoc code to "see what's happening."
-2. **Do** write a test that reproduces the problem. You will need that test again — the fact that you hit this issue proves your test coverage has a gap.
-3. **Then** fix the implementation until the test passes.
-
-This is not slower. The ad hoc script you were about to write takes the same effort as a test, but the script gets deleted and the test stays.
-
-</rationale>
-
 <success_criteria>
 
-- Understanding skill (`spx:understanding-spx`) invoked and full context hierarchy loaded
-- Testing skill (`test:testing`) invoked and methodology loaded
-- Tests written before any implementation code
-- If you have concerns about specs or testing approach, raise them NOW — before writing code, not after
+- Ad hoc work stopped
+- Coding skill invoked and proper flow started from Phase 1
+- No throwaway scripts or debug code committed
 
 </success_criteria>
