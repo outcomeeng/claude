@@ -3,7 +3,6 @@ name: testing
 description: >-
   ALWAYS invoke this skill when creating tests from assertions, running tests, or checking stale status.
   NEVER create or run spec tree tests without this skill.
-allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
 
 <!-- PLACEHOLDER: Full implementation in Phase 3 -->
