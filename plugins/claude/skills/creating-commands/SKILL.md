@@ -192,86 +192,20 @@ Files: @ relevant/files
 </intelligence_rules>
 
 <arguments_intelligence>
-The skill should intelligently determine whether a slash command needs arguments.
+Determine whether a command needs arguments:
 
-<commands_that_need_arguments>
+**Needs arguments** — task operates on user-specified data:
 
-**User provides specific input:**
+- Use `$ARGUMENTS` for single input: `Fix issue #$ARGUMENTS`
+- Use `$1`, `$2`, `$3` for structured input: `Review PR #$1 with priority $2`
+- Add `argument-hint` in frontmatter
 
-- `/fix-issue [issue-number]` - Needs issue number
-- `/review-pr [pr-number]` - Needs PR number
-- `/optimize [file-path]` - Needs file to optimize
-- `/commit [type]` - Needs commit type (optional)
+**No arguments** — task operates on implicit context (conversation, known files, project state):
 
-**Pattern:** Task operates on user-specified data
+- Omit `argument-hint` and don't reference `$ARGUMENTS`
 
-Include `argument-hint: [description]` in frontmatter and reference `$ARGUMENTS` in the body.
-</commands_that_need_arguments>
+For detailed examples and patterns, see [${SKILL_DIR}/references/arguments.md](references/arguments.md).
 
-<commands_without_arguments>
-
-**Self-contained procedures:**
-
-- `/check-todos` - Operates on known file (TO-DOS.md)
-- `/first-principles` - Operates on current conversation
-- `/whats-next` - Analyzes current context
-
-**Pattern:** Task operates on implicit context (current conversation, known files, project state)
-
-Omit `argument-hint` and don't reference `$ARGUMENTS`.
-</commands_without_arguments>
-
-<incorporating_arguments>
-
-**In `<objective>` tag:**
-
-```markdown
-<objective>
-Fix issue #$ARGUMENTS following project conventions.
-
-This ensures bugs are resolved systematically with proper testing.
-</objective>
-```
-
-**In `<process>` tag:**
-
-```markdown
-<process>
-1. Understand issue #$ARGUMENTS from issue tracker
-2. Locate relevant code
-3. Implement fix
-4. Add tests
-</process>
-```
-
-**In `<context>` tag:**
-
-```markdown
-<context>
-Issue details: @ issues/$ARGUMENTS.md
-Related files: ! `grep -r "TODO.*$ARGUMENTS" src/`
-</context>
-```
-
-(Note: Remove the space after the exclamation mark in actual usage)
-</incorporating_arguments>
-
-<positional_arguments>
-
-For structured input, use `$1`, `$2`, `$3`:
-
-```markdown
----
-argument-hint: <pr-number> <priority> <assignee>
----
-
-<objective>
-Review PR #$1 with priority $2 and assign to $3.
-</objective>
-```
-
-**Usage:** `/review-pr 456 high alice`
-</positional_arguments>
 </arguments_intelligence>
 
 <file_structure>
@@ -299,6 +233,17 @@ description: Analyze this code for performance issues and suggest optimizations
 ```
 
 Shown in the `/help` command list.
+</field>
+
+<field name="argument-hint">
+**Optional** - Tells users what arguments the command expects
+
+```yaml
+argument-hint: [issue-number]
+argument-hint: <pr-number> <priority> <assignee>
+```
+
+Shown in autocomplete. Omit for self-contained commands that don't take arguments.
 </field>
 
 <field name="allowed-tools">
