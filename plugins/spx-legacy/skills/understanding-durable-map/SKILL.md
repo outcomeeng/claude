@@ -1,6 +1,8 @@
 ---
 name: understanding-durable-map
-description: Specs are permanent product documentation, not work items. Use when agents think in tasks/backlogs, want to "close" items, or ask where "done" work goes.
+description: >-
+  ALWAYS invoke this skill when agents think in tasks or backlogs, want to "close" items, or ask where "done" work goes.
+  NEVER treat specs as work items without this skill.
 allowed-tools: Read, Glob, Grep
 ---
 

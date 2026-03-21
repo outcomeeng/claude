@@ -1,8 +1,8 @@
 ---
 name: refactoring
-description: |
-  Structural refactoring of Spec Tree: move nodes, re-scope content, extract shared enablers.
-  Use when restructuring the tree, consolidating nodes, or factoring common aspects.
+description: >-
+  ALWAYS invoke this skill when moving nodes, re-scoping content, or extracting shared enablers.
+  NEVER restructure the spec tree without this skill.
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
 

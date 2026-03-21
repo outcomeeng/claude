@@ -1,8 +1,8 @@
 ---
 name: decomposing-prd-to-capabilities
-description: |
-  Break down a PRD into capability specs. Use when decomposing product requirements into what the product CAN DO.
-  Creates cross-cutting vertical slices like "Document Generation" or "Identity Management".
+description: >-
+  ALWAYS invoke this skill when breaking down a PRD into capabilities.
+  NEVER decompose PRDs without this skill.
 ---
 
 <objective>

@@ -1,6 +1,8 @@
 ---
 name: managing-spx
-description: Create and manage spx/ specs including capabilities, features, stories, PRDs, ADRs, and PDRs. Use when creating a feature, creating a story, adding specs, or setting up spec structure. For Outcome Engineering framework (spx/) projects.
+description: >-
+  ALWAYS invoke this skill when creating or organizing specs, capabilities, features, stories, or ADRs.
+  NEVER create, read, or modify any files in the spx/ directory without this skill.
 ---
 
 <objective>

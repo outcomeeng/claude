@@ -1,6 +1,8 @@
 ---
 name: reviewing-prose
-description: Review and edit prose for formulaic, machine-sounding patterns. Use when asked to review, edit, or improve existing text for quality.
+description: >-
+  ALWAYS invoke this skill when reviewing, editing, or improving prose for quality.
+  NEVER review prose without this skill.
 ---
 
 <objective>

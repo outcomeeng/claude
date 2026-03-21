@@ -1,6 +1,6 @@
 {
   "name": "prose",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Prose craft: /writing-prose (always active), /reviewing-prose (on request)",
   "author": {
     "name": "Simon Heimlicher"

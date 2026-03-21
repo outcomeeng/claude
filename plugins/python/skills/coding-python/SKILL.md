@@ -1,6 +1,8 @@
 ---
 name: coding-python
-description: Write or fix Python implementation code to pass tests. Use when implementing code after tests exist, or fixing code after review rejection.
+description: >-
+  ALWAYS invoke this skill when writing or fixing Python implementation code.
+  NEVER write implementation code without this skill.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 

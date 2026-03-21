@@ -1,6 +1,8 @@
 ---
 name: reviewing-python
-description: Review Python code strictly, reject mocking. Use when reviewing Python code, checking if code is ready for merge, or validating implementations.
+description: >-
+  ALWAYS invoke this skill when reviewing Python code or validating implementations.
+  NEVER review code without this skill.
 allowed-tools: Read, Bash, Glob, Grep, Write, Edit
 ---
 

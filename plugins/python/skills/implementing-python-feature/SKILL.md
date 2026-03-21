@@ -1,6 +1,8 @@
 ---
 name: implementing-python-feature
-description: Implement Python stories in a feature through specs, testing, coding, and review. Use when implementing features with multiple stories or when auto-implementing a feature.
+description: >-
+  ALWAYS invoke this skill when implementing features with multiple stories or auto-implementing.
+  NEVER implement a feature without this skill.
 ---
 
 <objective>

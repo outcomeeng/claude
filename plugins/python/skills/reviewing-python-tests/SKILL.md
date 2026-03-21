@@ -1,6 +1,8 @@
 ---
 name: reviewing-python-tests
-description: Review Python tests for evidentiary value and spec compliance. Use when reviewing capabilities, features, or stories and their tests in Python.
+description: >-
+  ALWAYS invoke this skill when reviewing Python tests for evidentiary value and spec compliance.
+  NEVER review tests without this skill.
 allowed-tools: Read, Bash, Glob, Grep
 ---
 
@@ -71,26 +73,35 @@ Execute these phases IN ORDER. Stop at first REJECT.
 <phase name="spec_structure_validation">
 For each assertion in the spec, verify:
 
-**1.1 Outcome Format**
+**1.1 Assertion Format**
 
-Outcomes MUST be Gherkin only. No code in specs.
+Assertions MUST use one of five typed formats. No code in specs.
 
-````markdown
-<!-- ✅ CORRECT: Gherkin only -->
+| Type            | Quantifier                     | Test strategy   | Format pattern                                     |
+| --------------- | ------------------------------ | --------------- | -------------------------------------------------- |
+| **Scenario**    | There exists (this case works) | Example-based   | `Given ... when ... then ... ([test](...))`        |
+| **Mapping**     | For all over finite set        | Parameterized   | `{input} maps to {output} ([test](...))`           |
+| **Conformance** | External oracle                | Tool validation | `{output} conforms to {standard} ([test](...))`    |
+| **Property**    | For all over type space        | Property-based  | `{invariant} holds for all {domain} ([test](...))` |
+| **Compliance**  | ALWAYS/NEVER rules             | Review or test  | `ALWAYS/NEVER: {rule} ([review]/[test](...))`      |
 
-### 1. UART transmitter sends byte correctly
+```markdown
+<!-- ✅ CORRECT: Typed assertions with inline test links -->
 
-```gherkin
-GIVEN a UartTx component configured for 8N1 at 115200 baud
-WHEN a byte 0x55 is written to the input stream
-THEN the TX line outputs start bit, 8 data bits (LSB first), and stop bit
-AND the component signals busy during transmission
+### Scenarios
+
+- Given a UartTx configured for 8N1 at 115200 baud, when byte 0x55 is written, then TX line outputs start bit, 8 data bits (LSB first), and stop bit ([test](tests/test_uart_tx_unit.py))
+
+### Properties
+
+- Serialization is deterministic: same input always produces the same output ([test](tests/test_serialize_unit.py))
+
+### Compliance
+
+- ALWAYS: signal writes use non-blocking assignment — PDR-12 two-phase tick ([review](../../12-simulation-execution.pdr.md))
 ```
-````
 
 <!-- ❌ REJECT: Code in spec -->
-
-### 1. UART transmitter sends byte correctly
 
 ```python
 def test_uart_tx():
@@ -98,31 +109,39 @@ def test_uart_tx():
     ...
 ```
 
-````
 **If spec contains code examples**: REJECT. Specs are durable; code drifts.
+
+**Assertion type must match test strategy:**
+
+| Assertion Type | Required Test Pattern      | REJECT if                                    |
+| -------------- | -------------------------- | -------------------------------------------- |
+| Scenario       | Example-based tests        | Missing concrete inputs/outputs              |
+| Mapping        | Parameterized tests        | Only example-based (not all cases covered)   |
+| Property       | `@given` / hypothesis      | Only example-based (must use property-based) |
+| Conformance    | Tool validation            | Manual checks instead of tool                |
+| Compliance     | `[review]` or `[test]` tag | No tag indicating verification method        |
 
 **1.2 Test File Linkage**
 
-**Test Files tables are contractual.** Every link must resolve to an actual file. Stale links = REJECT.
+**Inline test links are contractual.** Every `([test](...))` link in an assertion must resolve to an actual file. Stale links = REJECT.
+
+Specs may use either format:
+
+- **Inline links** (spec-tree format): `([test](tests/test_uart_tx_unit.py))` embedded in assertions
+- **Test Files tables** (spx-legacy format): Separate table with File/Level/Harness columns
+
+Both are contractual — every link must resolve.
 
 This is distinct from the **Analysis section** (stories only), which documents the agent's codebase examination. Analysis references may diverge from implementation as understanding deepens — do NOT reject specs for stale Analysis references.
 
-Each assertion MUST have a Test Files table with valid Markdown links:
-
-```markdown
-| File                                       | Level | Harness |
-| ------------------------------------------ | ----- | ------- |
-| [test_uart_tx.unit](tests/test_uart_tx.unit.py) | 1     | -       |
-````
-
 **Check:**
 
-1. Link syntax is valid Markdown: `[display](path)`
+1. Link syntax is valid Markdown: `[test](path)` or `[display](path)`
 2. Linked file EXISTS at specified path
 3. Level matches filename suffix (`.unit.py` = Level 1, `.integration.py` = Level 2, `.e2e.py` = Level 3)
 
 ```bash
-# Verify linked files exist
+# Verify linked files exist (extract paths from inline links or tables)
 ls -la {container}/tests/{linked_file}
 ```
 
@@ -145,9 +164,10 @@ Evidence lives at specific levels. Verify each assertion is tested at the correc
 
 **GATE 1**: Before proceeding to Phase 2, verify:
 
-- [ ] All outcomes use Gherkin format (no code in specs)
-- [ ] All test file links are valid markdown AND files exist (ran `ls` for each)
-- [ ] All outcomes tested at appropriate level
+- [ ] All assertions use typed format (Scenario/Mapping/Conformance/Property/Compliance — no code in specs)
+- [ ] Assertion type matches test strategy (Property assertions have `@given`, Mapping have parameterized tests, etc.)
+- [ ] All test file links resolve (inline `([test](...))` or table links — ran `ls` for each)
+- [ ] All assertions tested at appropriate level
 
 If any check fails, STOP and REJECT with detailed findings.
 </phase>
@@ -494,21 +514,17 @@ Reviewing `spx/01-uart/03-transmitter.story/`
 
 Phase 1 checks:
 
-````bash
-$ grep -A 10 "^### 1\." transmitter.story.md
-### 1. UART transmitter sends byte correctly
+```bash
+$ grep -A 5 "^### Scenarios" transmitter.story.md
+### Scenarios
 
-```gherkin
-GIVEN a UartTx component configured for 8N1 at 115200 baud
-WHEN a byte 0x55 is written to the input stream
-THEN the TX line outputs start bit, 8 data bits (LSB first), and stop bit
-````
+- Given a UartTx configured for 8N1 at 115200 baud, when byte 0x55 is written, then TX line outputs start bit, 8 data bits (LSB first), and stop bit ([test](tests/test_uart_tx_unit.py))
 
-$ ls -la tests/test_uart_tx.unit.py
--rw-r--r-- 1 user group 2847 Jan 15 10:23 tests/test_uart_tx.unit.py
-✓ File exists, Level 1 matches .unit.py suffix
+$ ls -la tests/test_uart_tx_unit.py
+-rw-r--r-- 1 user group 2847 Jan 15 10:23 tests/test_uart_tx_unit.py
+✓ File exists, Level 1 matches _unit.py suffix
+```
 
-````
 Phase 2 checks:
 
 ```bash
@@ -519,7 +535,7 @@ $ grep -rn "pytest.mark.skipif" tests/
 $ grep -rn "@patch\|Mock()\|MagicMock" tests/
 (no results)
 ✓ No mocking
-````
+```
 
 Phase 5 checks:
 
@@ -626,22 +642,23 @@ All outcomes have genuine evidentiary coverage at appropriate levels.
 <rejection_triggers>
 Quick reference for common rejection triggers:
 
-| Category            | Trigger                                                          | Verdict |
-| ------------------- | ---------------------------------------------------------------- | ------- |
-| **Spec Structure**  | Code examples in spec                                            | REJECT  |
-| **Spec Structure**  | Missing or broken test file links                                | REJECT  |
-| **Spec Structure**  | Language about "pending" specs                                   | REJECT  |
-| **Spec Structure**  | Temporal language ("currently", "the existing", file references) | REJECT  |
-| **Level**           | Outcome tested at wrong level                                    | REJECT  |
-| **Dependencies**    | `skipif` on required dependency                                  | REJECT  |
-| **Dependencies**    | Harness referenced but missing                                   | REJECT  |
-| **Property-Based**  | Parser without `@given` roundtrip test                           | REJECT  |
-| **Property-Based**  | Serializer without `@given` roundtrip test                       | REJECT  |
-| **Property-Based**  | Math operation without property tests                            | REJECT  |
-| **Decision Record** | Test violates ADR/PDR constraint                                 | REJECT  |
-| **Python**          | Missing `-> None` on test                                        | REJECT  |
-| **Python**          | Mocking (`@patch`, `Mock()`)                                     | REJECT  |
-| **Evidentiary**     | Test can pass with broken impl                                   | REJECT  |
+| Category            | Trigger                                                                      | Verdict |
+| ------------------- | ---------------------------------------------------------------------------- | ------- |
+| **Spec Structure**  | Code examples in spec                                                        | REJECT  |
+| **Spec Structure**  | Assertion type doesn't match test strategy (Property without `@given`, etc.) | REJECT  |
+| **Spec Structure**  | Missing or broken test file links (inline or table)                          | REJECT  |
+| **Spec Structure**  | Language about "pending" specs                                               | REJECT  |
+| **Spec Structure**  | Temporal language ("currently", "the existing", file references)             | REJECT  |
+| **Level**           | Outcome tested at wrong level                                                | REJECT  |
+| **Dependencies**    | `skipif` on required dependency                                              | REJECT  |
+| **Dependencies**    | Harness referenced but missing                                               | REJECT  |
+| **Property-Based**  | Parser without `@given` roundtrip test                                       | REJECT  |
+| **Property-Based**  | Serializer without `@given` roundtrip test                                   | REJECT  |
+| **Property-Based**  | Math operation without property tests                                        | REJECT  |
+| **Decision Record** | Test violates ADR/PDR constraint                                             | REJECT  |
+| **Python**          | Missing `-> None` on test                                                    | REJECT  |
+| **Python**          | Mocking (`@patch`, `Mock()`)                                                 | REJECT  |
+| **Evidentiary**     | Test can pass with broken impl                                               | REJECT  |
 
 </rejection_triggers>
 

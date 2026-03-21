@@ -1,9 +1,8 @@
 ---
 name: contextualizing
-description: |
-  When the user asks about status, progress, what exists, what's next, or where things stand, invoke this.
-  When the user asks to work on any part of the project, invoke this first to load context.
-  When the user asks "what do we have", "show me", "where are we", invoke this.
+description: >-
+  ALWAYS invoke this skill when asking about status, progress, or what exists in the spec tree.
+  NEVER work on any part of the spec tree without loading context through this skill first.
 allowed-tools: Read, Glob, Grep
 ---
 

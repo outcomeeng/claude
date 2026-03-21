@@ -1,6 +1,8 @@
 ---
 name: managing-specs
-description: Create and manage specs including capabilities, features, stories, PRDs, TRDs, ADRs, and PDRs. Use when creating a feature, creating a story, adding specs, or setting up spec structure.
+description: >-
+  ALWAYS invoke this skill when creating or organizing specs, capabilities, features, stories, or ADRs.
+  NEVER create, read, or modify any files in the specs/ directory without this skill.
 ---
 
 <objective>

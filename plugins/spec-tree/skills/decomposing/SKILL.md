@@ -1,8 +1,8 @@
 ---
 name: decomposing
-description: |
-  When the user asks to break something down, split it up, scope work, or structure a feature.
-  When the user says "break this down", "what are the parts", "how should we structure this", "scope this", invoke this.
+description: >-
+  ALWAYS invoke this skill when breaking down, splitting, scoping, or structuring spec tree nodes.
+  NEVER decompose specs without this skill.
 allowed-tools: Read, Glob, Grep, Write, Edit
 ---
 

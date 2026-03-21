@@ -1,6 +1,8 @@
 ---
 name: testing-python
-description: Write or fix Python tests for a story spec. Use when writing tests for Python code, or fixing tests after review rejection.
+description: >-
+  ALWAYS invoke this skill when writing Python tests or fixing test failures.
+  NEVER write tests without this skill.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 

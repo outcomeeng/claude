@@ -1,6 +1,8 @@
 ---
 name: writing-prose
-description: Write varied, specific, human prose. Always apply when generating articles, documentation, blog posts, specs, or any long-form text.
+description: >-
+  ALWAYS invoke this skill when generating articles, documentation, blog posts, specs, or any long-form text.
+  NEVER write long-form text without this skill.
 ---
 
 <objective>

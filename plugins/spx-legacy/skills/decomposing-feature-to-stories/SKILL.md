@@ -1,8 +1,8 @@
 ---
 name: decomposing-feature-to-stories
-description: |
-  Break down a feature into story specs. Use when decomposing a significant slice into atomic implementation units.
-  Stories must be expressible as structured outcomes. Aim for ≤7 stories per feature.
+description: >-
+  ALWAYS invoke this skill when breaking down a feature into stories.
+  NEVER decompose features without this skill.
 ---
 
 <objective>

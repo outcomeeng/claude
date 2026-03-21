@@ -1,8 +1,8 @@
 ---
 name: aligning
-description: |
-  Check spec files for conformance to templates, atemporal voice, and content placement.
-  When the user asks to review, audit, check consistency, or find gaps, invoke this.
+description: >-
+  ALWAYS invoke this skill when reviewing, auditing, or checking spec file conformance.
+  NEVER check spec conformance without this skill.
 ---
 
 <objective>

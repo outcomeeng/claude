@@ -1,6 +1,8 @@
 ---
 name: migrating-spec-to-spx
-description: Use when migrating specs to spx, reviewing migrations, understanding spec-to-spx process, or debugging migration issues.
+description: >-
+  ALWAYS invoke this skill when migrating specs to spx, reviewing migrations, or debugging migration issues.
+  NEVER migrate specs without this skill.
 ---
 
 <context>

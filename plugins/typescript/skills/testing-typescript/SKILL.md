@@ -1,6 +1,8 @@
 ---
 name: testing-typescript
-description: TypeScript-specific testing patterns with type-safe test design. Use when testing TypeScript code or writing TypeScript tests.
+description: >-
+  ALWAYS invoke this skill when writing TypeScript tests or fixing test failures.
+  NEVER write tests without this skill.
 allowed-tools: Read, Bash, Glob, Grep, Write, Edit
 ---
 

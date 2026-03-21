@@ -1,6 +1,8 @@
 ---
 name: architecting-typescript
-description: Write ADRs for TypeScript architecture decisions. Use when making architecture decisions or writing ADRs.
+description: >-
+  ALWAYS invoke this skill when writing ADRs or making TypeScript architecture decisions.
+  NEVER write ADRs without this skill.
 allowed-tools: Read, Write, Glob, Grep
 ---
 

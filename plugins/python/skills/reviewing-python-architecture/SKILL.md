@@ -1,6 +1,8 @@
 ---
 name: reviewing-python-architecture
-description: Review ADRs to check they follow testing principles and parent PDR constraints. Use when reviewing ADRs or architecture decisions.
+description: >-
+  ALWAYS invoke this skill when reviewing ADRs or architecture decisions.
+  NEVER review architecture decisions without this skill.
 allowed-tools: Read, Grep
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: standardizing-python-testing
-description: Python testing standards enforced across all skills. Reference skill for property-based testing, factories, harness patterns, and level-specific implementations.
+disable-model-invocation: true
+description: >-
+  Python testing standards enforced across all skills. Loaded by other skills, not invoked directly.
 allowed-tools: Read
 ---
 

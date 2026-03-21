@@ -1,8 +1,8 @@
 ---
 name: authoring
-description: |
-  When the user asks to add, define, create, or specify something — a feature, capability, decision, or spec.
-  When the user says "let's add", "we need", "define", "plan", "spec out", "write up", invoke this.
+description: >-
+  ALWAYS invoke this skill when adding, defining, or creating specs, decisions, or nodes.
+  NEVER author spec tree artifacts without this skill.
 allowed-tools: Read, Glob, Grep, Write, Edit
 ---
 

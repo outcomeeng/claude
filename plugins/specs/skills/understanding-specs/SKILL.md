@@ -1,6 +1,8 @@
 ---
 name: understanding-specs
-description: Read all specs for a story, feature, or capability including PRDs, TRDs, ADRs, and PDRs. Use when starting implementation, checking progress, or asked to "read the spec".
+description: >-
+  ALWAYS invoke this skill before implementing any work item to load complete context.
+  NEVER create, read, or modify any files in the specs/ directory without this skill.
 allowed-tools: Read, Glob, Grep
 ---
 

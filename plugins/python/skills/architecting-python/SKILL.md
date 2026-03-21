@@ -1,6 +1,8 @@
 ---
 name: architecting-python
-description: Write ADRs for Python architecture decisions. Use when making architecture decisions or writing ADRs.
+description: >-
+  ALWAYS invoke this skill when writing ADRs or making Python architecture decisions.
+  NEVER write ADRs without this skill.
 allowed-tools: Read, Write, Glob, Grep
 ---
 

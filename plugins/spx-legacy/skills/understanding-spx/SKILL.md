@@ -1,6 +1,8 @@
 ---
 name: understanding-spx
-description: Read all specs for a story, feature, or capability including PRDs, ADRs, and PDRs. Use when starting implementation, checking progress, or asked to "read the spec". For Outcome Engineering framework (spx/) projects.
+description: >-
+  ALWAYS invoke this skill before implementing any work item to load complete context.
+  NEVER create, read, or modify any files in the spx/ directory without this skill.
 allowed-tools: Read, Glob, Grep
 ---
 

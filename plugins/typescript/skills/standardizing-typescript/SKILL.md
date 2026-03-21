@@ -1,6 +1,8 @@
 ---
 name: standardizing-typescript
-description: TypeScript code standards enforced across all skills. Reference skill for type safety, naming conventions, and linting rules.
+disable-model-invocation: true
+description: >-
+  TypeScript code standards enforced across all skills. Loaded by other skills, not invoked directly.
 allowed-tools: Read
 ---
 

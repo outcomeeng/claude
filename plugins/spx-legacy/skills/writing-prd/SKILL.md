@@ -1,6 +1,8 @@
 ---
 name: writing-prd
-description: Write PRDs documenting what users need and why. Use when writing PRDs or product requirements.
+description: >-
+  ALWAYS invoke this skill when writing PRDs or product requirements.
+  NEVER write PRDs without this skill.
 allowed-tools: Read, Write, Glob, Grep, AskUserQuestion
 ---
 

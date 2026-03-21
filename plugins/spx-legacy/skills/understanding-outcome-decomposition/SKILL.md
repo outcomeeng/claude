@@ -1,8 +1,8 @@
 ---
 name: understanding-outcome-decomposition
-description: |
-  Foundational skill for decomposing outcomes into capabilities, features, and stories.
-  Use when breaking down PRDs, understanding outcome levels, or before using decomposition skills.
+description: >-
+  ALWAYS invoke this skill before using any decomposition skill or when understanding outcome levels.
+  NEVER decompose outcomes without loading this foundation first.
 allowed-tools: Read, Glob, Grep
 ---
 

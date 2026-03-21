@@ -1,8 +1,8 @@
 ---
 name: decomposing-capability-to-features
-description: |
-  Break down a capability into feature specs. Use when decomposing a product ability into significant vertical slices.
-  Each feature must be implementable in at most 7 atomic stories.
+description: >-
+  ALWAYS invoke this skill when breaking down a capability into features.
+  NEVER decompose capabilities without this skill.
 ---
 
 <objective>

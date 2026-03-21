@@ -1,8 +1,8 @@
 ---
 name: understanding
-description: |
-  Foundation skill — loaded automatically before any other spec-tree skill.
-  When the user asks about methodology, node types, or how specs work, invoke this first.
+description: >-
+  ALWAYS invoke this skill before any spec-tree work to load methodology.
+  NEVER create, read, or modify spec tree files without loading this foundation first.
 allowed-tools: Read, Glob, Grep
 ---
 

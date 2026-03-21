@@ -1,6 +1,8 @@
 ---
 name: standardizing-python
-description: Python code standards enforced across all skills. Reference skill for type annotations, naming conventions, and linting rules.
+disable-model-invocation: true
+description: >-
+  Python code standards enforced across all skills. Loaded by other skills, not invoked directly.
 allowed-tools: Read
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: testing
-description: Learn how to test code without mocking. Use when learning testing approach or before writing tests.
+description: >-
+  ALWAYS invoke this skill before writing tests or when learning the testing approach.
+  NEVER write tests without this skill.
 allowed-tools: Read, Bash, Glob, Grep, Write, Edit
 ---
 

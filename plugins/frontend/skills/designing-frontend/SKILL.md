@@ -1,6 +1,8 @@
 ---
 name: designing-frontend
-description: Design and build beautiful web UI that doesn't look generic. Use when designing or building web components, pages, or dashboards.
+description: >-
+  ALWAYS invoke this skill when designing or building web components, pages, or dashboards.
+  NEVER design or build web UI without this skill.
 ---
 
 <objective>

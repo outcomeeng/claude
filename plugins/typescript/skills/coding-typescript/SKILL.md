@@ -1,6 +1,8 @@
 ---
 name: coding-typescript
-description: Write TypeScript code that's type-safe and tested. Use when coding TypeScript or implementing features.
+description: >-
+  ALWAYS invoke this skill when writing or fixing TypeScript implementation code.
+  NEVER write implementation code without this skill.
 allowed-tools: Read, Write, Bash, Glob, Grep, Edit
 ---
 

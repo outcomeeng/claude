@@ -1,8 +1,8 @@
 ---
 name: testing
-description: |
-  Manage Spec Tree testing: create tests from assertions, run tests, check stale status.
-  Use when creating tests, running tests, or synchronizing spec-test consistency after changes.
+description: >-
+  ALWAYS invoke this skill when creating tests from assertions, running tests, or checking stale status.
+  NEVER create or run spec tree tests without this skill.
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
 

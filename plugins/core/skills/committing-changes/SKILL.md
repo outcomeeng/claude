@@ -1,6 +1,8 @@
 ---
 name: committing-changes
-description: Commit changes following Conventional Commits with selective staging. Use when user says "commit", "commit this", or when ready to commit after completing work.
+description: >-
+  ALWAYS invoke this skill when committing changes or when user says "commit".
+  NEVER run git commit without this skill.
 ---
 
 <objective>
