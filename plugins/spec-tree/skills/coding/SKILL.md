@@ -12,51 +12,28 @@ Orchestrate the spec-tree TDD flow for a work item. Eight phases, strictly seque
 
 <quick_start>
 
-1. Detect project language
-2. Load methodology (Phase 1 — once per session)
-3. Load work item context (Phase 2 — every node)
-4. Architect → review until APPROVED (Phases 3–4)
-5. Test → review until APPROVED (Phases 5–6)
-6. Implement → review until APPROVED (Phases 7–8)
+1. Load methodology (Phase 1 — once per session)
+2. Load work item context (Phase 2 — every node)
+3. Architect → review until APPROVED (Phases 3–4)
+4. Test → review until APPROVED (Phases 5–6)
+5. Implement → review until APPROVED (Phases 7–8)
 
 </quick_start>
 
-<language_detection>
-Determine the project language before proceeding. This selects which skills to invoke in Phases 3–8.
-
-| Indicator                       | Language   | Plugin prefix |
-| ------------------------------- | ---------- | ------------- |
-| `pyproject.toml`, `*.py`        | Python     | `python`      |
-| `tsconfig.json`, `package.json` | TypeScript | `typescript`  |
-
-If both are present or neither is found, ask the user.
-
-</language_detection>
-
 <skill_map>
-Reference table for all phase invocations. Replace `{P}` with the detected plugin prefix.
 
-| Phase | Purpose                | Skill to invoke                         |
-| ----- | ---------------------- | --------------------------------------- |
-| 1     | Load methodology       | `spec-tree:understanding`               |
-| 2     | Load work item context | `spec-tree:contextualizing`             |
-| 3     | Architect              | `{P}:architecting-{language}`           |
-| 4     | Architecture review    | `{P}:reviewing-{language}-architecture` |
-| 5     | Write tests            | `{P}:testing-{language}`                |
-| 6     | Test review            | `{P}:reviewing-{language}-tests`        |
-| 7     | Implement              | `{P}:coding-{language}`                 |
-| 8     | Code review            | `{P}:reviewing-{language}`              |
+Phases 1–2 are always the same. Phases 3–8 use the language you are writing. You know what language you are writing — use the corresponding plugin.
 
-**Concrete examples:**
-
-| Phase | Python                                 | TypeScript                                     |
-| ----- | -------------------------------------- | ---------------------------------------------- |
-| 3     | `python:architecting-python`           | `typescript:architecting-typescript`           |
-| 4     | `python:reviewing-python-architecture` | `typescript:reviewing-typescript-architecture` |
-| 5     | `python:testing-python`                | `typescript:testing-typescript`                |
-| 6     | `python:reviewing-python-tests`        | `typescript:reviewing-typescript-tests`        |
-| 7     | `python:coding-python`                 | `typescript:coding-typescript`                 |
-| 8     | `python:reviewing-python`              | `typescript:reviewing-typescript`              |
+| Phase | Purpose                | Python                                 | TypeScript                                     |
+| ----- | ---------------------- | -------------------------------------- | ---------------------------------------------- |
+| 1     | Load methodology       | `spec-tree:understanding`              | `spec-tree:understanding`                      |
+| 2     | Load work item context | `spec-tree:contextualizing`            | `spec-tree:contextualizing`                    |
+| 3     | Architect              | `python:architecting-python`           | `typescript:architecting-typescript`           |
+| 4     | Architecture review    | `python:reviewing-python-architecture` | `typescript:reviewing-typescript-architecture` |
+| 5     | Write tests            | `python:testing-python`                | `typescript:testing-typescript`                |
+| 6     | Test review            | `python:reviewing-python-tests`        | `typescript:reviewing-typescript-tests`        |
+| 7     | Implement              | `python:coding-python`                 | `typescript:coding-typescript`                 |
+| 8     | Code review            | `python:reviewing-python`              | `typescript:reviewing-typescript`              |
 
 </skill_map>
 
@@ -136,12 +113,13 @@ Invoke the code review skill for the detected language.
 
 <review_gates>
 
-Phases 4, 6, and 8 are blocking gates. The flow does not advance past a review until the verdict is APPROVED.
+Phases 4, 6, and 8 are blocking review gates. Each review skill emits `APPROVED` or `REJECT` in the conversation.
 
-- APPROVED or REJECT. Nothing else exists.
-- "Approved with observations" is not a verdict — observations that matter are rejections.
-- Each rejection cycle: fix the findings, then re-invoke the same review skill.
-- Do not skip review phases. Do not proceed on REJECT.
+- Before starting Phase 5: scan the conversation for the Phase 4 review verdict. If `APPROVED` is not present, stop — invoke Phase 4.
+- Before starting Phase 7: scan the conversation for the Phase 6 review verdict. If `APPROVED` is not present, stop — invoke Phase 6.
+- Before declaring success: scan the conversation for the Phase 8 review verdict. If `APPROVED` is not present, stop — invoke Phase 8.
+
+On `REJECT`: fix the findings, re-invoke the same review skill, and scan again.
 
 </review_gates>
 
@@ -158,12 +136,13 @@ This is not slower. The ad hoc script you were about to write takes the same eff
 
 <success_criteria>
 
-- Phase 1 complete: spec-tree methodology loaded
-- Phase 2 complete: work item context hierarchy loaded
-- Phase 4 verdict: APPROVED (architecture review passed)
-- Phase 6 verdict: APPROVED (test review passed)
-- Phase 8 verdict: APPROVED (code review passed)
-- All tests pass
-- No phase skipped, no review gate bypassed
+Scan the conversation for these markers before declaring done:
+
+- [ ] `SPEC_TREE_FOUNDATION` marker present (Phase 1)
+- [ ] `SPEC_TREE_CONTEXT` marker present (Phase 2)
+- [ ] Phase 4 review skill emitted `APPROVED`
+- [ ] Phase 6 review skill emitted `APPROVED`
+- [ ] Phase 8 review skill emitted `APPROVED`
+- [ ] All tests pass
 
 </success_criteria>
