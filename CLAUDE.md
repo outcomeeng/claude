@@ -348,6 +348,15 @@ Spec-driven development with Outcome Engineering framework.
 | `/managing-spx`      | Create and manage spx/ specs: capabilities, features, stories, ADRs  |
 | `/understanding-spx` | Read all specs before starting work to load requirements and context |
 
+### Commands
+
+| Command    | Purpose                                                    |
+| ---------- | ---------------------------------------------------------- |
+| `/commit`  | Git commit with Conventional Commits (auto-context)        |
+| `/handoff` | Create timestamped context handoff                         |
+| `/pickup`  | Load and continue from previous handoff                    |
+| `/rtfm`    | Load specs and testing methodology before writing any code |
+
 ### Core Principles
 
 - Specs are a durable map - nothing moves because work is "done"
@@ -701,6 +710,10 @@ Error: Bash command permission check failed for pattern "!find .spx/sessions -ma
 
 ## For Claude Agents Modifying This Marketplace
 
+### ⛔ Subagent Restrictions
+
+**NEVER use subagents (Agent tool) to create or modify any file.** All file creation and modification must happen in the main conversation context using Read, Edit, and Write tools directly. Subagents are for research, exploration, and auditing only.
+
 ### ⛔ Path Restrictions
 
 **NEVER write to these locations:**
@@ -805,7 +818,12 @@ claude/
 │   │       ├── understanding-specs/
 │   │       ├── writing-prd/
 │   │       └── writing-trd/
-│   ├── spx/                      # Version: 0.5.0 (Outcome Engineering framework)
+│   ├── spx/                      # Version: 0.9.1 (Outcome Engineering framework)
+│   │   ├── commands/
+│   │   │   ├── commit.md
+│   │   │   ├── handoff.md
+│   │   │   ├── pickup.md
+│   │   │   └── rtfm.md
 │   │   └── skills/
 │   │       ├── managing-spx/
 │   │       ├── understanding-spx/
