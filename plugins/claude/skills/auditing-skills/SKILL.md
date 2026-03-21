@@ -3,6 +3,7 @@ name: auditing-skills
 description: >-
   ALWAYS invoke this skill when auditing, reviewing, or evaluating SKILL.md files.
   NEVER audit skills without this skill.
+argument-hint: <skill-path>
 ---
 
 <objective>
@@ -51,7 +52,9 @@ During audits, prioritize evaluation of:
 <critical_workflow>
 **MANDATORY**: Read best practices FIRST, before auditing:
 
-1. Read creating-skills/SKILL.md for overview
+1. Locate the creating-skills skill and its references:
+   - Use Glob: `.claude/plugins/cache/**/creating-skills/SKILL.md`
+   - Then read its SKILL.md for overview
 2. Read creating-skills/references/use-xml-tags.md for required/conditional tags, XML structure requirements
 3. Read creating-skills/references/skill-patterns.md for YAML, naming, progressive disclosure patterns
 4. Read creating-skills/references/core-principles.md for XML structure, conciseness, context window principles

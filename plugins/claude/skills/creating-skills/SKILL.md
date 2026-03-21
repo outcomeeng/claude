@@ -9,17 +9,19 @@ description: >-
 When this skill is invoked, Claude Code provides the base directory in the loading message:
 
 ```
-Base directory for this skill: {skill_dir}
+Base directory for this skill: /path/to/.claude/plugins/cache/{marketplace}/{plugin}/{version}/skills/creating-skills/
 ```
+
+Throughout this skill, we refer to this as `${SKILL_DIR}`.
 
 Use this path for all skill file access:
 
-- References: `{skill_dir}/references/`
-- Workflows: `{skill_dir}/workflows/`
-- Templates: `{skill_dir}/templates/`
-- Scripts: `{skill_dir}/scripts/`
+- References: `${SKILL_DIR}/references/`
+- Workflows: `${SKILL_DIR}/workflows/`
+- Templates: `${SKILL_DIR}/templates/`
+- Scripts: `${SKILL_DIR}/scripts/`
 
-**IMPORTANT**: Do NOT search the project directory for skill files.
+**IMPORTANT**: Do NOT search the project directory for skill files. If you cannot find a file, use Glob: `.claude/plugins/cache/**/creating-skills/**/*.md`
 </accessing_skill_files>
 
 <essential_principles>
@@ -71,18 +73,18 @@ What would you like to do?
 <routing>
 | Response | Workflow |
 |----------|----------|
-| 1, "create", "new", "build" | `workflows/create-new-skill.md` |
-| 2, "audit", "improve", "review", "check" | `workflows/audit-skill.md` |
-| 3, "add workflow" | `workflows/add-workflow.md` |
-| 3, "add reference" | `workflows/add-reference.md` |
-| 3, "upgrade to router" | `workflows/upgrade-to-router.md` |
-| 4, "patterns", "understand", "help" | Read `references/skill-patterns.md` |
+| 1, "create", "new", "build" | `${SKILL_DIR}/workflows/create-new-skill.md` |
+| 2, "audit", "improve", "review", "check" | `${SKILL_DIR}/workflows/audit-skill.md` |
+| 3, "add workflow" | `${SKILL_DIR}/workflows/add-workflow.md` |
+| 3, "add reference" | `${SKILL_DIR}/workflows/add-reference.md` |
+| 3, "upgrade to router" | `${SKILL_DIR}/workflows/upgrade-to-router.md` |
+| 4, "patterns", "understand", "help" | Read `${SKILL_DIR}/references/skill-patterns.md` |
 
 **Intent-based routing** (if user provides clear context):
 
-- "verify content is current" → `workflows/verify-skill.md`
-- "audit this skill" → `workflows/audit-skill.md`
-- "create skill for X" → `workflows/create-new-skill.md`
+- "verify content is current" → `${SKILL_DIR}/workflows/verify-skill.md`
+- "audit this skill" → `${SKILL_DIR}/workflows/audit-skill.md`
+- "create skill for X" → `${SKILL_DIR}/workflows/create-new-skill.md`
 
 **After reading the workflow, follow it exactly.**
 </routing>
@@ -125,7 +127,7 @@ description: >- # Directive with negative constraint, ≤1024 chars
 </quick_reference>
 
 <reference_index>
-All in `references/`:
+All in `${SKILL_DIR}/references/`:
 
 | File                    | Purpose                                          |
 | ----------------------- | ------------------------------------------------ |
@@ -135,10 +137,11 @@ All in `references/`:
 | reusability-patterns.md | Variations vs constants, adaptable skills        |
 | testing-patterns.md     | Evaluation-driven development, iterative testing |
 | technical-patterns.md   | Error handling, security, dependencies           |
-| </reference_index>      |                                                  |
+
+</reference_index>
 
 <workflows_index>
-All in `workflows/`:
+All in `${SKILL_DIR}/workflows/`:
 
 | Workflow             | Purpose                                |
 | -------------------- | -------------------------------------- |
@@ -148,10 +151,11 @@ All in `workflows/`:
 | add-reference.md     | Add a reference to existing skill      |
 | upgrade-to-router.md | Convert simple skill to router pattern |
 | verify-skill.md      | Check if content is still accurate     |
-| </workflows_index>   |                                        |
+
+</workflows_index>
 
 <templates_index>
-All in `templates/`:
+All in `${SKILL_DIR}/templates/`:
 
 | Template            | Purpose                       |
 | ------------------- | ----------------------------- |
@@ -162,17 +166,19 @@ All in `templates/`:
 | automation-skill.md | Automation type template      |
 | analyzer-skill.md   | Analyzer type template        |
 | validator-skill.md  | Validator type template       |
-| </templates_index>  |                               |
+
+</templates_index>
 
 <scripts_index>
-All in `scripts/`:
+All in `${SKILL_DIR}/scripts/`:
 
 | Script            | Purpose                              |
 | ----------------- | ------------------------------------ |
 | init_skill.py     | Initialize skill directory structure |
 | package_skill.py  | Validate and package skill           |
 | quick_validate.py | Quick YAML/structure validation      |
-| </scripts_index>  |                                      |
+
+</scripts_index>
 
 <success_criteria>
 A well-structured skill:

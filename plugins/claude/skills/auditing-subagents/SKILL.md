@@ -205,14 +205,17 @@ Generic tag names like `<section1>`, `<part2>`, `<content>`.
 </anti_patterns>
 
 <output_format>
-Provide audit results using severity-based findings, not scores:
+Audit reports use severity-based findings, not scores. Generate output using this markdown template:
 
-**Audit Results: [subagent-name]**
+```markdown
+## Audit Results: [subagent-name]
 
-**Assessment**
+### Assessment
+
 [1-2 sentence overall assessment: Is this subagent fit for purpose? What's the main takeaway?]
 
-**Critical Issues**
+### Critical Issues
+
 Issues that hurt effectiveness or violate required patterns:
 
 1. **[Issue category]** (file:line)
@@ -225,7 +228,8 @@ Issues that hurt effectiveness or violate required patterns:
 
 (If none: "No critical issues found.")
 
-**Recommendations**
+### Recommendations
+
 Improvements that would make this subagent better:
 
 1. **[Issue category]** (file:line)
@@ -237,24 +241,27 @@ Improvements that would make this subagent better:
 
 (If none: "No recommendations - subagent follows best practices well.")
 
-**Strengths**
+### Strengths
+
 What's working well (keep these):
 
 - [Specific strength with location]
 - ...
 
-**Quick Fixes**
+### Quick Fixes
+
 Minor issues easily resolved:
 
 1. [Issue] at file:line → [One-line fix]
 2. ...
 
-**Context**
+### Context
 
 - Subagent type: [simple/complex/delegation/etc.]
 - Tool access: [appropriate/over-permissioned/under-specified]
 - Model selection: [appropriate/reconsider - with reason if latter]
 - Estimated effort to address issues: [low/medium/high]
+```
 
 </output_format>
 

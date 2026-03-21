@@ -145,8 +145,9 @@ Always explain WHY something matters for this specific command, not just that it
 </contextual_judgment>
 
 <output_format>
-Audit reports use severity-based findings, not scores:
+Audit reports use severity-based findings, not scores. Generate output using this markdown template:
 
+```markdown
 ## Audit Results: [command-name]
 
 ### Assessment
@@ -200,8 +201,35 @@ Minor issues easily resolved:
 - Line count: [number]
 - Security profile: [none/low/medium/high - based on what the command does]
 - Estimated effort to address issues: [low/medium/high]
+```
 
 </output_format>
+
+<validation>
+Before presenting audit findings, verify:
+
+**Completeness checks**:
+
+- [ ] All evaluation areas assessed (YAML, Arguments, Dynamic Context, Tool Restrictions, Content)
+- [ ] Findings have file:line locations
+- [ ] Assessment section provides clear summary
+- [ ] Strengths identified
+
+**Accuracy checks**:
+
+- [ ] All line numbers verified against actual file
+- [ ] Recommendations match command complexity level
+- [ ] Context appropriately considered (simple vs state-dependent vs security-sensitive)
+
+**Quality checks**:
+
+- [ ] Findings are specific and actionable
+- [ ] "Why it matters" explains impact for THIS command
+- [ ] Remediation steps are clear
+- [ ] No arbitrary rules applied without contextual justification
+
+Only present findings after all checks pass.
+</validation>
 
 <success_criteria>
 Task is complete when:
