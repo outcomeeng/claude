@@ -1,6 +1,6 @@
-# SPX-Claude Plugin Marketplace
+# Outcome Engineering Plugin Marketplace
 
-A Claude Code plugin marketplace with skills and commands for testing, Python and TypeScript development, specifications, and productivity.
+A Claude Code plugin marketplace (`outcomeeng/claude`) for [Outcome Engineering](https://outcome.engineering) and [SPX](https://spx.sh) — spec-driven development with skills and commands for testing, Python and TypeScript engineering, and productivity.
 
 ## Philosophy
 
@@ -16,11 +16,14 @@ Add this marketplace and install plugins directly from GitHub:
 claude plugin marketplace add outcomeeng/claude
 
 # Install plugins you want
-claude plugin install core@outcomeeng
-claude plugin install test@outcomeeng
-claude plugin install typescript@outcomeeng
-claude plugin install python@outcomeeng
-claude plugin install spx@outcomeeng
+claude plugin install core@outcomeeng        # /commit, /handoff, /pickup
+claude plugin install claude@outcomeeng      # meta-skills for creating/auditing
+claude plugin install test@outcomeeng        # /testing (foundational)
+claude plugin install typescript@outcomeeng  # TypeScript engineering
+claude plugin install python@outcomeeng      # Python engineering
+claude plugin install spec-tree@outcomeeng   # Spec Tree framework
+claude plugin install spx@outcomeeng         # SPX commands (/rtfm, /clarify)
+claude plugin install prose@outcomeeng       # writing and reviewing prose
 ```
 
 Now slash commands like `/commit`, `/handoff`, `/pickup` and skills like `/testing-typescript` are available in all your projects.
@@ -39,6 +42,21 @@ For automatic updates, run `claude`, navigate to `/plugin marketplace`, select t
 
 ## Available Plugins
 
+### claude
+
+Meta-skills for Claude Code plugin development.
+
+| Type  | Name                  | Purpose                         |
+| ----- | --------------------- | ------------------------------- |
+| Skill | `/creating-skills`    | Create and refine skills        |
+| Skill | `/creating-commands`  | Create slash commands with XML  |
+| Skill | `/creating-subagents` | Create and configure subagents  |
+| Skill | `/auditing-skills`    | Audit skills for best practices |
+| Skill | `/auditing-commands`  | Audit slash commands            |
+| Skill | `/auditing-subagents` | Audit subagent configurations   |
+
+Credit: `/creating-skills` is inspired by [TÂCHES Claude Code Resources](https://github.com/glittercowboy/taches-cc-resources?tab=readme-ov-file#skills).
+
 ### core
 
 Productivity commands and skills.
@@ -51,6 +69,33 @@ Productivity commands and skills.
 | Command | `/pickup`             | Load and continue from previous handoff |
 
 Credit: `/handoff` is inspired by [TÂCHES Claude Code Resources](https://github.com/glittercowboy/taches-cc-resources/tree/main?tab=readme-ov-file#context-handoff).
+
+### spec-tree
+
+Spec Tree framework for spec-driven development. Supersedes `spx-legacy`.
+
+| Type  | Name               | Purpose                                       |
+| ----- | ------------------ | --------------------------------------------- |
+| Skill | `/understanding`   | Foundation skill — loaded before any other    |
+| Skill | `/contextualizing` | Show status, progress, what exists            |
+| Skill | `/authoring`       | Add, define, create specs and features        |
+| Skill | `/decomposing`     | Break down, split, scope work                 |
+| Skill | `/refactoring`     | Move nodes, re-scope, extract shared enablers |
+| Skill | `/aligning`        | Review, check consistency, audit, find gaps   |
+| Skill | `/testing`         | Create tests, run tests, check stale status   |
+
+### spx
+
+Commands for spec-driven development projects.
+
+| Type    | Name                  | Purpose                                 |
+| ------- | --------------------- | --------------------------------------- |
+| Skill   | `/committing-changes` | Commit message guidance                 |
+| Command | `/commit`             | Git commit with Conventional Commits    |
+| Command | `/handoff`            | Create timestamped context handoff      |
+| Command | `/pickup`             | Load and continue from previous handoff |
+| Command | `/rtfm`               | Load specs and testing before coding    |
+| Command | `/clarify`            | Clarify ambiguous requirements          |
 
 ### test
 
@@ -86,15 +131,14 @@ Complete Python development workflow.
 | Skill   | `/architecting-python`           | ADR producer with testing strategy |
 | Skill   | `/reviewing-python-architecture` | ADR validator                      |
 
-### spx
+### prose
 
-Spec-driven development skills.
+Prose craft skills for writing and reviewing.
 
-| Type  | Name                   | Purpose                            |
-| ----- | ---------------------- | ---------------------------------- |
-| Skill | `/writing-prd`         | Write product requirements         |
-| Skill | `/managing-specs`      | Manage specs structure and ADRs    |
-| Skill | `/understanding-specs` | Load context before implementation |
+| Type  | Name               | Purpose                                      |
+| ----- | ------------------ | -------------------------------------------- |
+| Skill | `/writing-prose`   | Write varied, specific, human prose          |
+| Skill | `/reviewing-prose` | Review and edit prose for formulaic patterns |
 
 ### frontend
 
@@ -112,15 +156,25 @@ Autonomous coding orchestration.
 | ----- | ---------------------- | ---------------------------------- |
 | Skill | `/coding-autonomously` | Autonomous implementation patterns |
 
-### claude
+### specs (legacy)
 
-Meta-skills for Claude Code plugin development.
+Legacy `specs/` directory support.
 
-| Type  | Name               | Purpose                    |
-| ----- | ------------------ | -------------------------- |
-| Skill | `/creating-skills` | Create maintainable skills |
+| Type  | Name                   | Purpose                            |
+| ----- | ---------------------- | ---------------------------------- |
+| Skill | `/managing-specs`      | Manage specs structure and ADRs    |
+| Skill | `/understanding-specs` | Load context before implementation |
 
-Credit: `/creating-skills` is inspired by [TÂCHES Claude Code Resources](https://github.com/glittercowboy/taches-cc-resources?tab=readme-ov-file#skills).
+### spx-legacy (deprecated)
+
+**Deprecated — superseded by spec-tree.** Legacy Outcome Engineering (spx/) skills.
+
+| Type  | Name                 | Purpose                                 |
+| ----- | -------------------- | --------------------------------------- |
+| Skill | `/writing-prd`       | Write product requirements              |
+| Skill | `/managing-spx`      | Create and manage spx/ specs            |
+| Skill | `/understanding-spx` | Load context before implementation      |
+| Skill | `/decomposing-*`     | Decompose PRDs to capabilities/features |
 
 ---
 

@@ -845,7 +845,7 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 ├── .spx/                          # Tool operational (gitignored)
 │   └── sessions/                  # Session handoffs
 ├── plugins/
-│   ├── claude/                   # Version: 0.1.1 — Meta-skills
+│   ├── claude/                   # Version: 0.1.2 — Meta-skills
 │   │   └── skills/
 │   │       ├── creating-skills/
 │   │       ├── creating-commands/
@@ -856,33 +856,33 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   ├── code/                     # Version: 0.0.3
 │   │   └── skills/
 │   │       └── coding-autonomously/
-│   ├── core/                     # Version: 0.4.30
+│   ├── core/                     # Version: 0.4.31
 │   │   ├── commands/
 │   │   │   ├── commit.md
 │   │   │   ├── handoff.md
 │   │   │   └── pickup.md
 │   │   └── skills/
 │   │       └── committing-changes/
-│   ├── frontend/                 # Version: 0.0.1
+│   ├── frontend/                 # Version: 0.0.2
 │   │   └── skills/
 │   │       └── designing-frontend/
-│   ├── prose/                    # Version: 0.1.2
+│   ├── prose/                    # Version: 0.1.3
 │   │   └── skills/
 │   │       ├── writing-prose/
 │   │       └── reviewing-prose/
-│   ├── python/                   # Version: 0.11.2
+│   ├── python/                   # Version: 0.11.3
 │   │   ├── commands/
 │   │   │   └── auto-python.md
 │   │   └── skills/
 │   │       └── (6 skills)
-│   ├── spec-tree/                # Version: 0.4.0 — Spec Tree (current)
+│   ├── spec-tree/                # Version: 0.4.1 — Spec Tree (current)
 │   │   └── skills/
 │   │       └── (7 skills)
-│   ├── specs/                    # Version: 0.5.6 (legacy)
+│   ├── specs/                    # Version: 0.5.7 (legacy)
 │   │   └── skills/
 │   │       ├── managing-specs/
 │   │       └── understanding-specs/
-│   ├── spx/                      # Version: 0.9.1 — SPX commands
+│   ├── spx/                      # Version: 0.9.2 — SPX commands
 │   │   ├── commands/
 │   │   │   ├── clarify.md
 │   │   │   ├── commit.md
@@ -891,13 +891,13 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │   │   └── rtfm.md
 │   │   └── skills/
 │   │       └── committing-changes/
-│   ├── spx-legacy/               # Version: 0.1.1 (deprecated → spec-tree)
+│   ├── spx-legacy/               # Version: 0.1.2 (deprecated → spec-tree)
 │   │   └── skills/
 │   │       └── (9 skills)
-│   ├── test/                     # Version: 0.3.0
+│   ├── test/                     # Version: 0.3.1
 │   │   └── skills/
 │   │       └── testing/
-│   └── typescript/               # Version: 0.8.8
+│   └── typescript/               # Version: 0.8.9
 │       ├── commands/
 │       │   └── auto-typescript.md
 │       └── skills/
