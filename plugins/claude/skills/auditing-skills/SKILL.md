@@ -1,8 +1,8 @@
 ---
 name: auditing-skills
-description: Review and audit skills for best practices. Use when user asks you to audit a skill, audit all skills, review a skill, review all skills
-allowed-tools: Read, Grep, Glob
-model: sonnet
+description: >-
+  ALWAYS invoke this skill when auditing, reviewing, or evaluating SKILL.md files.
+  NEVER audit skills without this skill.
 ---
 
 <objective>
@@ -33,7 +33,7 @@ To audit a skill:
 <focus_areas>
 During audits, prioritize evaluation of:
 
-- YAML compliance (name length, description quality, third person POV)
+- YAML compliance (name length, description quality, directive style with negative constraint)
 - Pure XML structure (required tags, no markdown headings in body, proper nesting)
 - Progressive disclosure structure (SKILL.md < 500 lines, references one level deep)
 - Conciseness and signal-to-noise ratio (every word earns its place)
@@ -71,7 +71,7 @@ During audits, prioritize evaluation of:
 Check for:
 
 - **name**: Lowercase-with-hyphens, max 64 chars, matches directory name, follows verb-noun convention (create-*, manage-*, setup-*, generate-*)
-- **description**: Max 1024 chars, third person, includes BOTH what it does AND when to use it, no XML tags
+- **description**: Max 1024 chars, directive style (ALWAYS invoke + NEVER without), no XML tags
 
 </area>
 
@@ -143,7 +143,7 @@ Flag these issues:
 - **hybrid_xml_markdown**: Mixing XML tags with markdown headings in body
 - **unclosed_xml_tags**: XML tags not properly closed
 - **vague_descriptions**: "helps with", "processes data"
-- **wrong_pov**: First/second person instead of third person
+- **passive_description**: Uses passive "Use when" instead of directive "ALWAYS invoke... NEVER X without this skill"
 - **too_many_options**: Multiple options without clear default
 - **deeply_nested_references**: References more than one level deep from SKILL.md
 - **windows_paths**: Backslash paths instead of forward slashes

@@ -1,6 +1,8 @@
 ---
 name: creating-skills
-description: Create and refine Claude Code Skills. Use when user asks you to create a skill, write a SKILL.md file, or improve a skill.
+description: >-
+  ALWAYS invoke this skill when creating, editing, or improving SKILL.md files.
+  NEVER create or modify skills without this skill.
 ---
 
 <accessing_skill_files>
@@ -91,9 +93,9 @@ What would you like to do?
 ```yaml
 ---
 name: skill-name # lowercase-with-hyphens, ≤64 chars
-description: | # What + When, ≤1024 chars, third person
-  What this skill does.
-  Use when users ask to <triggers>.
+description: >- # Directive with negative constraint, ≤1024 chars
+  ALWAYS invoke this skill when <triggers>.
+  NEVER <alternative action> without this skill.
 ---
 ```
 

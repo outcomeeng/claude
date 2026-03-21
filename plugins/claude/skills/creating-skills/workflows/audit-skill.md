@@ -45,7 +45,7 @@ Evaluate against each criterion:
 - [ ] Name matches directory name
 - [ ] Has `description:` field (≤1024 chars)
 - [ ] Description says what it does AND when to use it
-- [ ] Description is third person
+- [ ] Description uses directive style with negative constraint (ALWAYS/NEVER)
 
 ### Structure
 

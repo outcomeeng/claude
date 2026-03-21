@@ -1,10 +1,10 @@
-# SPX-Claude Plugin Marketplace
+# Outcome Engineering Plugin Marketplace
 
-Claude Code plugin marketplace, based on the spec-driven development framework [SPX](https://spx.sh).
+Claude Code plugin marketplace (`outcomeeng/claude`) for spec-driven development with [Outcome Engineering](https://outcome.engineering) and [SPX](https://spx.sh).
 
 ## Marketplace Is a Product
 
-We develop the "features" of this market place like a software product. We are currently starting out from scratch, so there is not yet much to be found, but as we progress, everything will be in `spx/` (specs as durable map).
+We develop the "features" of this marketplace like a software product. We are currently starting out from scratch, so there is not yet much to be found, but as we progress, everything will be in `spx/` (specs as durable map).
 
 ## Always use `AskUserQuestion` Tool
 
@@ -197,6 +197,21 @@ Claude Code skills cannot automatically invoke other skills. However, skills can
 
 ---
 
+## Claude Plugin
+
+Meta-skills for Claude Code plugin development: creating and auditing skills, commands, and subagents.
+
+### Skills
+
+| Skill                 | Purpose                                    |
+| --------------------- | ------------------------------------------ |
+| `/creating-skills`    | Create and refine Claude Code skills       |
+| `/creating-commands`  | Create slash commands with XML structure   |
+| `/creating-subagents` | Create and configure subagents             |
+| `/auditing-skills`    | Audit skills for best practices compliance |
+| `/auditing-commands`  | Audit slash commands for best practices    |
+| `/auditing-subagents` | Audit subagent configurations              |
+
 ## Core Plugin
 
 Productivity skills and commands.
@@ -205,7 +220,6 @@ Productivity skills and commands.
 
 | Skill                 | Purpose                                   |
 | --------------------- | ----------------------------------------- |
-| `/creating-skills`    | Create production-grade, reusable skills  |
 | `/committing-changes` | Comprehensive git commit message guidance |
 
 ### Commands
@@ -218,15 +232,13 @@ Productivity skills and commands.
 
 ## Code Plugin
 
-Coding agents and commands.
+Autonomous coding orchestration.
 
-### Agents
+### Skills
 
-| Command    | Purpose                                             |
-| ---------- | --------------------------------------------------- |
-| `/commit`  | Git commit with Conventional Commits (auto-context) |
-| `/handoff` | Create timestamped context handoff                  |
-| `/pickup`  | Load and continue from previous handoff             |
+| Skill                  | Purpose                            |
+| ---------------------- | ---------------------------------- |
+| `/coding-autonomously` | Autonomous implementation patterns |
 
 ## Frontend Plugin
 
@@ -323,30 +335,31 @@ Complete Python development workflow with testing, implementation, and review.
 - Behavior testing, not implementation testing
 - Tests at appropriate levels (Unit/Integration/E2E)
 
-## Specs Plugin (Legacy)
+## Spec Tree Plugin
 
-Legacy `specs/` directory support. Use for projects that haven't migrated to Outcome Engineering framework.
-
-### Skills
-
-| Skill                  | Purpose                                                                    |
-| ---------------------- | -------------------------------------------------------------------------- |
-| `/writing-prd`         | Write PRDs documenting what users need and why                             |
-| `/writing-trd`         | Write TRDs for technical implementation details                            |
-| `/managing-specs`      | Create and manage specs: capabilities, features, stories, PRDs, TRDs, ADRs |
-| `/understanding-specs` | Read all specs before starting work to load requirements and context       |
-
-## SPX Plugin (Outcome Engineering Framework)
-
-Spec-driven development with Outcome Engineering framework.
+Spec-driven development with the Spec Tree framework. Supersedes `spx-legacy`.
 
 ### Skills
 
-| Skill                | Purpose                                                              |
-| -------------------- | -------------------------------------------------------------------- |
-| `/writing-prd`       | Write PRDs documenting what users need and why                       |
-| `/managing-spx`      | Create and manage spx/ specs: capabilities, features, stories, ADRs  |
-| `/understanding-spx` | Read all specs before starting work to load requirements and context |
+| Skill              | Purpose                                       |
+| ------------------ | --------------------------------------------- |
+| `/understanding`   | Foundation skill — loaded before any other    |
+| `/contextualizing` | Show status, progress, what exists            |
+| `/authoring`       | Add, define, create specs and features        |
+| `/decomposing`     | Break down, split, scope work                 |
+| `/refactoring`     | Move nodes, re-scope, extract shared enablers |
+| `/aligning`        | Review, check consistency, audit, find gaps   |
+| `/testing`         | Create tests, run tests, check stale status   |
+
+## SPX Plugin
+
+Commands for spec-driven development projects.
+
+### Skills
+
+| Skill                 | Purpose                                   |
+| --------------------- | ----------------------------------------- |
+| `/committing-changes` | Comprehensive git commit message guidance |
 
 ### Commands
 
@@ -356,23 +369,42 @@ Spec-driven development with Outcome Engineering framework.
 | `/handoff` | Create timestamped context handoff                         |
 | `/pickup`  | Load and continue from previous handoff                    |
 | `/rtfm`    | Load specs and testing methodology before writing any code |
+| `/clarify` | Clarify ambiguous requirements                             |
 
-### Core Principles
+## SPX-Legacy Plugin (Deprecated)
 
-- Specs are a durable map - nothing moves because work is "done"
-- Status tracked via `status.yaml`, not directory location
-- Tests co-located with specs in `spx/.../tests/`
-- No TRDs - technical details belong in `feature.md` itself
-- No test graduation - tests stay with their spec
+**Deprecated — superseded by Spec Tree plugin.** Legacy Outcome Engineering (spx/) skills for projects that haven't migrated.
 
-### Disambiguation: specs/ vs spx/
+### Skills
 
-| Directory | System                        | Skills                                              |
-| --------- | ----------------------------- | --------------------------------------------------- |
-| `specs/`  | Legacy                        | `specs:understanding-specs`, `specs:managing-specs` |
-| `spx/`    | Outcome Engineering framework | `spx:understanding-spx`, `spx:managing-spx`         |
+| Skill                    | Purpose                                           |
+| ------------------------ | ------------------------------------------------- |
+| `/writing-prd`           | Write PRDs documenting what users need and why    |
+| `/managing-spx`          | Create and manage spx/ specs                      |
+| `/understanding-spx`     | Read all specs before starting work               |
+| `/decomposing-*`         | Decompose PRDs to capabilities, features, stories |
+| `/migrating-spec-to-spx` | Migrate from specs/ to spx/ format                |
 
-If both directories exist, ask the user which system to use.
+## Specs Plugin (Legacy)
+
+Legacy `specs/` directory support. Use for projects that haven't migrated.
+
+### Skills
+
+| Skill                  | Purpose                                    |
+| ---------------------- | ------------------------------------------ |
+| `/managing-specs`      | Create and manage specs structure and ADRs |
+| `/understanding-specs` | Load context before implementation         |
+
+### Disambiguation: specs/ vs spx/ vs Spec Tree
+
+| Directory | System                           | Plugin       |
+| --------- | -------------------------------- | ------------ |
+| `specs/`  | Legacy                           | `specs`      |
+| `spx/`    | Outcome Engineering (deprecated) | `spx-legacy` |
+| `spx/`    | Spec Tree (current)              | `spec-tree`  |
+
+If unclear which system to use, ask the user.
 
 ## Discovering Other Installed Skills
 
@@ -386,29 +418,30 @@ Certain skills must be invoked **automatically** when specific conditions are me
 
 **FIRST**, check which directory exists:
 
-| Directory | System                        | Use Skills From |
-| --------- | ----------------------------- | --------------- |
-| `spx/`    | Outcome Engineering framework | `spx` plugin    |
-| `specs/`  | Legacy                        | `specs` plugin  |
+| Directory | System                           | Use Skills From |
+| --------- | -------------------------------- | --------------- |
+| `spx/`    | Spec Tree (current)              | `spec-tree`     |
+| `spx/`    | Outcome Engineering (deprecated) | `spx-legacy`    |
+| `specs/`  | Legacy                           | `specs`         |
 
-If both exist, ask the user which system to use.
+If unclear which system, ask the user. Prefer Spec Tree if `spec-tree` plugin is installed.
 
 ### Step 2: Invoke the Appropriate Skills
 
 **BEFORE implementing any work item** (capability/feature/story), you MUST:
 
-1. **Invoke understanding skill** on the work item file
-   - **SPX**: `/spx:understanding-spx` | **Legacy**: `/specs:understanding-specs`
+1. **Invoke understanding/contextualizing skill** on the work item file
+   - **Spec Tree**: `/spec-tree:contextualizing` | **SPX-Legacy**: `/spx-legacy:understanding-spx` | **Legacy**: `/specs:understanding-specs`
    - **Trigger**: User requests implementation of a work item
    - **Purpose**: Load complete context hierarchy (requirements → decisions → work item)
    - **Example**: User says "implement story-21" → STOP and invoke understanding skill FIRST
    - **Non-negotiable**: Do NOT read story/feature/capability files directly without invoking this skill
 
-2. **Invoke managing skill** when creating specs or work items
-   - **SPX**: `/spx:managing-spx` | **Legacy**: `/specs:managing-specs`
+2. **Invoke authoring/managing skill** when creating specs or work items
+   - **Spec Tree**: `/spec-tree:authoring` | **SPX-Legacy**: `/spx-legacy:managing-spx` | **Legacy**: `/specs:managing-specs`
    - **Trigger**: User requests creating capability, feature, story, PRD, or ADR
-   - **Purpose**: Access templates from skill's `templates/` directory, understand BSP numbering
-   - **Example**: User says "create the feature" → STOP and invoke managing skill to read template
+   - **Purpose**: Access templates from skill's `templates/` directory, understand numbering
+   - **Example**: User says "create the feature" → STOP and invoke authoring skill to read template
    - **Critical**: Templates are in `.claude/plugins/cache/.../templates/`, NOT in the project
 
 **Pattern**: These skills are preparatory and blocking. You MUST invoke them BEFORE writing code or documents.
@@ -417,10 +450,8 @@ If both exist, ask the user which system to use.
 
 - Miss requirements and violate ADRs
 - Search for templates that don't exist in the project
-- Create work items with incorrect BSP numbering
+- Create work items with incorrect numbering
 - Generate requirements documents with wrong structure
-
-See [spx/CLAUDE.md](spx/CLAUDE.md) for Outcome Engineering framework rules, [specs/CLAUDE.md](specs/CLAUDE.md) for legacy rules.
 
 ## Naming Skills
 
@@ -467,22 +498,33 @@ The description field enables Skill discovery and should include both what the S
 
 **Keep descriptions concise** - Claude has a character budget for all skill metadata (name, args, description). When the budget is exceeded, Claude sees only a subset of available skills, making some skills invisible.
 
-Always write in third person. The description is injected into the system prompt, and inconsistent point-of-view can cause discovery problems.
+### Directive descriptions for reliable activation
 
-**Match actual user speech, not formal jargon.** Use the exact words and phrases users say, avoiding technical or formal language. Use abbreviations if the user would (ADR not Architecture Decision Record). Avoid corporate speak ("hierarchical context ingestion protocol" → "read all specs").
+Research (Seleznov, 650 automated trials, Feb 2026) shows description wording has a **20x impact on activation odds**:
 
-### Include both what the Skill does and specific triggers/contexts for when to use it
+| Style         | Activation | Example                                         |
+| ------------- | ---------- | ----------------------------------------------- |
+| Passive       | ~77%       | `Docker expert for containerization. Use when…` |
+| Expanded      | ~93%       | `…or any Docker-related task`                   |
+| **Directive** | **~100%**  | `ALWAYS invoke… Do not X directly`              |
 
-**A good description answers two questions:**
-
-1. What does this Skill do? List the specific capabilities.
-2. When should Claude use it? Include trigger terms users would mention.
+**Use directive descriptions with negative constraints.** The recommended template:
 
 ```yaml
-description: Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
+description: >-
+  ALWAYS invoke this skill when <triggers>.
+  NEVER <alternative action> without this skill.
 ```
 
-This description works because it names specific **actions** (extract, fill, merge) and includes **keywords** users would say (PDF, forms, document extraction).
+The negative constraint is load-bearing. Skills where Claude has strong built-in alternatives (file operations, git, code review) benefit most from this pattern.
+
+**Keep negatives language-agnostic.** Write `NEVER review code without this skill`, not `Do not review Python code directly`. The agent knows which language is in play, and typically only one language-specific skill is installed per project.
+
+See [research/skill-invocation.md](research/skill-invocation.md) for the full study and additional strategies.
+
+### Additional description guidelines
+
+**Match actual user speech, not formal jargon.** Use the exact words and phrases users say, avoiding technical or formal language. Use abbreviations if the user would (ADR not Architecture Decision Record). Avoid corporate speak ("hierarchical context ingestion protocol" → "read all specs").
 
 **Multiple Skills conflict:**
 
@@ -490,24 +532,32 @@ If Claude uses the wrong Skill or seems confused between similar Skills, the des
 
 For example, instead of two Skills with "data analysis" in both descriptions, differentiate them: one for "sales data in Excel files and CRM exports" and another for "log files and system metrics". The more specific your trigger terms, the easier it is for Claude to match the right Skill to your request.
 
+### Reference skills
+
+Skills that exist only to be loaded by other skills (e.g., `standardizing-python`) should NOT use directive descriptions — that would cause false activations. Instead, use `disable-model-invocation: true` and a passive description:
+
+```yaml
+disable-model-invocation: true
+description: >-
+  Python code standards enforced across all skills. Loaded by other skills, not invoked directly.
+```
+
 ### Effective examples
 
 **PDF Processing skill:**
 
 ```yaml
-description: Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
-```
-
-**Excel Analysis skill:**
-
-```yaml
-description: Analyze Excel spreadsheets, create pivot tables, generate charts. Use when analyzing Excel files, spreadsheets, tabular data, or .xlsx files.
+description: >-
+  ALWAYS invoke this skill when working with PDF files, extracting text, filling forms, or merging documents.
+  NEVER process PDFs without this skill.
 ```
 
 **Git Commit Helper skill:**
 
 ```yaml
-description: Generate descriptive commit messages by analyzing git diffs. Use when the user asks for help writing commit messages or reviewing staged changes.
+description: >-
+  ALWAYS invoke this skill when writing commit messages or reviewing staged changes.
+  NEVER run git commit without this skill.
 ```
 
 ### Examples from this marketplace
@@ -515,51 +565,62 @@ description: Generate descriptive commit messages by analyzing git diffs. Use wh
 **SPX Plugin skills (differentiating similar skills):**
 
 ```yaml
-# ✅ Good: natural language, clear triggers
+# ✅ Good: directive with negative constraint
 name: writing-prd
-description: Write PRDs documenting what users need and why. Use when writing PRDs or product requirements.
+description: >-
+  ALWAYS invoke this skill when writing PRDs or product requirements.
+  NEVER write PRDs without this skill.
 
-name: managing-specs
-description: Create and manage specs: capabilities, features, stories, PRDs, ADRs. Use when creating a feature, creating a story, or setting up spec structure.
+name: managing-spx
+description: >-
+  ALWAYS invoke this skill when creating or organizing specs, capabilities, features, stories, or ADRs.
+  NEVER create, read, or modify any files in the spx/ directory without this skill.
 
-  name: understanding-specs
-  description: Read all specs for a story, feature, or capability before starting work. Use when starting implementation to load requirements and context.
+name: understanding-spx
+description: >-
+  ALWAYS invoke this skill before implementing any work item to load complete context.
+  NEVER create, read, or modify any files in the spx/ directory without this skill.
 ```
 
 **Why these work:**
 
-- Natural language users actually say ("what users need" not "user value propositions")
-- Short and direct ("build and test" not "testing methodology and validation strategy")
-- Clear action verbs (write, set up, read)
-- No jargon or corporate speak
+- `ALWAYS` tells Claude when to activate (specific triggers)
+- `NEVER` tells Claude what NOT to do without the skill (negative constraint)
+- Natural language users actually say ("writing PRDs" not "PRD creation protocol")
+- Short and direct
 
 ```yaml
-# ❌ Bad: formal jargon instead of user speech
+# ❌ Bad: passive style (77% activation)
 name: understanding-specs
-description: Hierarchical context ingestion protocol that verifies all specification documents before implementation.
-# Problem: Nobody says "hierarchical context ingestion protocol"
+description: Read all specs for a story before starting work. Use when starting implementation.
+# Problem: Claude will just read the files directly instead of invoking the skill
 
+# ❌ Bad: formal jargon
 name: writing-prd
 description: Systematic PRD creation with user value propositions and measurable outcomes.
-# Problem: Users say "what users need" not "user value propositions"
+# Problem: Nobody says "user value propositions"
 ```
 
 **Testing Plugin skills (language-specific differentiation):**
 
 ```yaml
-# ✅ Good: clear language distinction
+# ✅ Good: language in trigger, generic negative
 name: testing-python
-description: Python-specific testing patterns with dependency injection and real infrastructure. Use when testing Python code or writing Python tests.
+description: >-
+  ALWAYS invoke this skill when writing Python tests or fixing test failures.
+  NEVER write tests without this skill.
 
 name: testing-typescript
-description: TypeScript-specific testing patterns with type-safe test design. Use when testing TypeScript code or writing TypeScript tests.
+description: >-
+  ALWAYS invoke this skill when writing TypeScript tests or fixing test failures.
+  NEVER write tests without this skill.
 ```
 
 **Why these work:**
 
-- Language is in the name AND description
-- Specific to each ecosystem (dependency injection for Python, type-safe for TypeScript)
-- Clear trigger: "test Python code" → testing-python
+- Language in the trigger differentiates (Python vs TypeScript)
+- Negative is language-agnostic — the agent knows which language is in play
+- Trigger includes both writing AND fixing (covers the full lifecycle)
 
 ---
 
@@ -778,22 +839,24 @@ Error: Bash command permission check failed for pattern "!find .spx/sessions -ma
 ### Quick Reference: File Locations
 
 ```
-claude/
+outcomeeng/claude/                  # Marketplace: outcomeeng
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace catalog
 ├── .spx/                          # Tool operational (gitignored)
 │   └── sessions/                  # Session handoffs
-│       ├── todo/                 # Available for /pickup
-│       ├── doing/                # Currently claimed
-│       └── archive/              # Completed sessions
 ├── plugins/
-│   ├── claude/                   # Version: 0.0.3
+│   ├── claude/                   # Version: 0.1.1 — Meta-skills
 │   │   └── skills/
-│   │       └── creating-skills/
+│   │       ├── creating-skills/
+│   │       ├── creating-commands/
+│   │       ├── creating-subagents/
+│   │       ├── auditing-skills/
+│   │       ├── auditing-commands/
+│   │       └── auditing-subagents/
 │   ├── code/                     # Version: 0.0.3
 │   │   └── skills/
 │   │       └── coding-autonomously/
-│   ├── core/                     # Version: 0.4.26
+│   ├── core/                     # Version: 0.4.30
 │   │   ├── commands/
 │   │   │   ├── commit.md
 │   │   │   ├── handoff.md
@@ -803,47 +866,44 @@ claude/
 │   ├── frontend/                 # Version: 0.0.1
 │   │   └── skills/
 │   │       └── designing-frontend/
-│   ├── python/                   # Version: 0.3.5
+│   ├── prose/                    # Version: 0.1.2
+│   │   └── skills/
+│   │       ├── writing-prose/
+│   │       └── reviewing-prose/
+│   ├── python/                   # Version: 0.11.2
 │   │   ├── commands/
 │   │   │   └── auto-python.md
 │   │   └── skills/
 │   │       └── (6 skills)
-│   ├── prose/                    # Version: 0.1.0
+│   ├── spec-tree/                # Version: 0.4.0 — Spec Tree (current)
 │   │   └── skills/
-│   │       ├── reviewing-prose/
-│   │       └── writing-prose/
-│   ├── specs/                    # Version: 0.4.7 (legacy)
+│   │       └── (7 skills)
+│   ├── specs/                    # Version: 0.5.6 (legacy)
 │   │   └── skills/
 │   │       ├── managing-specs/
-│   │       ├── understanding-specs/
-│   │       ├── writing-prd/
-│   │       └── writing-trd/
-│   ├── spx/                      # Version: 0.9.1 (Outcome Engineering framework)
+│   │       └── understanding-specs/
+│   ├── spx/                      # Version: 0.9.1 — SPX commands
 │   │   ├── commands/
+│   │   │   ├── clarify.md
 │   │   │   ├── commit.md
 │   │   │   ├── handoff.md
 │   │   │   ├── pickup.md
 │   │   │   └── rtfm.md
 │   │   └── skills/
-│   │       ├── managing-spx/
-│   │       ├── understanding-spx/
-│   │       └── writing-prd/
-│   ├── test/                     # Version: 0.1.1
+│   │       └── committing-changes/
+│   ├── spx-legacy/               # Version: 0.1.1 (deprecated → spec-tree)
+│   │   └── skills/
+│   │       └── (9 skills)
+│   ├── test/                     # Version: 0.3.0
 │   │   └── skills/
 │   │       └── testing/
-│   └── typescript/               # Version: 0.6.5
+│   └── typescript/               # Version: 0.8.8
 │       ├── commands/
 │       │   └── auto-typescript.md
 │       └── skills/
 │           └── (6 skills)
-├── spx/                           # Specs as durable map (Outcome Engineering framework)
-│   ├── CLAUDE.md                 # Specs directory guide
-│   ├── claude.prd.md             # Product requirements
-│   ├── NN-{slug}.adr.md          # Product-wide ADRs (interleaved)
-│   └── NN-{slug}.capability/     # Capabilities with co-located tests
-│       ├── {slug}.capability.md
-│       ├── status.yaml              # Test status
-│       └── tests/
+├── spx/                           # Specs as durable map
+│   └── CLAUDE.md                 # Specs directory guide
 └── CLAUDE.md                      # This file
 ```
 

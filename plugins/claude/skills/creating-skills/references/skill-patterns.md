@@ -11,22 +11,20 @@ SKILL.md structure and examples for different skill types.
 ```yaml
 ---
 name: skill-name # Required
-description: | # Required
-  [What] Brief statement of capability.
-  [When] Use when users ask to <triggers>.
-allowed-tools: Read, Grep, Glob # Optional: restrict tool access
+description: >- # Required — directive with negative constraint
+  ALWAYS invoke this skill when <triggers>.
+  NEVER <alternative action> without this skill.
 model: claude-sonnet-4-20250514 # Optional: model override
 ---
 ```
 
 ### Field Requirements
 
-| Field           | Required | Constraints                                                            | Purpose                                         |
-| --------------- | -------- | ---------------------------------------------------------------------- | ----------------------------------------------- |
-| `name`          | Yes      | Lowercase, numbers, hyphens only; ≤64 chars; must match directory name | Skill identifier                                |
-| `description`   | Yes      | ≤1024 characters; must include What + When                             | Claude Code uses this to decide when to trigger |
-| `allowed-tools` | No       | Comma-separated tool names                                             | Restricts tool access during skill execution    |
-| `model`         | No       | Valid model ID                                                         | Override model for complex reasoning            |
+| Field         | Required | Constraints                                                            | Purpose                                         |
+| ------------- | -------- | ---------------------------------------------------------------------- | ----------------------------------------------- |
+| `name`        | Yes      | Lowercase, numbers, hyphens only; ≤64 chars; must match directory name | Skill identifier                                |
+| `description` | Yes      | ≤1024 characters; directive with negative constraint                   | Claude Code uses this to decide when to trigger |
+| `model`       | No       | Valid model ID                                                         | Override model for complex reasoning            |
 
 ### Name Constraints
 
@@ -41,22 +39,34 @@ model: claude-sonnet-4-20250514 # Optional: model override
 
 ### Description Format
 
-**Structure**: `[What it does] + [When to use/triggers]`
+**Structure**: `ALWAYS invoke this skill when <triggers>. NEVER <alternative> without this skill.`
 
 **Limit**: ≤1024 characters (truncated if exceeded)
 
-**Purpose**: Claude Code reads this to decide when to activate the skill. Include specific trigger phrases users would say.
+**Purpose**: Claude Code reads this to decide when to activate the skill. Directive descriptions with negative constraints achieve ~100% activation (vs ~77% for passive style).
 
 ```yaml
-# Good: Clear what + when with triggers (third-person style)
+# Good: Directive with negative constraint
+description: >-
+  ALWAYS invoke this skill when visualizing data, creating charts, or building dashboards.
+  NEVER create data visualizations without this skill.
+
+# Bad: Passive style (~77% activation)
 description: |
   Create data visualizations with charts and graphs.
-  This skill should be used when users ask to visualize data, create charts,
-  build dashboards, or display metrics graphically.
+  Use when users ask to visualize data or create charts.
 
 # Bad: Vague, no triggers
 description: Helps with charts
 ```
+
+**Negative constraint rules:**
+
+- Use `NEVER` not "Do not"
+- Drop the language from the negative — the agent knows which language is in play
+- Frame as "without this skill" not "directly"
+
+**Reference skills** (loaded by other skills, not user-triggered) use `disable-model-invocation: true` and a passive description instead.
 
 ### allowed-tools Usage
 
@@ -94,9 +104,9 @@ model: claude-haiku-3-20250514
 ```markdown
 ---
 name: skill-name
-description: |
-  [What] Capability statement.
-  [When] Use when users ask to <specific triggers>.
+description: >-
+  ALWAYS invoke this skill when <specific triggers>.
+  NEVER <alternative action> without this skill.
 ---
 
 # Skill Name
@@ -662,30 +672,36 @@ export function {{COMPONENT_NAME}}({ {{DESTRUCTURED_PROPS}} }: {{COMPONENT_NAME}
 ### Good Description (triggers reliably)
 
 ```yaml
-description: |
-  Create production widgets for ChatGPT Apps using OpenAI Apps SDK.
-  Use when users ask to build UI components, visual interfaces,
+description: >-
+  ALWAYS invoke this skill when building UI components, visual interfaces,
   progress trackers, quiz interfaces, or interactive elements.
+  NEVER build UI components without this skill.
 ```
 
 **Why it works**:
 
-- [What] Clear capability statement first
-- [When] Specific trigger phrases users would say
+- `ALWAYS` with specific trigger phrases
+- `NEVER` with negative constraint
 - ≤1024 characters
-- Claude Code can match user intent
+- Claude Code can match user intent and knows not to bypass
 
 ### Bad Description (won't trigger)
 
 ```yaml
+# Passive style — ~77% activation
+description: |
+  Create production widgets for ChatGPT Apps.
+  Use when users ask to build UI components or visual interfaces.
+
+# Vague — near 0% activation
 description: Widget stuff
 ```
 
-**Why it fails**:
+**Why these fail**:
 
-- No [What] capability statement
-- No [When] trigger phrases
-- Too vague for Claude Code to match
+- Passive "Use when" gives Claude room to skip activation
+- No negative constraint — Claude may build UI directly
+- Vague description has no trigger phrases at all
 
 ---
 
