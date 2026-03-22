@@ -6,12 +6,21 @@ All skills in this document belong to the `spec-tree` plugin. Skill names have n
 
 ## Design principles
 
-- Keep very few skills: foundation skills load context, action skills do the work.
+The `spec-tree` plugin covers three phases with distinct concerns:
+
+1. **Spec-tree** — creating and maintaining the spec tree (the product structure itself).
+2. **Implementation** — using the spec tree to build software (TDD flow driven by specs).
+3. **Commit** — recording results into version control.
+
+Within these phases:
+
 - Foundation skills load once per conversation using marker pattern (no persistent state).
 - `understanding` is the single shared library: methodology, structure, templates.
 - `contextualizing` handles deterministic context injection from tree structure.
-- `testing` orchestrates test creation from spec assertions (delegates methodology to `test` plugin).
-- Action skills check for foundation markers before working; invoke foundations if absent.
+- Spec-tree action skills check for foundation markers before working; invoke foundations if absent.
+- `testing` and `reviewing-tests` are supersets of their `test` plugin counterparts, adding tree-specific concerns. No cross-plugin dependency at runtime.
+- `coding` orchestrates the TDD flow: architecture, tests, code — with review gates at each phase.
+- `committing-changes` enforces Conventional Commits with selective staging and atomic commits.
 - Make conversational flow explicit and consistent across action skills.
 - Keep migration concerns in a separate optional structure document.
 
@@ -133,30 +142,32 @@ When a behavior spans multiple nodes, the assertion lives in the lowest common a
 
 ## Intent model (use cases)
 
-### 1. Understand Spec Tree context
+### Phase 1: Spec-tree — creating and maintaining the product structure
+
+#### 1. Understand Spec Tree context
 
 1a. Systematically ingest context to prepare for a discussion with the user.
 1b. Systematically ingest context to prepare for autonomous work.
 
-### 2. Author Spec Tree artifacts
+#### 2. Author Spec Tree artifacts
 
 2a. Author from scratch from user conversation/prompt, including clarifying questions.
 2b. Extend existing artifacts with new requirements, outcomes, or decisions.
 
-### 3. Decompose Spec Tree artifacts
+#### 3. Decompose Spec Tree artifacts
 
 3a. Systematically decompose existing higher-level nodes to lower levels.
 
-### 4. Refactor Spec Tree artifacts
+#### 4. Refactor Spec Tree artifacts
 
 4a. Review and structurally refactor (move/re-scope content) through user conversation.
 4b. Factor common aspects into shared enablers at lower indices.
 
-### 5. Align Spec Tree artifacts
+#### 5. Align Spec Tree artifacts
 
 5a. Clarify/augment/align/deconflict artifacts while preserving product truth.
 
-### 6. Lock file lifecycle based on Spec Tree context (planned)
+#### 6. Lock file lifecycle (planned)
 
 > **Not yet implemented.** Depends on lock file tooling.
 
@@ -164,9 +175,41 @@ When a behavior spans multiple nodes, the assertion lives in the lowest common a
 6b. Refactor tests when assertions or decisions change.
 6c. Update spec artifacts with test file references and lock when new test evidence reveals gaps.
 
+### Phase 2: Implementation — using the spec tree to build software
+
+#### 7. Write tests driven by spec assertions
+
+7a. Extract typed assertions from spec nodes and determine what test evidence is demanded.
+7b. Analyze evidence gaps across a subtree — which assertions lack test links, which links are stale.
+7c. Generate test scaffolds from assertion types, delegating methodology to `test/testing` and language patterns to language-specific skills.
+7d. Load deterministic context (ancestor ADRs/PDRs, lower-index siblings) before writing tests.
+
+#### 8. Review test evidence against spec assertions
+
+8a. Adversarial review: how could tests pass while assertions remain unfulfilled?
+8b. Tree-level coverage: are all assertions across a subtree covered? Are there orphaned tests?
+8c. Cross-cutting assertion review: evidence at the right place for assertions at ancestor nodes?
+8d. Decision record compliance from full ancestor chain.
+
+#### 9. Implement work items using TDD flow
+
+9a. Orchestrate architecture → test → code phases with review gates.
+9b. Load methodology and work item context as prerequisites.
+9c. Delegate to language-specific plugins for each phase.
+
+### Phase 3: Commit — recording results into version control
+
+#### 10. Commit changes
+
+10a. Stage changes selectively by concern, write Conventional Commits messages.
+
 ## Skill map
 
-### Foundation layer
+### Phase 1: Spec-tree
+
+Skills for creating and maintaining the spec tree itself.
+
+#### Foundation layer
 
 Foundation skills load once per conversation. They emit conversation markers so other skills can detect whether foundation context is present.
 
@@ -175,7 +218,7 @@ Foundation skills load once per conversation. They emit conversation markers so 
 | `understanding`   | Methodology, durable map worldview, decomposition semantics, ordering rules, all shared templates | `<SPEC_TREE_FOUNDATION>`           | Implemented |
 | `contextualizing` | Deterministic context injection from tree structure, path validation, abort/remediation           | `<SPEC_TREE_CONTEXT target="...">` | Placeholder |
 
-### Action layer
+#### Action layer
 
 Action skills do the work. Before starting, they check conversation history for foundation markers and invoke missing foundations.
 
@@ -186,19 +229,50 @@ Action skills do the work. Before starting, they check conversation history for 
 | `refactoring` | 4        | Structural moves, re-scoping, factoring shared enablers         | Placeholder |
 | `aligning`    | 5        | Clarify, augment, align, deconflict while preserving truth      | Implemented |
 
-### Test orchestration
-
-| Skill     | Use case | Scope                                                              | Status      |
-| --------- | -------- | ------------------------------------------------------------------ | ----------- |
-| `testing` | 6        | Create tests from spec assertions, run them, flag missing evidence | Placeholder |
-
-`spec-tree:testing` reads assertion links from specs, generates corresponding test files, runs them, and reports which outcomes lack evidence. It delegates test methodology decisions to the `test` plugin (`/testing`, `/testing-python`, `/testing-typescript`).
-
-### Lock file lifecycle (planned)
+#### Lock file lifecycle (planned)
 
 Lock file management (`spx-lock.yaml`) is a separate concern from test creation or methodology. It binds spec content to test evidence via Git blob hashes and detects drift. This is not yet designed as a skill — it may become a CLI tool, a skill, or part of `spec-tree:testing` once that skill is implemented.
 
-## Foundation ownership model
+### Phase 2: Implementation
+
+Skills for using the spec tree to build software. Each builds on a standalone `test` plugin counterpart, adding tree-specific concerns.
+
+| Skill             | Use case | Scope                                                                | Builds on              | Status      |
+| ----------------- | -------- | -------------------------------------------------------------------- | ---------------------- | ----------- |
+| `testing`         | 7        | Write tests driven by spec assertions, evidence gap analysis         | `test/testing`         | Placeholder |
+| `reviewing-tests` | 8        | Adversarial review of test evidence against spec assertions          | `test/reviewing-tests` | Placeholder |
+| `coding`          | 9        | TDD flow: architecture → test → code with review gates at each phase | —                      | Implemented |
+
+`spec-tree:testing` is a **superset** of `test/testing`. It incorporates the full testing methodology (5 stages, 5 factors, 7 exceptions) and adds spec-tree-specific concerns: assertion extraction from spec nodes, evidence gap analysis across subtrees, test scaffold generation driven by assertion type, and deterministic context loading from the tree. A spec-tree user invokes `spec-tree:testing`; a non-spec-tree user invokes `test/testing`. No cross-plugin dependency at runtime.
+
+`spec-tree:reviewing-tests` is a **superset** of `test/reviewing-tests`. It incorporates the full adversarial review protocol (4 phases, binary verdict) and adds tree-level coverage analysis, cross-cutting assertion review, and decision record compliance from the full ancestor chain.
+
+`spec-tree:coding` orchestrates the TDD flow. Phases 1–2 load methodology and context via Phase 1 foundation skills. Phases 3–8 delegate to language-specific plugins (Python or TypeScript) for architecture, testing, and implementation — each with a review gate that loops until approved.
+
+### Phase 3: Commit
+
+Skills for recording results into version control.
+
+| Skill                | Use case | Scope                                                          | Status      |
+| -------------------- | -------- | -------------------------------------------------------------- | ----------- |
+| `committing-changes` | 10       | Conventional Commits with selective staging and atomic commits | Implemented |
+
+### Commands
+
+Commands provide dynamic context injection and invoke the corresponding skill. Absorbed from the former `spx` plugin.
+
+| Command    | Phase | Invokes              | Purpose                                               |
+| ---------- | ----- | -------------------- | ----------------------------------------------------- |
+| `/clarify` | 1     | —                    | Gather requirements through questioning before acting |
+| `/handoff` | 1     | —                    | Create timestamped handoff for session continuity     |
+| `/pickup`  | 1     | —                    | Load handoff document to continue previous work       |
+| `/tdd`     | 2     | `coding`             | Start TDD flow with auto-injected project context     |
+| `/rtfm`    | 2     | `coding`             | Stop ad hoc work, restart proper TDD flow             |
+| `/commit`  | 3     | `committing-changes` | Git commit with auto-injected branch/status/diff      |
+
+## Ownership model
+
+### Phase 1: Spec-tree
 
 - **`understanding`** is the single shared library for all Spec Tree knowledge:
   - Durable map worldview (specs are permanent product documentation)
@@ -212,25 +286,46 @@ Lock file management (`spx-lock.yaml`) is a separate concern from test creation 
   - Validates artifact existence along the path
   - Returns context manifest or abort with remediation
   - Bootstrap mode: returns empty manifest with `bootstrap=true` when authoring into an empty tree (no abort)
-- **`testing`** owns spec-tree test orchestration (placeholder):
-  - Reads assertion links from specs and generates test files
-  - Invokes `/testing` and `/testing-[language]` for test methodology
-  - Runs tests and flags outcomes lacking evidence
-  - Updates spec assertion links when test files are created
+- **Action skills** (`authoring`, `decomposing`, `refactoring`, `aligning`) do not duplicate foundation content. They reference `understanding` for templates and methodology.
 - **Lock file lifecycle** is a separate planned concern (not yet assigned to a skill):
   - Lock file binding between spec content and test evidence
   - Writes `spx-lock.yaml` only when all tests pass
   - Detects stale nodes (spec or test blob changed since last lock)
-- **Action skills do not duplicate foundation content.** They reference `understanding` for templates and methodology.
+
+### Phase 2: Implementation
+
+- **`testing`** owns spec-tree test writing (superset of `test/testing`):
+  - Incorporates full testing methodology (5 stages, 5 factors, 7 exceptions)
+  - Extracts typed assertions from spec nodes, determines what evidence is demanded
+  - Analyzes evidence gaps across subtrees — which assertions lack tests, which links are stale
+  - Generates test scaffolds from assertion types (Scenario → example-based, Property → property-based, etc.)
+  - Loads deterministic context (ancestor ADRs/PDRs, lower-index siblings) before writing tests
+- **`reviewing-tests`** owns spec-tree test review (superset of `test/reviewing-tests`):
+  - Incorporates full adversarial review protocol (4 phases, binary verdict)
+  - Tree-level coverage: are all assertions across a subtree covered? Orphaned test files?
+  - Cross-cutting assertion review: evidence at the right place for ancestor-level assertions
+  - Decision record compliance from full ancestor chain (not just manually found ADRs/PDRs)
+- **`coding`** owns the TDD implementation flow:
+  - 8-phase orchestration: methodology → context → architect → review → test → review → implement → review
+  - Phases 1–2 reuse Phase 1 foundation skills (`understanding`, `contextualizing`)
+  - Phases 3–8 delegate to language-specific plugins (Python or TypeScript)
+  - Three review gates that loop until approved — no exceptions
+
+### Phase 3: Commit
+
+- **`committing-changes`** owns the git commit workflow:
+  - Conventional Commits format with selective staging
+  - Classifies changes by concern, one concern per commit
+  - Runs project validation before committing
 
 ## Marker-based state detection
 
-Foundation skills emit XML markers into the conversation when loaded. Action skills search conversation history for these markers before starting work. This follows the same pattern as `/pickup` emitting `<PICKUP_ID>` for `/handoff` to find.
+Phase 1 foundation skills emit XML markers into the conversation when loaded. All skills that depend on spec-tree context — Phase 1 action skills and Phase 2 skills (`testing`, `reviewing-tests`, `coding`) — check for these markers before starting work. Phase 3 (`committing-changes`) operates independently and does not check markers. This follows the same pattern as `/pickup` emitting `<PICKUP_ID>` for `/handoff` to find.
 
-| Marker                                   | Emitted by        | Checked by       | Meaning                              |
-| ---------------------------------------- | ----------------- | ---------------- | ------------------------------------ |
-| `<SPEC_TREE_FOUNDATION>`                 | `understanding`   | All other skills | Methodology and templates are loaded |
-| `<SPEC_TREE_CONTEXT target="full/path">` | `contextualizing` | All other skills | Target artifacts are loaded          |
+| Marker                                   | Emitted by        | Checked by                                | Meaning                              |
+| ---------------------------------------- | ----------------- | ----------------------------------------- | ------------------------------------ |
+| `<SPEC_TREE_FOUNDATION>`                 | `understanding`   | Phase 1 action skills, all Phase 2 skills | Methodology and templates are loaded |
+| `<SPEC_TREE_CONTEXT target="full/path">` | `contextualizing` | Phase 1 action skills, all Phase 2 skills | Target artifacts are loaded          |
 
 **Decision rule:**
 
@@ -267,26 +362,30 @@ Action skills reference templates with: `Read: ${UNDERSTANDING_DIR}/templates/no
 
 ## Conversational flow contract
 
-Every action skill follows this interaction contract:
+Phase 1 spec-tree action skills follow this interaction contract:
 
 1. **Intake** -- Ask for target path/scope and intended operation.
 2. **Foundation gate** -- Check for `<SPEC_TREE_FOUNDATION>` marker; invoke `understanding` if absent.
 3. **Target context gate** -- Check for `<SPEC_TREE_CONTEXT>` matching target; invoke `contextualizing` if absent or mismatched. Context is injected deterministically from tree structure. Abort with explicit remediation if required artifacts are missing.
 4. **Plan** -- Present concise execution plan and expected outputs.
 5. **Execute** -- Perform workflow steps. Keep user in the loop at major decision points.
-6. **Evidence gate** -- Invoke `testing` to verify spec assertions have test evidence. (Placeholder — not yet active.)
+6. **Evidence gate** -- Verify spec assertions have test evidence. (Placeholder — not yet active.)
 7. **Deliver** -- Summarize changes, decisions, and next actions.
+
+Phase 2 (`coding`) has its own 8-phase flow that reuses steps 1–3 internally. Phase 3 (`committing-changes`) has no dependency on spec-tree foundations.
 
 ## Mode-specific flows
 
-Each flow documents only what is unique to that mode. All action skills share the standard preflight (steps 1-3) and postflight (steps 6-7) from the conversational flow contract above.
+### Phase 1: Spec-tree
 
-### `understanding`
+Each flow documents only what is unique to that mode. All Phase 1 action skills share the standard preflight (steps 1–3) and postflight (steps 6–7) from the conversational flow contract above.
+
+#### `understanding`
 
 1. Load Spec Tree methodology, structure semantics, and template index.
 2. Emit `<SPEC_TREE_FOUNDATION>` marker with loaded module summary.
 
-### `contextualizing` (placeholder)
+#### `contextualizing` (placeholder)
 
 1. Intake target path/scope and operation type.
 2. Walk tree from product root to target node.
@@ -296,7 +395,7 @@ Each flow documents only what is unique to that mode. All action skills share th
 6. If operation is `author` and no artifacts exist at target level, return empty manifest with `bootstrap=true` instead of aborting.
 7. Emit `<SPEC_TREE_CONTEXT target="full/path">` with context manifest: collected specs, open decisions, readiness status.
 
-### `authoring` (placeholder)
+#### `authoring` (placeholder)
 
 1. Intake node type (enabler or outcome), intended location, and path.
 2. Clarify user intent and unresolved product decisions.
@@ -304,7 +403,7 @@ Each flow documents only what is unique to that mode. All action skills share th
 4. Validate atemporal voice, consistency, and testability (assertions link to test files for outcomes).
 5. Return draft, open decisions, and recommended next steps (decomposition or test creation).
 
-### `decomposing` (placeholder)
+#### `decomposing` (placeholder)
 
 1. Intake source node and target decomposition depth.
 2. Apply decomposition methodology (enabler vs outcome, scope, sparse integer ordering).
@@ -312,7 +411,7 @@ Each flow documents only what is unique to that mode. All action skills share th
 4. Validate decomposition quality (no excessive nesting, correct node types, no misplaced assertions).
 5. Return decomposition output with rationale for splits and boundaries.
 
-### `refactoring` (placeholder)
+#### `refactoring` (placeholder)
 
 1. Intake structural change request (move, re-scope, extract shared enabler).
 2. Analyze impact across hierarchy and decision records.
@@ -320,7 +419,7 @@ Each flow documents only what is unique to that mode. All action skills share th
 4. Apply refactoring updates.
 5. Validate cross-node consistency after structural changes.
 
-### `aligning`
+#### `aligning`
 
 1. Intake alignment request (clarify, augment, deconflict).
 2. Analyze contradictions, gaps, or ambiguities across affected nodes.
@@ -328,28 +427,56 @@ Each flow documents only what is unique to that mode. All action skills share th
 4. Apply clarification or deconfliction updates.
 5. Validate cross-node consistency and report unresolved conflicts.
 
-### `testing` (placeholder)
+### Phase 2: Implementation
 
-When invoked directly:
+#### `testing` (placeholder)
 
-1. Intake target node(s).
-2. Read spec assertion links to determine what tests are needed.
-3. Invoke `/testing` and `/testing-[language]` for test methodology and implementation.
-4. Run tests and report results.
-5. Update spec assertion links and flag outcomes lacking evidence.
-6. Return evidence summary (which assertions have tests, which don't).
+Superset of `test/testing`. Incorporates the full methodology, adds tree-specific concerns.
 
-When invoked as postflight by action skills:
+1. Load methodology and tree context via foundation skills.
+2. Extract typed assertions from target spec node(s) — Scenario, Property, Mapping, Conformance, Compliance.
+3. For each assertion, determine what test evidence is demanded (assertion type → test pattern).
+4. Analyze evidence gaps: which assertions have test links? Which links resolve? Which are stale?
+5. For assertions lacking tests, generate scaffolds using assertion type to select test pattern. Delegate methodology decisions (level, doubles) to the 5-stage router. Delegate language patterns to language-specific skills.
+6. Report evidence summary: which assertions have tests, which don't, which are stale.
 
-1. Receive change summary from calling skill.
-2. Determine which assertions were added or changed.
-3. If tests need creation or update, invoke `/testing` and `/testing-[language]`.
-4. Run tests for affected nodes.
-5. Return evidence status to calling skill.
+#### `reviewing-tests` (placeholder)
+
+Superset of `test/reviewing-tests`. Incorporates the full adversarial review protocol, adds tree-specific concerns.
+
+1. Load methodology and tree context via foundation skills.
+2. Execute the 4 foundational review phases from `test/reviewing-tests` (spec structure, evidentiary integrity, lower-level assumptions, ADR/PDR compliance).
+3. Tree-level coverage: walk subtree, verify all assertions across all nodes have test evidence.
+4. Cross-cutting assertion review: for assertions at ancestor nodes, verify evidence is provided at the appropriate place.
+5. Orphan detection: identify test files not linked from any assertion.
+6. Decision record compliance from full ancestor chain loaded via `contextualizing` (not just manually found ADRs/PDRs).
+7. Binary verdict: APPROVED or REJECT. No middle ground.
+
+#### `coding`
+
+1. Load methodology via `understanding` (once per session).
+2. Load work item context via `contextualizing` (every node).
+3. Architect: produce ADR via language-specific `/architecting-[language]` skill.
+4. Review architecture via `/reviewing-[language]-architecture` — loop until APPROVED.
+5. Test: write tests via `/testing-[language]` skill.
+6. Review tests via `/reviewing-[language]-tests` — loop until APPROVED.
+7. Implement: write code via `/coding-[language]` skill.
+8. Review code via `/reviewing-[language]` — loop until APPROVED.
+
+### Phase 3: Commit
+
+#### `committing-changes`
+
+1. Run project validation (e.g., `just check`).
+2. Review changes: `git status`, `git diff`.
+3. Classify changes by concern — group by type+scope.
+4. Stage specific files for one concern (never `git add .`).
+5. Write Conventional Commits message (imperative, under 50 chars).
+6. Commit, then repeat from step 4 for remaining concerns.
 
 ## Current skills disposition
 
-This table maps existing `spx-legacy` plugin skills to their disposition in the `spec-tree` plugin.
+### From `spx-legacy` plugin
 
 | Current skill (`spx-legacy` plugin)   | Disposition in `spec-tree` plugin                                         |
 | ------------------------------------- | ------------------------------------------------------------------------- |
@@ -362,3 +489,19 @@ This table maps existing `spx-legacy` plugin skills to their disposition in the 
 | `writing-prd`                         | Absorbed into `authoring`; PRD becomes product spec (`.product.md`)       |
 | `migrating-spec-to-spx`               | See `skill-structure-migration.md`                                        |
 | `understanding-spx`                   | Rewritten as `understanding` foundation skill                             |
+
+### From `spx` plugin (merged)
+
+The `spx` plugin was merged into `spec-tree` (commit `a153b0c`). The `code` plugin was removed in the same commit.
+
+| Former `spx` artifact       | Disposition in `spec-tree` plugin                                   |
+| --------------------------- | ------------------------------------------------------------------- |
+| `coding` skill              | Moved as implementation action skill                                |
+| `committing-changes` skill  | Moved as operations skill                                           |
+| `/commit` command           | Moved; invokes `committing-changes`                                 |
+| `/tdd` command              | Moved; invokes `coding`                                             |
+| `/rtfm` command             | Moved; invokes `coding`                                             |
+| `/clarify` command          | Moved                                                               |
+| `/handoff` command          | Moved                                                               |
+| `/pickup` command           | Moved                                                               |
+| `testing` skill (spec-tree) | Removed (was placeholder); redesigned as superset of `test/testing` |

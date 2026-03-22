@@ -175,8 +175,10 @@ git commit -m "refactor(skills): simplify descriptions
 
 Skills follow a **reference pattern** to avoid duplication:
 
-1. **Foundational skill** (`/testing`) - Contains core principles, methodology, and language-agnostic patterns
-2. **Language-specific skills** (`/testing-python`, `/testing-typescript`) - Reference the foundational skill, provide only language-specific implementations
+1. **Foundational skill** (e.g., `/testing`) - Contains core principles, methodology, and language-agnostic patterns
+2. **Language-specific skills** (e.g., `/testing-python`, `/testing-typescript`) - Reference the foundational skill, provide only language-specific implementations
+
+For spec-tree users, `/testing` from the spec-tree plugin is a superset that also covers tree-specific concerns. The language-specific skills use unqualified names (`/testing`) so they resolve to whichever foundational skill is installed.
 
 **Usage:** Always read the foundational skill first, then the language-specific skill for concrete patterns.
 
@@ -214,7 +216,7 @@ Meta-skills for Claude Code plugin development: creating and auditing skills, co
 
 ## Core Plugin
 
-Productivity skills and commands.
+Standalone commit workflow for projects that do not use the Spec Tree.
 
 ### Skills
 
@@ -229,16 +231,6 @@ Productivity skills and commands.
 | `/commit`  | Git commit with Conventional Commits (auto-context) |
 | `/handoff` | Create timestamped context handoff                  |
 | `/pickup`  | Load and continue from previous handoff             |
-
-## Code Plugin
-
-Autonomous coding orchestration.
-
-### Skills
-
-| Skill                  | Purpose                            |
-| ---------------------- | ---------------------------------- |
-| `/coding-autonomously` | Autonomous implementation patterns |
 
 ## Frontend Plugin
 
@@ -261,15 +253,9 @@ Prose craft skills for writing and reviewing.
 | `/writing-prose`   | Write varied, specific, human prose (always active)       |
 | `/reviewing-prose` | Review and edit prose for formulaic patterns (on request) |
 
-## Test Plugin (`/testing`)
+## Test Plugin (Legacy)
 
-The test plugin provides BDD testing methodology with three-level testing:
-
-| Level          | Question                               | Requirements                     |
-| -------------- | -------------------------------------- | -------------------------------- |
-| 1: Unit        | "Is our logic correct?"                | Dependency injection, NO mocking |
-| 2: Integration | "Does it work with real dependencies?" | Documented test harnesses        |
-| 3: E2E         | "Does it work for users?"              | Documented credentials           |
+Standalone testing methodology for projects that do not use the Spec Tree. Spec-tree users should use `spec-tree:testing` and `spec-tree:reviewing-tests` instead, which are supersets.
 
 ### Skills
 
@@ -278,27 +264,20 @@ The test plugin provides BDD testing methodology with three-level testing:
 | `/testing`         | Foundational testing methodology (5 stages, 5 factors)        |
 | `/reviewing-tests` | Foundational test review protocol (loaded by language skills) |
 
-**Core rules:**
-
-- No mocking - use dependency injection at Level 1, real dependencies at Level 2+
-- Tests co-located with specs in `spx/.../tests/` with suffix naming (`*.unit.test.ts`)
-- Test level in filename: `*.unit.test.ts`, `*.integration.test.ts`, `*.e2e.test.ts`
-
 ## TypeScript Plugin
 
 Complete TypeScript development workflow with testing, implementation, and review.
 
 ### Skills
 
-| Skill                                | Purpose                                                    |
-| ------------------------------------ | ---------------------------------------------------------- |
-| `/testing-typescript`                | TypeScript-specific testing patterns (requires `/testing`) |
-| `/coding-typescript`                 | Implementation workhorse with remediation loop             |
-| `/reviewing-typescript`              | Strict code review with zero-tolerance                     |
-| `/reviewing-typescript-tests`        | TypeScript test review (requires `/reviewing-tests`)       |
-| `/architecting-typescript`           | ADR producer with testing strategy                         |
-| `/reviewing-typescript-architecture` | ADR validator against testing principles                   |
-| `/orchestrating-typescript`          | Orchestrate story implementation through skills            |
+| Skill                                | Purpose                                        |
+| ------------------------------------ | ---------------------------------------------- |
+| `/testing-typescript`                | TypeScript-specific testing patterns           |
+| `/coding-typescript`                 | Implementation workhorse with remediation loop |
+| `/reviewing-typescript`              | Strict code review with zero-tolerance         |
+| `/reviewing-typescript-tests`        | TypeScript test review                         |
+| `/architecting-typescript`           | ADR producer with testing strategy             |
+| `/reviewing-typescript-architecture` | ADR validator against testing principles       |
 
 ### Commands
 
@@ -311,9 +290,7 @@ Complete TypeScript development workflow with testing, implementation, and revie
 - No mocking - dependency injection only
 - Reality is the oracle
 - Behavior testing, not implementation testing
-- Tests at appropriate levels (Unit/Integration/E2E)
-- Pure XML structure in all skills
-- Self-contained skills (no inter-skill invocations)
+- Tests at appropriate levels (Level 1/Level 2/Level 3)
 
 ## Python Plugin
 
@@ -321,15 +298,14 @@ Complete Python development workflow with testing, implementation, and review.
 
 ### Skills
 
-| Skill                            | Purpose                                                |
-| -------------------------------- | ------------------------------------------------------ |
-| `/testing-python`                | Python-specific testing patterns (requires `/testing`) |
-| `/coding-python`                 | Implementation workhorse with remediation loop         |
-| `/reviewing-python`              | Strict code review with zero-tolerance                 |
-| `/reviewing-python-tests`        | Python test review (requires `/reviewing-tests`)       |
-| `/architecting-python`           | ADR producer with testing strategy                     |
-| `/reviewing-python-architecture` | ADR validator against testing principles               |
-| `/orchestrating-python`          | Orchestrate story implementation through skills        |
+| Skill                            | Purpose                                        |
+| -------------------------------- | ---------------------------------------------- |
+| `/testing-python`                | Python-specific testing patterns               |
+| `/coding-python`                 | Implementation workhorse with remediation loop |
+| `/reviewing-python`              | Strict code review with zero-tolerance         |
+| `/reviewing-python-tests`        | Python test review                             |
+| `/architecting-python`           | ADR producer with testing strategy             |
+| `/reviewing-python-architecture` | ADR validator against testing principles       |
 
 ### Commands
 
@@ -342,45 +318,37 @@ Complete Python development workflow with testing, implementation, and review.
 - No mocking - dependency injection only
 - Reality is the oracle
 - Behavior testing, not implementation testing
-- Tests at appropriate levels (Unit/Integration/E2E)
+- Tests at appropriate levels (Level 1/Level 2/Level 3)
 
 ## Spec Tree Plugin
 
-Spec-driven development with the Spec Tree framework. Supersedes `spx-legacy`.
+Spec-driven development with the Spec Tree framework. Supersedes `spx-legacy` and `spx` (merged). Three phases: spec-tree maintenance, implementation, commit.
 
 ### Skills
 
-| Skill              | Purpose                                       |
-| ------------------ | --------------------------------------------- |
-| `/understanding`   | Foundation skill — loaded before any other    |
-| `/contextualizing` | Show status, progress, what exists            |
-| `/authoring`       | Add, define, create specs and features        |
-| `/decomposing`     | Break down, split, scope work                 |
-| `/refactoring`     | Move nodes, re-scope, extract shared enablers |
-| `/aligning`        | Review, check consistency, audit, find gaps   |
-| `/testing`         | Create tests, run tests, check stale status   |
-
-## SPX Plugin
-
-Commands and skills for spec-driven development projects.
-
-### Skills
-
-| Skill                 | Purpose                                            |
-| --------------------- | -------------------------------------------------- |
-| `/coding`             | Spec-tree TDD flow: architect, test, code + review |
-| `/committing-changes` | Comprehensive git commit message guidance          |
+| Skill                 | Phase | Purpose                                                         |
+| --------------------- | ----- | --------------------------------------------------------------- |
+| `/understanding`      | 1     | Foundation skill — loaded before any other                      |
+| `/contextualizing`    | 1     | Show status, progress, what exists                              |
+| `/authoring`          | 1     | Add, define, create specs and features                          |
+| `/decomposing`        | 1     | Break down, split, scope work                                   |
+| `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers                   |
+| `/aligning`           | 1     | Review, check consistency, audit, find gaps                     |
+| `/testing`            | 2     | Write tests driven by spec assertions (superset of test plugin) |
+| `/reviewing-tests`    | 2     | Adversarial review of test evidence (superset of test plugin)   |
+| `/coding`             | 2     | TDD flow: architect, test, code + review gates                  |
+| `/committing-changes` | 3     | Conventional Commits with selective staging                     |
 
 ### Commands
 
 | Command    | Purpose                                             |
 | ---------- | --------------------------------------------------- |
 | `/commit`  | Git commit with Conventional Commits (auto-context) |
-| `/handoff` | Create timestamped context handoff                  |
-| `/pickup`  | Load and continue from previous handoff             |
 | `/tdd`     | Start spec-tree TDD flow (invokes `/coding`)        |
 | `/rtfm`    | Stop ad hoc work and follow the methodology         |
 | `/clarify` | Clarify ambiguous requirements                      |
+| `/handoff` | Create timestamped context handoff                  |
+| `/pickup`  | Load and continue from previous handoff             |
 
 ## SPX-Legacy Plugin (Deprecated)
 
@@ -442,14 +410,14 @@ If unclear which system, ask the user. Prefer Spec Tree if `spec-tree` plugin is
 **BEFORE implementing any work item** (capability/feature/story), you MUST:
 
 1. **Invoke understanding/contextualizing skill** on the work item file
-   - **Spec Tree**: `/spec-tree:contextualizing` | **SPX-Legacy**: `/spx-legacy:understanding-spx` | **Legacy**: `/specs:understanding-specs`
+   - **Spec Tree**: `/contextualizing` | **SPX-Legacy**: `/understanding-spx` | **Legacy**: `/understanding-specs`
    - **Trigger**: User requests implementation of a work item
    - **Purpose**: Load complete context hierarchy (requirements → decisions → work item)
    - **Example**: User says "implement story-21" → STOP and invoke understanding skill FIRST
    - **Non-negotiable**: Do NOT read story/feature/capability files directly without invoking this skill
 
 2. **Invoke authoring/managing skill** when creating specs or work items
-   - **Spec Tree**: `/spec-tree:authoring` | **SPX-Legacy**: `/spx-legacy:managing-spx` | **Legacy**: `/specs:managing-specs`
+   - **Spec Tree**: `/authoring` | **SPX-Legacy**: `/managing-spx` | **Legacy**: `/managing-specs`
    - **Trigger**: User requests creating capability, feature, story, PRD, or ADR
    - **Purpose**: Access templates from skill's `templates/` directory, understand numbering
    - **Example**: User says "create the feature" → STOP and invoke authoring skill to read template
@@ -856,7 +824,7 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 ├── .spx/                          # Tool operational (gitignored)
 │   └── sessions/                  # Session handoffs
 ├── plugins/
-│   ├── claude/                   # Version: 0.1.2 — Meta-skills
+│   ├── claude/                   # Meta-skills for plugin development
 │   │   └── skills/
 │   │       ├── creating-skills/
 │   │       ├── creating-commands/
@@ -864,36 +832,26 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │       ├── auditing-skills/
 │   │       ├── auditing-commands/
 │   │       └── auditing-subagents/
-│   ├── code/                     # Version: 0.0.3
-│   │   └── skills/
-│   │       └── coding-autonomously/
-│   ├── core/                     # Version: 0.4.31
+│   ├── core/                     # Standalone commit workflow
 │   │   ├── commands/
 │   │   │   ├── commit.md
 │   │   │   ├── handoff.md
 │   │   │   └── pickup.md
 │   │   └── skills/
 │   │       └── committing-changes/
-│   ├── frontend/                 # Version: 0.0.2
+│   ├── frontend/
 │   │   └── skills/
 │   │       └── designing-frontend/
-│   ├── prose/                    # Version: 0.1.3
+│   ├── prose/
 │   │   └── skills/
 │   │       ├── writing-prose/
 │   │       └── reviewing-prose/
-│   ├── python/                   # Version: 0.11.4
+│   ├── python/
 │   │   ├── commands/
 │   │   │   └── auto-python.md
 │   │   └── skills/
 │   │       └── (6 skills)
-│   ├── spec-tree/                # Version: 0.4.1 — Spec Tree (current)
-│   │   └── skills/
-│   │       └── (7 skills)
-│   ├── specs/                    # Version: 0.5.7 (legacy)
-│   │   └── skills/
-│   │       ├── managing-specs/
-│   │       └── understanding-specs/
-│   ├── spx/                      # Version: 0.11.0 — SPX commands + coding
+│   ├── spec-tree/                # Spec Tree (current) — 3 phases
 │   │   ├── commands/
 │   │   │   ├── clarify.md
 │   │   │   ├── commit.md
@@ -902,16 +860,19 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │   │   ├── rtfm.md
 │   │   │   └── tdd.md
 │   │   └── skills/
-│   │       ├── coding/
-│   │       └── committing-changes/
-│   ├── spx-legacy/               # Version: 0.1.3 (deprecated → spec-tree)
+│   │       └── (10 skills)
+│   ├── specs/                    # Legacy
+│   │   └── skills/
+│   │       ├── managing-specs/
+│   │       └── understanding-specs/
+│   ├── spx-legacy/               # Deprecated → spec-tree
 │   │   └── skills/
 │   │       └── (9 skills)
-│   ├── test/                     # Version: 0.4.0
+│   ├── test/                     # Legacy (standalone testing)
 │   │   └── skills/
 │   │       ├── testing/
 │   │       └── reviewing-tests/
-│   └── typescript/               # Version: 0.9.0
+│   └── typescript/
 │       ├── commands/
 │       │   └── auto-typescript.md
 │       └── skills/

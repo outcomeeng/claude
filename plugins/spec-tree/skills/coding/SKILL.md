@@ -24,16 +24,16 @@ Orchestrate the spec-tree TDD flow for a work item. Eight phases, strictly seque
 
 Phases 1–2 are always the same. Phases 3–8 use the language you are writing. You know what language you are writing — use the corresponding plugin.
 
-| Phase | Purpose                | Python                                 | TypeScript                                     |
-| ----- | ---------------------- | -------------------------------------- | ---------------------------------------------- |
-| 1     | Load methodology       | `spec-tree:understanding`              | `spec-tree:understanding`                      |
-| 2     | Load work item context | `spec-tree:contextualizing`            | `spec-tree:contextualizing`                    |
-| 3     | Architect              | `python:architecting-python`           | `typescript:architecting-typescript`           |
-| 4     | Architecture review    | `python:reviewing-python-architecture` | `typescript:reviewing-typescript-architecture` |
-| 5     | Write tests            | `python:testing-python`                | `typescript:testing-typescript`                |
-| 6     | Test review            | `python:reviewing-python-tests`        | `typescript:reviewing-typescript-tests`        |
-| 7     | Implement              | `python:coding-python`                 | `typescript:coding-typescript`                 |
-| 8     | Code review            | `python:reviewing-python`              | `typescript:reviewing-typescript`              |
+| Phase | Purpose                | Python                           | TypeScript                           |
+| ----- | ---------------------- | -------------------------------- | ------------------------------------ |
+| 1     | Load methodology       | `/understanding`                 | `/understanding`                     |
+| 2     | Load work item context | `/contextualizing`               | `/contextualizing`                   |
+| 3     | Architect              | `/architecting-python`           | `/architecting-typescript`           |
+| 4     | Architecture review    | `/reviewing-python-architecture` | `/reviewing-typescript-architecture` |
+| 5     | Write tests            | `/testing-python`                | `/testing-typescript`                |
+| 6     | Test review            | `/reviewing-python-tests`        | `/reviewing-typescript-tests`        |
+| 7     | Implement              | `/coding-python`                 | `/coding-typescript`                 |
+| 8     | Code review            | `/reviewing-python`              | `/reviewing-typescript`              |
 
 </skill_map>
 
@@ -41,7 +41,7 @@ Phases 1–2 are always the same. Phases 3–8 use the language you are writing.
 
 <phase number="1" name="Load methodology" frequency="once per session">
 
-Invoke `spec-tree:understanding`.
+Invoke `/understanding`.
 
 This loads the spec-tree methodology — node types, assertion formats, durable map rules. Skip if already invoked in this session.
 
@@ -51,7 +51,7 @@ This loads the spec-tree methodology — node types, assertion formats, durable 
 
 <phase number="2" name="Load work item context" frequency="every node">
 
-Invoke `spec-tree:contextualizing`.
+Invoke `/contextualizing`.
 
 Load the full context hierarchy for the specific node — parent chain, sibling nodes, applicable decisions, assertions.
 
