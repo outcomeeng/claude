@@ -1,10 +1,10 @@
 # Outcome Engineering Plugin Marketplace
 
-Claude Code plugin marketplace (`outcomeeng/claude`) for spec-driven development with [Outcome Engineering](https://outcome.engineering) and [SPX](https://spx.sh).
+Claude Code plugin marketplace (`outcomeeng/claude`) for spec-driven development with [Outcome Engineering](https://outcome.engineering).
 
 ## Marketplace Is a Product
 
-We develop the "features" of this marketplace like a software product. We are currently starting out from scratch, so there is not yet much to be found, but as we progress, everything will be in `spx/` (specs as durable map).
+We develop this marketplace as a product using its own Spec Tree. The product specs are in `spx/` (the durable map).
 
 ## Always use `AskUserQuestion` Tool
 
@@ -282,9 +282,9 @@ Complete TypeScript development workflow with testing, implementation, and revie
 
 ### Commands
 
-| Command            | Purpose                                     |
-| ------------------ | ------------------------------------------- |
-| `/auto-typescript` | Implement stories in a feature sequentially |
+| Command            | Purpose                           |
+| ------------------ | --------------------------------- |
+| `/auto-typescript` | Implement work items sequentially |
 
 ### Core Principles
 
@@ -310,9 +310,9 @@ Complete Python development workflow with testing, implementation, and review.
 
 ### Commands
 
-| Command        | Purpose                                     |
-| -------------- | ------------------------------------------- |
-| `/auto-python` | Implement stories in a feature sequentially |
+| Command        | Purpose                           |
+| -------------- | --------------------------------- |
+| `/auto-python` | Implement work items sequentially |
 
 ### Core Principles
 
@@ -332,7 +332,7 @@ Spec-driven development with the Spec Tree framework. Three phases: spec-tree ma
 | `/understanding`      | 1     | Foundation skill — loaded before any other                      |
 | `/contextualizing`    | 1     | Show status, progress, what exists                              |
 | `/bootstrapping`      | 1     | Interview user, scaffold new spec tree                          |
-| `/authoring`          | 1     | Add, define, create specs and features                          |
+| `/authoring`          | 1     | Add, define, create specs, decisions, and nodes                 |
 | `/decomposing`        | 1     | Break down, split, scope work                                   |
 | `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers                   |
 | `/aligning`           | 1     | Review, check consistency, audit, find gaps                     |
@@ -354,41 +354,6 @@ Spec-driven development with the Spec Tree framework. Three phases: spec-tree ma
 | `/handoff`   | Create timestamped context handoff                  |
 | `/pickup`    | Load and continue from previous handoff             |
 
-## SPX-Legacy Plugin (Deprecated)
-
-**Deprecated — superseded by Spec Tree plugin.** Legacy Outcome Engineering (spx/) skills for projects that haven't migrated.
-
-### Skills
-
-| Skill                    | Purpose                                           |
-| ------------------------ | ------------------------------------------------- |
-| `/writing-prd`           | Write PRDs documenting what users need and why    |
-| `/managing-spx`          | Create and manage spx/ specs                      |
-| `/understanding-spx`     | Read all specs before starting work               |
-| `/decomposing-*`         | Decompose PRDs to capabilities, features, stories |
-| `/migrating-spec-to-spx` | Migrate from specs/ to spx/ format                |
-
-## Specs Plugin (Legacy)
-
-Legacy `specs/` directory support. Use for projects that haven't migrated.
-
-### Skills
-
-| Skill                  | Purpose                                    |
-| ---------------------- | ------------------------------------------ |
-| `/managing-specs`      | Create and manage specs structure and ADRs |
-| `/understanding-specs` | Load context before implementation         |
-
-### Disambiguation: specs/ vs spx/ vs Spec Tree
-
-| Directory | System                           | Plugin       |
-| --------- | -------------------------------- | ------------ |
-| `specs/`  | Legacy                           | `specs`      |
-| `spx/`    | Outcome Engineering (deprecated) | `spx-legacy` |
-| `spx/`    | Spec Tree (current)              | `spec-tree`  |
-
-If unclear which system to use, ask the user.
-
 ## Discovering Other Installed Skills
 
 Search for `SKILL.md` in `.claude/plugins/cache/{marketplace-name}/{plugin-name}/`
@@ -397,35 +362,19 @@ Search for `SKILL.md` in `.claude/plugins/cache/{marketplace-name}/{plugin-name}
 
 Certain skills must be invoked **automatically** when specific conditions are met, without waiting for explicit user request.
 
-### Step 1: Determine Which System
+**BEFORE implementing any work item**, you MUST:
 
-**FIRST**, check which directory exists:
-
-| Directory | System                           | Use Skills From |
-| --------- | -------------------------------- | --------------- |
-| `spx/`    | Spec Tree (current)              | `spec-tree`     |
-| `spx/`    | Outcome Engineering (deprecated) | `spx-legacy`    |
-| `specs/`  | Legacy                           | `specs`         |
-
-If unclear which system, ask the user. Prefer Spec Tree if `spec-tree` plugin is installed.
-
-### Step 2: Invoke the Appropriate Skills
-
-**BEFORE implementing any work item** (capability/feature/story), you MUST:
-
-1. **Invoke understanding/contextualizing skill** on the work item file
-   - **Spec Tree**: `/contextualizing` | **SPX-Legacy**: `/understanding-spx` | **Legacy**: `/understanding-specs`
+1. **Invoke `/contextualizing`** on the target node
    - **Trigger**: User requests implementation of a work item
-   - **Purpose**: Load complete context hierarchy (requirements → decisions → work item)
-   - **Example**: User says "implement story-21" → STOP and invoke understanding skill FIRST
-   - **Non-negotiable**: Do NOT read story/feature/capability files directly without invoking this skill
+   - **Purpose**: Load complete context hierarchy (product → decisions → ancestors → target)
+   - **Example**: User says "implement this outcome" → STOP and invoke `/contextualizing` FIRST
+   - **Non-negotiable**: Do NOT read spec files directly without invoking this skill
 
-2. **Invoke authoring/managing skill** when creating specs or work items
-   - **Spec Tree**: `/authoring` | **SPX-Legacy**: `/managing-spx` | **Legacy**: `/managing-specs`
-   - **Trigger**: User requests creating capability, feature, story, PRD, or ADR
-   - **Purpose**: Access templates from skill's `templates/` directory, understand numbering
-   - **Example**: User says "create the feature" → STOP and invoke authoring skill to read template
-   - **Critical**: Templates are in `.claude/plugins/cache/.../templates/`, NOT in the project
+2. **Invoke `/authoring`** when creating specs or nodes
+   - **Trigger**: User requests creating a product spec, ADR, PDR, enabler, or outcome
+   - **Purpose**: Access templates, understand index assignment
+   - **Example**: User says "create an outcome for search" → STOP and invoke `/authoring`
+   - **Critical**: Templates are in the `understanding` skill's directory, NOT in the project
 
 **Pattern**: These skills are preparatory and blocking. You MUST invoke them BEFORE writing code or documents.
 
@@ -433,8 +382,8 @@ If unclear which system, ask the user. Prefer Spec Tree if `spec-tree` plugin is
 
 - Miss requirements and violate ADRs
 - Search for templates that don't exist in the project
-- Create work items with incorrect numbering
-- Generate requirements documents with wrong structure
+- Create nodes with incorrect indices
+- Generate specs with wrong structure
 
 ## Naming Skills
 
@@ -442,33 +391,33 @@ The `name` field in SKILL.md YAML frontmatter is how users invoke your skill (`/
 
 **Match user speech patterns:**
 
-- Use domain acronyms: `writing-prd` not `writing-prd-document`
+- Use domain acronyms: `authoring` not `authoring-spec-tree-artifacts`
 - Use terms users actually say: `testing-python` not `python-unit-test-framework`
 - Think "CD-ROM" not "Compact Disc Read Only Memory"
 
 **Directory name must match:**
 
-- Directory: `skills/writing-prd/`
-- YAML name: `name: writing-prd`
-- User invokes: `/writing-prd`
+- Directory: `skills/authoring/`
+- YAML name: `name: authoring`
+- User invokes: `/authoring`
 
 **Examples from this marketplace:**
 
 ```yaml
 # ✅ Good: matches user speech
-name: writing-prd
-# Users say "write a PRD"
+name: authoring
+# Users say "author a spec"
 
 name: testing-typescript
 # Users say "test TypeScript code"
 
-name: autopython
-# Users say "autopython" (command name)
+name: bootstrapping
+# Users say "bootstrap the spec tree"
 ```
 
 ```yaml
 # ❌ Bad: nobody says these
-name: writing-prd-document
+name: authoring-spec-tree-artifacts
 # Too verbose, doesn't match speech
 
 name: typescript-testing-framework
@@ -545,43 +494,43 @@ description: >-
 
 ### Examples from this marketplace
 
-**SPX-Legacy Plugin skills (differentiating similar skills):**
+**Spec Tree skills (differentiating similar skills):**
 
 ```yaml
 # ✅ Good: directive with negative constraint
-name: writing-prd
+name: contextualizing
 description: >-
-  ALWAYS invoke this skill when writing PRDs or product requirements.
-  NEVER write PRDs without this skill.
+  ALWAYS invoke this skill when asking about status, progress, or what exists in the spec tree.
+  NEVER work on any part of the spec tree without loading context through this skill first.
 
-name: managing-spx
+name: authoring
 description: >-
-  ALWAYS invoke this skill when creating or organizing specs, capabilities, features, stories, or ADRs.
-  NEVER create, read, or modify any files in the spx/ directory without this skill.
+  ALWAYS invoke this skill when adding, defining, or creating specs, decisions, or nodes.
+  NEVER author spec tree artifacts without this skill.
 
-name: understanding-spx
+name: decomposing
 description: >-
-  ALWAYS invoke this skill before implementing any work item to load complete context.
-  NEVER create, read, or modify any files in the spx/ directory without this skill.
+  ALWAYS invoke this skill when breaking down, splitting, scoping, or structuring spec tree nodes.
+  NEVER decompose specs without this skill.
 ```
 
 **Why these work:**
 
 - `ALWAYS` tells Claude when to activate (specific triggers)
 - `NEVER` tells Claude what NOT to do without the skill (negative constraint)
-- Natural language users actually say ("writing PRDs" not "PRD creation protocol")
+- Natural language users actually say ("author a spec" not "spec authoring protocol")
 - Short and direct
 
 ```yaml
 # ❌ Bad: passive style (77% activation)
-name: understanding-specs
-description: Read all specs for a story before starting work. Use when starting implementation.
+name: contextualizing
+description: Load spec tree context before working. Use when starting implementation.
 # Problem: Claude will just read the files directly instead of invoking the skill
 
 # ❌ Bad: formal jargon
-name: writing-prd
-description: Systematic PRD creation with user value propositions and measurable outcomes.
-# Problem: Nobody says "user value propositions"
+name: authoring
+description: Systematic spec creation with outcome hypotheses and typed assertions.
+# Problem: Nobody says "outcome hypotheses"
 ```
 
 **Testing Plugin skills (language-specific differentiation):**
@@ -862,8 +811,10 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │   │   └── auto-python.md
 │   │   └── skills/
 │   │       └── (6 skills)
-│   ├── spec-tree/                # Spec Tree (current) — 3 phases
+│   ├── spec-tree/                # Spec Tree — 3 phases
 │   │   ├── commands/
+│   │   │   ├── author.md
+│   │   │   ├── bootstrap.md
 │   │   │   ├── clarify.md
 │   │   │   ├── commit.md
 │   │   │   ├── handoff.md
@@ -872,14 +823,7 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │   │   └── tdd.md
 │   │   └── skills/
 │   │       └── (11 skills)
-│   ├── specs/                    # Legacy
-│   │   └── skills/
-│   │       ├── managing-specs/
-│   │       └── understanding-specs/
-│   ├── spx-legacy/               # Deprecated → spec-tree
-│   │   └── skills/
-│   │       └── (9 skills)
-│   ├── test/                     # Legacy (standalone testing)
+│   ├── test/                     # Standalone testing (non-spec-tree)
 │   │   └── skills/
 │   │       ├── testing/
 │   │       └── reviewing-tests/

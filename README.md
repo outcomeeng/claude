@@ -150,7 +150,7 @@ Meta-skills for Claude Code plugin development.
 | Skill | `/auditing-commands`  | Audit slash commands            |
 | Skill | `/auditing-subagents` | Audit subagent configurations   |
 
-Credit: `/creating-skills` is inspired by [TÂCHES Claude Code Resources](https://github.com/glittercowboy/taches-cc-resources?tab=readme-ov-file#skills).
+Credit: These meta skills are derived from [TÂCHES Claude Code Resources](https://github.com/glittercowboy/taches-cc-resources?tab=readme-ov-file#skills).
 
 ### frontend
 
@@ -170,6 +170,8 @@ Standalone commit workflow for projects that don't use the Spec Tree.
 | Command | `/commit`             | Git commit with Conventional Commits    |
 | Command | `/handoff`            | Create timestamped context handoff      |
 | Command | `/pickup`             | Load and continue from previous handoff |
+
+Credit: The commands `/handoff` and `/pickup` are based on `/whats-next` in [TÂCHES Claude Code Resources](https://github.com/glittercowboy/taches-cc-resources?tab=readme-ov-file#context-handoff).
 
 ## Documentation
 
