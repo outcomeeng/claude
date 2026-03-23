@@ -34,14 +34,13 @@ claude plugin install claude@outcomeeng      # meta-skills for plugin developmen
 **`spec-tree` — spec-driven development + commands:**
 
 ```text
+> /bootstrap                       # set up a new spec tree
+> /author product                  # author a product spec
+> /author new outcome for search   # author a new outcome node
 > /commit                          # commit with Conventional Commits
-> /handoff                         # create context handoff for next session
-> /pickup                          # continue from a previous handoff
 > /tdd                             # start the TDD flow
 > /rtfm                            # stop ad hoc work, follow methodology
 > /clarify                         # gather requirements before executing
-> /testing                         # write tests driven by spec assertions
-> /coding                          # TDD flow: architect, test, code + review
 ```
 
 **`prose` — writing and reviewing:**
@@ -108,25 +107,27 @@ Credit: `/creating-skills` is inspired by [TÂCHES Claude Code Resources](https:
 
 Spec Tree framework for spec-driven development. Three phases: spec-tree maintenance, implementation, commit.
 
-| Type    | Name                  | Phase | Purpose                                        |
-| ------- | --------------------- | ----- | ---------------------------------------------- |
-| Skill   | `/understanding`      | 1     | Foundation skill — loaded before any other     |
-| Skill   | `/contextualizing`    | 1     | Deterministic context loading from tree        |
-| Skill   | `/bootstrapping`      | 1     | Interview user, scaffold new spec tree         |
-| Skill   | `/authoring`          | 1     | Add, define, create specs and features         |
-| Skill   | `/decomposing`        | 1     | Break down, split, scope work                  |
-| Skill   | `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers  |
-| Skill   | `/aligning`           | 1     | Review, check consistency, audit, find gaps    |
-| Skill   | `/testing`            | 2     | Write tests driven by spec assertions          |
-| Skill   | `/reviewing-tests`    | 2     | Adversarial review of test evidence            |
-| Skill   | `/coding`             | 2     | TDD flow: architect, test, code + review gates |
-| Skill   | `/committing-changes` | 3     | Conventional Commits with selective staging    |
-| Command | `/commit`             |       | Git commit with Conventional Commits           |
-| Command | `/tdd`                |       | Start TDD flow                                 |
-| Command | `/rtfm`               |       | Stop ad hoc work, follow methodology           |
-| Command | `/clarify`            |       | Clarify ambiguous requirements                 |
-| Command | `/handoff`            |       | Create timestamped context handoff             |
-| Command | `/pickup`             |       | Load and continue from previous handoff        |
+| Type    | Name                  | Phase | Purpose                                         |
+| ------- | --------------------- | ----- | ----------------------------------------------- |
+| Skill   | `/understanding`      | 1     | Foundation skill — loaded before any other      |
+| Skill   | `/contextualizing`    | 1     | Deterministic context loading from tree         |
+| Skill   | `/bootstrapping`      | 1     | Interview user, scaffold new spec tree          |
+| Skill   | `/authoring`          | 1     | Add, define, create specs and features          |
+| Skill   | `/decomposing`        | 1     | Break down, split, scope work                   |
+| Skill   | `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers   |
+| Skill   | `/aligning`           | 1     | Review, check consistency, audit, find gaps     |
+| Skill   | `/testing`            | 2     | Write tests driven by spec assertions           |
+| Skill   | `/reviewing-tests`    | 2     | Adversarial review of test evidence             |
+| Skill   | `/coding`             | 2     | TDD flow: architect, test, code + review gates  |
+| Skill   | `/committing-changes` | 3     | Conventional Commits with selective staging     |
+| Command | `/bootstrap`          |       | Set up a new spec tree                          |
+| Command | `/author`             |       | Author a spec tree artifact (auto-detects type) |
+| Command | `/commit`             |       | Git commit with Conventional Commits            |
+| Command | `/tdd`                |       | Start TDD flow                                  |
+| Command | `/rtfm`               |       | Stop ad hoc work, follow methodology            |
+| Command | `/clarify`            |       | Clarify ambiguous requirements                  |
+| Command | `/handoff`            |       | Create timestamped context handoff              |
+| Command | `/pickup`             |       | Load and continue from previous handoff         |
 
 Credit: `/handoff` is inspired by [TÂCHES Claude Code Resources](https://github.com/glittercowboy/taches-cc-resources/tree/main?tab=readme-ov-file#context-handoff).
 

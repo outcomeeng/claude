@@ -343,14 +343,16 @@ Spec-driven development with the Spec Tree framework. Three phases: spec-tree ma
 
 ### Commands
 
-| Command    | Purpose                                             |
-| ---------- | --------------------------------------------------- |
-| `/commit`  | Git commit with Conventional Commits (auto-context) |
-| `/tdd`     | Start spec-tree TDD flow (invokes `/coding`)        |
-| `/rtfm`    | Stop ad hoc work and follow the methodology         |
-| `/clarify` | Clarify ambiguous requirements                      |
-| `/handoff` | Create timestamped context handoff                  |
-| `/pickup`  | Load and continue from previous handoff             |
+| Command      | Purpose                                             |
+| ------------ | --------------------------------------------------- |
+| `/bootstrap` | Set up a new spec tree (invokes `/bootstrapping`)   |
+| `/author`    | Author a spec tree artifact (auto-detects type)     |
+| `/commit`    | Git commit with Conventional Commits (auto-context) |
+| `/tdd`       | Start spec-tree TDD flow (invokes `/coding`)        |
+| `/rtfm`      | Stop ad hoc work and follow the methodology         |
+| `/clarify`   | Clarify ambiguous requirements                      |
+| `/handoff`   | Create timestamped context handoff                  |
+| `/pickup`    | Load and continue from previous handoff             |
 
 ## SPX-Legacy Plugin (Deprecated)
 
