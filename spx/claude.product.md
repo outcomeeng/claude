@@ -1,0 +1,47 @@
+# Claude Plugin Marketplace
+
+## Why this product exists
+
+Solo developers using Claude Code need structured, spec-driven workflows that produce reliable implementations honoring specifications, tests, and architectural decisions.
+
+## Product hypothesis
+
+WE BELIEVE THAT providing a plugin marketplace with skills for spec-driven development
+WILL reduce implementation rework by 60% through enforced context loading and test-driven flows
+CONTRIBUTING TO faster iteration cycles and higher confidence in AI-assisted development
+
+### Evidence of success
+
+| Metric                   | Current | Target | Measurement approach                              |
+| ------------------------ | ------- | ------ | ------------------------------------------------- |
+| Context loading coverage | 100%    | 100%   | All implementation skills enforce context loading |
+| Spec-test coupling       | Partial | 100%   | Every assertion links to at least one test file   |
+| Plugin adoption          | N/A     | 50+    | GitHub stars + marketplace installs               |
+
+## Scope
+
+### What's included
+
+- Spec Tree methodology (understanding, contextualizing, authoring, decomposing, refactoring, aligning)
+- Testing and review skills (testing, reviewing-tests) as supersets of standalone methodology
+- TDD flow orchestration (coding) with language-specific delegation
+- Commit workflow (committing-changes) with Conventional Commits
+- Language-specific plugins (Python, TypeScript) for architecture, testing, coding, review
+- Session management (handoff, pickup) for conversation continuity
+- Pre-commit validation infrastructure for plugin and skill quality
+
+### What's excluded
+
+| Excluded                | Rationale                                     |
+| ----------------------- | --------------------------------------------- |
+| Lock file tooling       | Planned but not yet designed                  |
+| Cloud collaboration     | Individual developer tool, not team platform  |
+| IDE-specific extensions | Claude Code is the interface, not IDE plugins |
+
+## Product-level assertions
+
+### Compliance
+
+- ALWAYS: derive node status from test results, never from stored labels — status reflects reality
+- ALWAYS: use atemporal voice in all specs — specs are permanent truth, not work items
+- NEVER: store status in committed files — prevents drift from reality

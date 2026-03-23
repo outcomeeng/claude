@@ -1,28 +1,27 @@
-# spx/ Directory Guide (Outcome Engineering Framework)
+# spx/ Directory Guide (Spec Tree)
 
-This guide explains WHEN to invoke spx skills. It is a **router** that tells you which skill to use. The skills themselves contain the HOW (detailed procedures, templates, structure definitions).
+This guide explains WHEN to invoke spec-tree skills. It is a **router** that tells you which skill to use. The skills themselves contain the HOW.
 
 ---
 
-## Structure Overview (Outcome Engineering)
+## Structure Overview
 
-The `spx/` tree is the always-current map of the product. Nothing moves because work is "done"—specs are a durable map, not a backlog.
+The `spx/` tree is a durable map of the product. Nothing moves because work is "done" — specs are permanent product truth, not a backlog.
+
+Two node types at any depth:
 
 ```text
 spx/
-  {product}.prd.md                    # Product requirements
-  NN-{slug}.adr.md                    # Product-wide decisions (interleaved)
-  NN-{slug}.capability/
-    {slug}.capability.md
-    tests/                            # See Test Naming Convention below
-    NN-{slug}.adr.md
-    NN-{slug}.feature/
-      {slug}.feature.md
-      tests/                          # See Test Naming Convention below
-      NN-{slug}.adr.md
-      NN-{slug}.story/
-        {slug}.story.md
-        tests/                        # See Test Naming Convention below
+  {product-name}.product.md           # Product spec (root)
+  NN-{slug}.adr.md                    # Architecture decision
+  NN-{slug}.pdr.md                    # Product constraint
+  NN-{slug}.enabler/                  # Shared infrastructure
+    {slug}.md                         # Spec file
+    tests/                            # Co-located tests
+    NN-{slug}.{enabler|outcome}/      # Children (any depth)
+  NN-{slug}.outcome/                  # Hypothesis + assertions
+    {slug}.md                         # Spec file
+    tests/                            # Co-located tests
 ```
 
 ---
@@ -30,71 +29,102 @@ spx/
 ## Key Principles
 
 1. **Durable map**: Specs stay in place. Nothing moves because work is "done."
-2. **Co-location**: Tests live with their spec in `tests/`. No graduation.
-3. **No TRDs**: Technical details belong in `feature.md`, not separate files.
+2. **Two node types**: Enabler (infrastructure) and outcome (hypothesis + assertions). No other types.
+3. **Co-location**: Tests live with their spec in `tests/`.
+4. **Atemporal voice**: Specs state product truth. Never narrate history.
+5. **Deterministic context**: The tree path defines what context an agent receives.
 
 ---
 
-## BSP = Binary Space Partitioning
+## Sparse Integer Ordering
 
-**Binary Space Partitioning (BSP)** encodes dependency order: lower BSP items are dependencies that higher-BSP items may rely on; same BSP means independent. The "binary" refers to insertion by halving available space.
+Numeric prefixes encode dependency order: lower index constrains higher. Same index means independent.
 
-- Lower BSP → dependency (others may rely on it)
-- Same BSP → independent of each other
-- Use `@` for recursive insertion when integers exhausted (e.g., `20@54-audit`)
+Formula for N items: `i_k = 10 + floor(k * 89 / (N + 1))`
+
+For N=7: 21, 32, 43, 54, 65, 76, 87.
 
 ```text
-13-test-infrastructure.capability/  ← Built first (harnesses)
-15-validation.capability/           ← Depends on harnesses
-20-auth.capability/                 ← Can parallel with 20-billing
-20-billing.capability/              ← Same BSP = parallel safe
+15-auth-strategy.adr.md              # Constrains everything at 16+
+21-test-harness.enabler/             # Depends on 15; constrains 22+
+32-auth.outcome/                     # Independent of billing
+32-billing.outcome/                  # Independent of auth
+43-integration.outcome/              # Depends on BOTH 32s
 ```
 
-**ALWAYS use full path when referencing work items:**
+**ALWAYS use full path when referencing nodes:**
 
-| Wrong                  | Correct                                                          |
-| ---------------------- | ---------------------------------------------------------------- |
-| "story-54"             | "15-validation.capability/21-testable.feature/47-commands.story" |
-| "implement feature-21" | "implement 15-validation.capability/21-testable.feature"         |
+| Wrong                  | Correct                                     |
+| ---------------------- | ------------------------------------------- |
+| "32-parser.outcome"    | "21-infra.enabler/32-parser.outcome"        |
+| "implement outcome-43" | "implement 21-infra.enabler/43-api.outcome" |
 
 ---
 
 ## When to Invoke Skills
 
-### Before Implementing ANY Work Item → `/spx:understanding-spx`
+### Before ANY spec-tree work → `/understanding`
+
+**BLOCKING REQUIREMENT**
+
+Loads the Spec Tree methodology. Emits `<SPEC_TREE_FOUNDATION>` marker. Required once per session.
+
+### Before working on a specific node → `/contextualizing`
 
 **BLOCKING REQUIREMENT**
 
 **Trigger conditions:**
 
-- User says "implement story-NN", "work on feature-NN", or "build capability-NN"
-- User references a work item file
-- You're about to write implementation code
+- User says "implement this node", "work on X"
+- You're about to read, write, or modify a spec
+- You need to understand what constrains a node
 
-**What it does**: Loads complete context hierarchy (PRD → ADRs → capability → feature → story).
+**What it does**: Walks the tree from product root to target, reads all ancestor specs, lower-index siblings, and ADRs/PDRs.
 
-### When Creating/Organizing Specs → `/spx:managing-spx`
-
-**BLOCKING REQUIREMENT**
+### When creating specs or nodes → `/authoring`
 
 **Trigger conditions:**
 
-- User says "create a PRD", "add an ADR", "create capability/feature/story"
-- User asks "what's next to work on?"
-- You need templates or BSP numbering rules
+- User says "create a product spec", "add an ADR", "create an outcome node"
+- You need templates or index assignment
 
-**What it does**: Provides templates, BSP numbering, structure guidance.
+### When breaking down a node → `/decomposing`
+
+**Trigger conditions:**
+
+- A node has too many assertions (>7)
+- A node contains independent concerns
+
+### When restructuring the tree → `/refactoring`
+
+**Trigger conditions:**
+
+- Moving a node between parents
+- Re-scoping assertions across nodes
+- Extracting shared enablers
+- Consolidating duplicate nodes
+
+### When checking consistency → `/aligning`
+
+**Trigger conditions:**
+
+- Review, audit, or quality check on specs
+- Finding contradictions or gaps across nodes
 
 ---
 
 ## Quick Reference: Skill Selection
 
-| User Says...         | Invoke                   | Do NOT                 |
-| -------------------- | ------------------------ | ---------------------- |
-| "Implement story-21" | `/spx:understanding-spx` | Read story.md directly |
-| "Create a PRD"       | `/spx:managing-spx`      | Search for templates   |
-| "What's next?"       | `/spx:managing-spx`      | Grep for work items    |
-| "Create a feature"   | `/spx:managing-spx`      | Calculate BSP yourself |
+| User Says...             | Invoke             | Do NOT                      |
+| ------------------------ | ------------------ | --------------------------- |
+| "Implement this outcome" | `/contextualizing` | Read spec files directly    |
+| "Create a product spec"  | `/authoring`       | Search for templates        |
+| "Add an ADR"             | `/authoring`       | Calculate indices yourself  |
+| "This node is too big"   | `/decomposing`     | Split nodes ad hoc          |
+| "Move this under that"   | `/refactoring`     | Rename directories manually |
+| "Check these specs"      | `/aligning`        | Review without methodology  |
+| "Write tests for this"   | `/testing`         | Write tests without spec    |
+| "Start the TDD flow"     | `/coding`          | Code without architecture   |
 
 ---
 
@@ -104,44 +134,45 @@ Test level is encoded in the filename. Naming patterns vary by language — **de
 
 ### TypeScript
 
-| Level       | Pattern                      | Example                   |
-| ----------- | ---------------------------- | ------------------------- |
-| Unit        | `{slug}.unit.test.ts`        | `parsing.unit.test.ts`    |
-| Integration | `{slug}.integration.test.ts` | `cli.integration.test.ts` |
-| E2E         | `{slug}.e2e.test.ts`         | `workflow.e2e.test.ts`    |
+| Level | Pattern                      | Example                   |
+| ----- | ---------------------------- | ------------------------- |
+| 1     | `{slug}.unit.test.ts`        | `parsing.unit.test.ts`    |
+| 2     | `{slug}.integration.test.ts` | `cli.integration.test.ts` |
+| 3     | `{slug}.e2e.test.ts`         | `workflow.e2e.test.ts`    |
 
 ### Python
 
-| Level       | Pattern                      | Example                   |
-| ----------- | ---------------------------- | ------------------------- |
-| Unit        | `test_{slug}_unit.py`        | `test_parsing_unit.py`    |
-| Integration | `test_{slug}_integration.py` | `test_cli_integration.py` |
-| E2E         | `test_{slug}_e2e.py`         | `test_workflow_e2e.py`    |
+| Level | Pattern                      | Example                   |
+| ----- | ---------------------------- | ------------------------- |
+| 1     | `test_{slug}_unit.py`        | `test_parsing_unit.py`    |
+| 2     | `test_{slug}_integration.py` | `test_cli_integration.py` |
+| 3     | `test_{slug}_e2e.py`         | `test_workflow_e2e.py`    |
 
-**Any test level can exist at any container level.** A capability may have unit tests; a story may have integration tests. The level describes what KIND of test, not where it lives.
+**Any test level can exist at any node.** The level describes what KIND of test, not where in the tree it lives.
 
 ---
 
-## Spec-Test Contract
+## Assertion-Test Contract
 
-Spec files must reference their tests via relative Markdown links:
+Spec assertions link to their tests inline:
 
 ```markdown
-## Tests
+### Scenarios
 
-- [Unit: flag parsing](tests/parsing.unit.test.ts)
-- [Integration: CLI validation](tests/cli.integration.test.ts)
+- Given a parser in strict mode, when invalid input is provided, then a ParseError is raised ([test](tests/test_parser_unit.py))
+
+### Properties
+
+- Parsing is deterministic: same input always produces same output ([test](tests/test_parser_unit.py))
 ```
 
-File names follow the language-specific patterns from the Test Naming Convention section above.
-
-This creates a verifiable contract between specs and tests.
+Every assertion must link to at least one test file. The link is a contract.
 
 ---
 
 ## Session Management
 
-Claude Code session handoffs are stored in `.spx/sessions/` (separate from spec tree):
+Claude Code session handoffs are stored in `.spx/sessions/` (separate from the spec tree):
 
 ```text
 .spx/sessions/

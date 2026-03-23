@@ -248,10 +248,11 @@ Prose craft skills for writing and reviewing.
 
 ### Skills
 
-| Skill              | Purpose                                                   |
-| ------------------ | --------------------------------------------------------- |
-| `/writing-prose`   | Write varied, specific, human prose (always active)       |
-| `/reviewing-prose` | Review and edit prose for formulaic patterns (on request) |
+| Skill                  | Purpose                                                    |
+| ---------------------- | ---------------------------------------------------------- |
+| `/standardizing-prose` | Prose anti-patterns enforced across all skills (reference) |
+| `/writing-prose`       | Write varied, specific, human prose (always active)        |
+| `/reviewing-prose`     | Review and edit prose for formulaic patterns (on request)  |
 
 ## Test Plugin (Legacy)
 
@@ -541,7 +542,7 @@ description: >-
 
 ### Examples from this marketplace
 
-**SPX Plugin skills (differentiating similar skills):**
+**SPX-Legacy Plugin skills (differentiating similar skills):**
 
 ```yaml
 # ✅ Good: directive with negative constraint
@@ -771,6 +772,12 @@ Error: Bash command permission check failed for pattern "!find .spx/sessions -ma
 
 **Rationale:** Claude Code requires user permission for every file operation in `.claude/` directories. This creates friction and breaks the development flow. All project artifacts belong in the project directory structure.
 
+### ⛔ File Removal Restrictions
+
+**Tracked files with no changes:** Use `git rm` to remove files that are committed in git and have no uncommitted modifications.
+
+**All other files:** You CANNOT remove files that are untracked or have uncommitted changes. Do not attempt to circumvent this restriction. Instead, **ALWAYS** provide the exact `rm` command to the user and **WAIT** until the user has confirmed they have executed it before proceeding.
+
 ### Before Making Changes
 
 1. **Read the context**: Check [CLAUDE.md](CLAUDE.md:1) (this file) for current structure and versioning rules
@@ -844,6 +851,7 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │       └── designing-frontend/
 │   ├── prose/
 │   │   └── skills/
+│   │       ├── standardizing-prose/
 │   │       ├── writing-prose/
 │   │       └── reviewing-prose/
 │   ├── python/
