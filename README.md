@@ -177,6 +177,17 @@ Standalone `/commit`, `/handoff`, `/pickup` for projects without the spx CLI. In
 | Command | `/handoff`            | Create timestamped context handoff      |
 | Command | `/pickup`             | Load and continue from previous handoff |
 
+## Using with other AI agents
+
+Skills are distributed as standalone repositories, compatible with any agent that supports the [Agent Skills](https://vercel.com/docs/agent-resources/skills) open standard.
+
+| Repository                                             | Purpose                                                 | Install                                |
+| ------------------------------------------------------ | ------------------------------------------------------- | -------------------------------------- |
+| [spec-tree](https://github.com/outcomeeng/spec-tree)   | Spec-tree skills for spec-driven development            | `npx skills add outcomeeng/spec-tree`  |
+| [python](https://github.com/outcomeeng/python)         | Python engineering skills                               | `npx skills add outcomeeng/python`     |
+| [typescript](https://github.com/outcomeeng/typescript) | TypeScript engineering skills                           | `npx skills add outcomeeng/typescript` |
+| [foundation](https://github.com/outcomeeng/foundation) | Foundation skills (prose, plugin development, frontend) | `npx skills add outcomeeng/foundation` |
+
 ## Documentation
 
 - [Claude Code Plugins](https://code.claude.com/docs/en/plugins)
