@@ -1,0 +1,11 @@
+{
+  "name": "visual",
+  "version": "0.1.0",
+  "description": "Visual diagrams: /excalidrawing (Excalidraw JSON generation)",
+  "author": {
+    "name": "Simon Heimlicher"
+  },
+  "repository": "https://github.com/outcomeeng/claude",
+  "license": "MIT",
+  "keywords": ["excalidraw", "diagrams", "visual"]
+}
