@@ -44,10 +44,10 @@ The tree structure enables deterministic context injection: the path from root t
 
 Two node types:
 
-| Node type   | Directory suffix | Spec header  | Purpose                                                            |
-| ----------- | ---------------- | ------------ | ------------------------------------------------------------------ |
-| **Enabler** | `.enabler`       | `## Enables` | Infrastructure that would be removed if all its dependents retired |
-| **Outcome** | `.outcome`       | `## Outcome` | Hypothesis about what change a behavior will produce               |
+| Node type   | Directory suffix | Spec header                                        | Purpose                                                            |
+| ----------- | ---------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
+| **Enabler** | `.enabler`       | `PROVIDES ... SO THAT ... CAN ...`                 | Infrastructure that would be removed if all its dependents retired |
+| **Outcome** | `.outcome`       | `WE BELIEVE THAT ... WILL ... CONTRIBUTING TO ...` | Hypothesis about what change a behavior will produce               |
 
 Nodes are nestable at any depth. The tree is not limited to three levels.
 
@@ -58,7 +58,7 @@ Every node directory contains:
 - `{slug}.md` -- the spec file (no type suffix, no numeric prefix)
 - `tests/` -- co-located test files
 
-Enabler specs start with `## Enables`. Outcome specs start with `## Outcome` followed by `### Assertions` listing test links:
+Enabler specs open with `PROVIDES ... SO THAT ... CAN ...`. Outcome specs open with `WE BELIEVE THAT ... WILL ... CONTRIBUTING TO ...`. Both are followed by `## Assertions` with typed test links:
 
 ```markdown
 ## Outcome

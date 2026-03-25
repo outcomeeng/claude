@@ -56,9 +56,11 @@ Every artifact in the Spec Tree has a specific purpose. Content placed in the wr
 
 **Purpose:** DESCRIBES what infrastructure this node provides to its dependents.
 
+**Opens with:** `PROVIDES ... SO THAT ... CAN ...` — what it offers, who depends on it, what they couldn't do without it.
+
 **Contains:**
 
-- What this enabler provides and why dependents need it
+- PROVIDES/SO THAT/CAN statement
 - Assertions specifying output — what must be true about this infrastructure
 
 **Does NOT contain:** Outcome hypotheses, user behavior claims.

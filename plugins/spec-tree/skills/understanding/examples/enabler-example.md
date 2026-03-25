@@ -1,8 +1,8 @@
 # Tree Parser
 
-## Enables
-
-The tree parser reads the `spx/` directory structure and produces an in-memory tree representation. Every command that operates on the spec tree — status, verify, context injection — depends on this parser to translate the filesystem into a traversable data structure.
+PROVIDES an in-memory tree representation parsed from the `spx/` directory structure
+SO THAT status, verify, and context injection commands
+CAN traverse the spec tree without re-reading the filesystem on every operation
 
 ## Assertions
 

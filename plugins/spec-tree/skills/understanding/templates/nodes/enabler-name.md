@@ -1,8 +1,8 @@
 # {Node Name}
 
-## Enables
-
-{What this enabler provides to its dependents and why they need it. State as permanent product truth.}
+PROVIDES {what this enabler offers — the infrastructure, utility, or foundation}
+SO THAT {which dependents use it — name the sibling nodes or categories of dependents}
+CAN {what those dependents could not do without this enabler}
 
 ## Assertions
 

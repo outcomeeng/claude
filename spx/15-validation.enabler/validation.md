@@ -1,8 +1,10 @@
 # Validation
 
-## Enables
+PROVIDES pre-commit validation that catches invalid plugin artifacts before they enter the repository
+SO THAT all plugin and skill authors
+CAN trust that committed artifacts conform to Claude Code and Agent Skills standards
 
-Pre-commit validation infrastructure that catches invalid plugin artifacts before they enter the repository. Two scripts:
+Two scripts:
 
 1. **SKILL.md frontmatter validation** (`validate-skill-frontmatter.py`) — Ensures skill files conform to the fields the Claude Code CLI accepts.
 2. **Plugin manifest validation** (`validate-plugins.py`) — Discovers and validates all marketplace and plugin manifests via `claude plugin validate`.

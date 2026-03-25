@@ -5,7 +5,7 @@ The Spec Tree contains two node types. Every directory in the tree (other than t
 <enabler>
 
 **Directory suffix:** `.enabler`
-**Spec header:** `## Enables`
+**Spec opening:** `PROVIDES ... SO THAT ... CAN ...`
 **Purpose:** Infrastructure that would be removed if all its dependents were retired.
 
 Enablers exist to serve other nodes. They provide shared infrastructure, utilities, or foundational capabilities that higher-index siblings and their descendants depend on.

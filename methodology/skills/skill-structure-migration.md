@@ -33,12 +33,12 @@ Both systems share core principles. These require no migration:
 
 ### Content changes
 
-| Aspect          | spx-legacy                           | spec-tree                                                                     |
-| --------------- | ------------------------------------ | ----------------------------------------------------------------------------- |
-| Spec header     | `## Purpose` + `## Requirements`     | Enabler: `## Enables` / Outcome: hypothesis + `## Assertions`                 |
-| Outcome format  | `## Outcomes` with numbered sections | `## Assertions` with typed assertion lists                                    |
-| Test Strategy   | Explicit `## Test Strategy` table    | No separate section; assertions carry test links inline                       |
-| Assertion types | Implicit                             | Five explicit types: Scenarios, Mappings, Conformance, Properties, Compliance |
+| Aspect          | spx-legacy                           | spec-tree                                                                                           |
+| --------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Spec header     | `## Purpose` + `## Requirements`     | Enabler: `PROVIDES/SO THAT/CAN` / Outcome: `WE BELIEVE THAT/WILL/CONTRIBUTING TO` + `## Assertions` |
+| Outcome format  | `## Outcomes` with numbered sections | `## Assertions` with typed assertion lists                                                          |
+| Test Strategy   | Explicit `## Test Strategy` table    | No separate section; assertions carry test links inline                                             |
+| Assertion types | Implicit                             | Five explicit types: Scenarios, Mappings, Conformance, Properties, Compliance                       |
 
 ## Migration strategy
 
@@ -65,7 +65,7 @@ Content rewriting requires domain understanding and cannot be fully automated. D
 
 For each node:
 
-1. **Enablers**: Replace `## Purpose` + `## Requirements` with `## Enables` section stating what this enabler provides to its dependents
+1. **Enablers**: Replace `## Purpose` + `## Requirements` with `PROVIDES ... SO THAT ... CAN ...` statement
 
 2. **Outcomes**: Rewrite to hypothesis format:
    - Replace `## Purpose` with hypothesis: `WE BELIEVE THAT {output} WILL {outcome} CONTRIBUTING TO {impact}`
