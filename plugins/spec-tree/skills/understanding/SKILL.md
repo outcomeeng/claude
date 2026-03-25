@@ -54,7 +54,7 @@ Invoke `/understanding` before any spec-tree work. The skill reads 3 core refere
 ```text
 <SPEC_TREE_FOUNDATION>
 Loaded: durable-map, node-types, assertion-types
-Operational references available: decomposition-semantics, ordering-rules, what-goes-where
+Operational references available: decomposition-semantics, ordering-rules, what-goes-where, potential-nodes
 Templates available: product, adr, pdr, enabler, outcome
 Examples available in: examples/
 </SPEC_TREE_FOUNDATION>
