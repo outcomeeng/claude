@@ -65,8 +65,8 @@ A test harness is the infrastructure that lets you run tests against a real depe
 Tests are co-located with specs in `spx/`. Level is indicated by suffix naming:
 
 ```
-spx/{capability}/{feature}/
-├── {feature}.md                      # Feature spec
+spx/{NN}-{slug}.enabler/{NN}-{slug}.outcome/
+├── {slug}.outcome.md                 # Node spec
 └── tests/
     ├── lhci.unit.test.ts            # Level 1
     ├── hugo.integration.test.ts      # Level 2

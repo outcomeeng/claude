@@ -20,16 +20,16 @@ Test files are co-located with their specs:
 
 | Test Level  | Location                           | Filename Suffix         |
 | ----------- | ---------------------------------- | ----------------------- |
-| Unit        | `spx/.../NN-{slug}.story/tests/`   | `*.unit.test.ts`        |
-| Integration | `spx/.../NN-{slug}.feature/tests/` | `*.integration.test.ts` |
-| E2E         | `spx/NN-{slug}.capability/tests/`  | `*.e2e.test.ts`         |
+| Unit        | `spx/.../NN-{slug}.outcome/tests/` | `*.unit.test.ts`        |
+| Integration | `spx/.../NN-{slug}.enabler/tests/` | `*.integration.test.ts` |
+| E2E         | `spx/NN-{slug}.outcome/tests/`     | `*.e2e.test.ts`         |
 
 ### 6.2 Run Tests
 
 Run all tests for the work item:
 
 ```bash
-npx vitest run spx/.../NN-{slug}.story/tests/
+npx vitest run spx/.../NN-{slug}.outcome/tests/
 ```
 
 **If tests fail**: The verdict becomes REJECTED with reason "Tests don't pass."

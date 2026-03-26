@@ -14,10 +14,10 @@ When committing as part of review approval, apply these additional guidelines:
 
 Stage **only** files from the approved work item:
 
-| Category         | Example Paths                             |
-| ---------------- | ----------------------------------------- |
-| Implementation   | `src/{modified files for this story}`     |
-| Co-located tests | `spx/.../NN-{slug}.story/tests/*.test.ts` |
+| Category         | Example Paths                               |
+| ---------------- | ------------------------------------------- |
+| Implementation   | `src/{modified files for this work item}`   |
+| Co-located tests | `spx/.../NN-{slug}.outcome/tests/*.test.ts` |
 
 **Exclude**: Unrelated files, experimental code, files from other work items.
 
@@ -26,12 +26,12 @@ Stage **only** files from the approved work item:
 Include work item reference in footer:
 
 ```text
-feat({scope}): implement {story-slug}
+feat({scope}): implement {node-slug}
 
 - {brief description of what was implemented}
 - Tests passing
 
-Refs: {capability}/{feature}/{story}
+Refs: {node-path}
 ```
 
 ### Return APPROVED

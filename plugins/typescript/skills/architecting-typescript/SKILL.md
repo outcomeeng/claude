@@ -40,39 +40,39 @@ allowed-tools: Read, Write, Glob, Grep
 </testing_levels_summary>
 
 <context_loading>
-**For specs-based work items: Load complete context before creating ADRs.**
+**For spec-tree work items: Load complete context before creating ADRs.**
 
-If you're creating ADRs for a spec-driven work item (story/feature/capability), ensure complete hierarchical context is loaded:
+If you're creating ADRs for a spec-tree work item (enabler/outcome), ensure complete hierarchical context is loaded:
 
-1. **Invoke `specs:understanding-specs`** with the work item identifier
-2. **Verify all parent ADRs/PDRs are loaded** - Must understand and honor all decision records in hierarchy
-3. **Read the feature spec** - Requirements, Test Strategy, and Outcomes sections
+1. **Invoke `spec-tree:contextualizing`** with the node path
+2. **Verify all ancestor ADRs/PDRs are loaded** - Must understand and honor all decision records in hierarchy
+3. **Read the node spec** - Requirements, Test Strategy, and Outcomes sections
 
-**The `specs:understanding-specs` skill provides:**
+**The `spec-tree:contextualizing` skill provides:**
 
-- Complete ADR/PDR hierarchy (product/capability/feature decisions)
-- Feature spec with requirements, test strategy, and outcomes
-- Story/feature/capability spec with Gherkin acceptance criteria
+- Complete ADR/PDR hierarchy (product and ancestor decisions at all levels)
+- Node spec with requirements, test strategy, and outcomes
+- Typed assertions from the target node
 
 **ADR creation requirements:**
 
-- Must not contradict parent ADRs/PDRs (product → capability → feature hierarchy)
-- Must reference relevant parent decisions
+- Must not contradict ancestor ADRs/PDRs (product → ancestor hierarchy)
+- Must reference relevant ancestor decisions
 - Must include testing strategy with level assignments
 - Must document trade-offs and consequences
 
-**If NOT working on specs-based work item**: Proceed directly with ADR creation using provided requirements.
+**If NOT working on spec-tree work item**: Proceed directly with ADR creation using provided requirements.
 </context_loading>
 
 <input_context>
 Before creating ADRs, you must understand:
 
-**1. Feature Specification**
+**1. Node Specification**
 
 - Functional requirements in `## Requirements` section
 - Test strategy in `## Test Strategy` section
-- Outcomes with Gherkin in `## Outcomes` section
-- Architectural constraints from parent ADRs
+- Typed assertions from the node spec
+- Architectural constraints from ancestor ADRs
 
 **2. Project Context**
 
@@ -88,18 +88,18 @@ Read existing ADRs/PDRs to ensure consistency:
 
 - `spx/{NN}-{slug}.adr.md` - Product-level ADRs (interleaved at root)
 - `spx/{NN}-{slug}.pdr.md` - Product-level PDRs (interleaved at root)
-- ADRs/PDRs interleaved within capability/feature containers
+- ADRs/PDRs interleaved within enabler/outcome nodes
 
 </input_context>
 
 <adr_scope>
 You produce ADRs. The scope depends on what you're deciding:
 
-| Decision Scope      | ADR Location                                     | Example                              |
-| ------------------- | ------------------------------------------------ | ------------------------------------ |
-| Product-wide        | `spx/{NN}-{slug}.adr.md`                         | "Use Zod for all data validation"    |
-| Capability-specific | `spx/{NN}-{slug}.capability/{NN}-{slug}.adr.md`  | "CLI command structure"              |
-| Feature-specific    | `spx/.../{NN}-{slug}.feature/{NN}-{slug}.adr.md` | "Use execa for subprocess execution" |
+| Decision Scope | ADR Location                                     | Example                              |
+| -------------- | ------------------------------------------------ | ------------------------------------ |
+| Product-wide   | `spx/{NN}-{slug}.adr.md`                         | "Use Zod for all data validation"    |
+| Node-specific  | `spx/{NN}-{slug}.enabler/{NN}-{slug}.adr.md`     | "CLI command structure"              |
+| Nested node    | `spx/.../{NN}-{slug}.outcome/{NN}-{slug}.adr.md` | "Use execa for subprocess execution" |
 
 **ADR Numbering:**
 
@@ -109,7 +109,7 @@ You produce ADRs. The scope depends on what you're deciding:
 - Append using: `new = floor((last + 99) / 2)`
 - First ADR in scope: use 21
 
-See `specs:managing-specs` skill `<adr_templates>` section for complete BSP numbering rules.
+See `/authoring` skill for complete ordering rules.
 
 **Within-scope dependency order**:
 
@@ -126,14 +126,14 @@ Execute these phases IN ORDER.
 
 **Phase 0: Read Context**
 
-1. Read the feature spec completely (requirements, test strategy, outcomes)
+1. Read the node spec completely (requirements, test strategy, assertions)
 2. Read project context:
    - `spx/CLAUDE.md` - Project structure, navigation, work item management
 3. Invoke `/testing-typescript` to understand testing methodology
 4. Read existing ADRs for consistency:
    - `spx/{NN}-{slug}.adr.md` - Product-level ADRs
-   - ADRs interleaved within capability/feature containers
-5. Read `/managing-specs` skill `<adr_templates>` section for ADR template
+   - ADRs interleaved within enabler/outcome nodes
+5. Read `/authoring` skill for ADR template
 
 **Phase 1: Identify Decisions Needed**
 
@@ -170,8 +170,8 @@ Use the project's template. Each ADR must include:
 **Phase 4: Verify Consistency**
 
 - No ADR should contradict another
-- Capability ADRs must align with project ADRs
-- Feature ADRs must align with capability ADRs
+- Node ADRs must align with ancestor ADRs
+- Nested ADRs must not contradict parent-level ADRs
 
 </adr_creation_protocol>
 
@@ -244,15 +244,15 @@ When you complete ADR creation, provide:
 
 ### ADRs Written
 
-| ADR                                                            | Scope         | Decision Summary                 |
-| -------------------------------------------------------------- | ------------- | -------------------------------- |
-| [Type Safety](spx/21-type-safety.adr.md)                       | Product       | Use strict TS, Zod at boundaries |
-| [CLI Structure](spx/32-cli.capability/21-cli-structure.adr.md) | Capability-32 | Commander.js with subcommands    |
+| ADR                                                         | Scope          | Decision Summary                 |
+| ----------------------------------------------------------- | -------------- | -------------------------------- |
+| [Type Safety](spx/21-type-safety.adr.md)                    | Product        | Use strict TS, Zod at boundaries |
+| [CLI Structure](spx/32-cli.enabler/21-cli-structure.adr.md) | 32-cli enabler | Commander.js with subcommands    |
 
 ### Key Constraints
 
 1. {constraint from [Type Safety](spx/21-type-safety.adr.md)}
-2. {constraint from [CLI Structure](spx/32-cli.capability/21-cli-structure.adr.md)}
+2. {constraint from [CLI Structure](spx/32-cli.enabler/21-cli-structure.adr.md)}
 
 ### Testing Strategy Summary
 

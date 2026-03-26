@@ -230,32 +230,29 @@ it("GIVEN valid args WHEN running THEN returns success", async () => {
 <context_loading>
 **BEFORE ANY IMPLEMENTATION: Load complete specification context.**
 
-**If working on a specs-based work item** (story/feature/capability):
+**If working on a spec-tree work item** (enabler/outcome):
 
-1. **Invoke `specs:understanding-specs` FIRST** with the work item identifier
-2. **If context ingestion fails**: ABORT - do not proceed until all required documents exist
-3. **If context ingestion succeeds**: Proceed with implementation using loaded context
+1. **Invoke `spec-tree:contextualizing` FIRST** with the node path
+2. **If context loading fails**: ABORT - do not proceed until all required documents exist
+3. **If context loading succeeds**: Proceed with implementation using loaded context
 
-**The `specs:understanding-specs` skill ensures:**
+**The `spec-tree:contextualizing` skill provides:**
 
-- All specification documents exist (capability/feature/story specs)
-- All requirements documents exist (PRD at product level)
-- All decision records (ADRs/PDRs) are read and understood
-- Complete hierarchical context is loaded (Product → Capability → Feature → Story)
+- Complete ancestor hierarchy (product → all ancestor nodes → target)
+- All ADRs/PDRs at every level along the path
+- Lower-index siblings (they constrain the target via dependency encoding)
+- Target node spec with typed assertions
 
 **Example invocation:**
 
 ```bash
-# By work item path
-specs:understanding-specs 10-cli.capability/20-commands.feature/30-build.story
-
-# By story name
-specs:understanding-specs 30-build.story
+# By node path
+spec-tree:contextualizing spx/32-cli.enabler/54-commands.outcome
 ```
 
-**If `specs:understanding-specs` returns an error**: The error message will specify which document is missing and how to create it. Create the missing document before proceeding with implementation.
+**If `spec-tree:contextualizing` returns an error**: The error message will specify which document is missing and how to create it. Create the missing document before proceeding with implementation.
 
-**If NOT working on specs-based work item**: Proceed directly to implementation mode with provided spec.
+**If NOT working on spec-tree work item**: Proceed directly to implementation mode with provided spec.
 </context_loading>
 
 <two_modes>
@@ -263,7 +260,7 @@ You operate in one of two modes depending on your input:
 
 | Input                            | Mode               | Workflow                      |
 | -------------------------------- | ------------------ | ----------------------------- |
-| Spec (ADR/PDR, feature spec)     | **Implementation** | `workflows/implementation.md` |
+| Spec (ADR/PDR, node spec)        | **Implementation** | `workflows/implementation.md` |
 | Rejection feedback from reviewer | **Remediation**    | `workflows/remediation.md`    |
 
 Determine your mode from the input, then follow the appropriate workflow.

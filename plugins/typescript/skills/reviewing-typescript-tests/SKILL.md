@@ -188,15 +188,15 @@ If all gates passed (foundational 1–4 + TypeScript 5–6), issue APPROVED. Oth
 <concrete_examples>
 **Example 1: APPROVED verdict**
 
-Reviewing `spx/01-config/03-parser.story/`
+Reviewing `spx/21-config.enabler/43-parser.outcome/`
 
 Phase 1 checks (from /reviewing-tests):
 
 ```bash
-$ grep -A 5 "^### Scenarios" parser.story.md
-### Scenarios
+$ grep -A 5 "^### Assertions" parser.outcome.md
+### Assertions
 
-- Given a config file with nested sections, when parsed, then all section values are accessible by dotted path ([test](tests/config-parser.unit.test.ts))
+- MUST: Given a config file with nested sections, when parsed, then all section values are accessible by dotted path ([test](tests/config-parser.unit.test.ts))
 
 $ ls -la tests/config-parser.unit.test.ts
 -rw-r--r-- 1 user group 3421 Jan 15 10:23 tests/config-parser.unit.test.ts
@@ -237,7 +237,7 @@ $ grep -rn "as any\|@ts-ignore" tests/
 
 **Example 2: REJECT verdict**
 
-Reviewing `spx/02-api/05-auth.feature/`
+Reviewing `spx/32-api.enabler/54-auth.outcome/`
 
 Phase 2 finds mocking:
 

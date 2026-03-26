@@ -77,8 +77,8 @@ beforeAll(() => {
 Tests are co-located with specs in `spx/`. Level is indicated by suffix naming:
 
 ```
-spx/{capability}/{feature}/
-├── {feature}.md                 # Feature spec
+spx/{NN}-{slug}.enabler/{NN}-{slug}.outcome/
+├── {slug}.outcome.md            # Node spec
 └── tests/
     ├── core.unit.test.ts        # Level 1 (Vitest)
     ├── core.integration.test.ts # Level 2 (Vitest)

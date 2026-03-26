@@ -11,23 +11,23 @@ Review ADRs against testing principles, atemporal voice rules, and applicable PD
 </objective>
 
 <context_loading>
-**For specs-based work items: Load complete ADR/PDR hierarchy before reviewing.**
+**For spec-tree work items: Load complete ADR/PDR hierarchy before reviewing.**
 
-If you're reviewing ADRs for a spec-driven work item (story/feature/capability), ensure complete architectural context is loaded:
+If you're reviewing ADRs for a spec-tree work item (enabler/outcome), ensure complete architectural context is loaded:
 
-1. **Invoke `specs:understanding-specs`** with the work item identifier
-2. **Verify all parent ADRs/PDRs are loaded** - Must check for consistency with decision hierarchy
-3. **Verify ADR references parent decisions** - Feature/capability ADRs should reference relevant product ADRs/PDRs
+1. **Invoke `spec-tree:contextualizing`** with the node path
+2. **Verify all ancestor ADRs/PDRs are loaded** - Must check for consistency with decision hierarchy
+3. **Verify ADR references ancestor decisions** - Node ADRs should reference relevant ancestor ADRs/PDRs
 
-**The `specs:understanding-specs` skill provides:**
+**The `spec-tree:contextualizing` skill provides:**
 
-- Complete ADR/PDR hierarchy (product/capability/feature decisions)
+- Complete ADR/PDR hierarchy (product and ancestor decisions at all levels)
 - TRD with technical requirements
-- Story/feature/capability spec with acceptance criteria
+- Target node spec with typed assertions
 
 **Review focus:**
 
-- Does ADR contradict any parent ADR/PDR decisions?
+- Does ADR contradict any ancestor ADR/PDR decisions?
 - Does ADR include testing strategy with level assignments?
 - Does ADR honor no-mocking principle?
 - Does ADR document trade-offs and consequences?
