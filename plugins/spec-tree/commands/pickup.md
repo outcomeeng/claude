@@ -20,7 +20,9 @@ Load and claim a handoff session to continue work from a previous context. The p
 1. **Skills first** — know what to invoke before touching any code
 2. **Nodes second** — understand what was worked on and its current state
 3. **Escape hatches** — check for PLAN.md / DEFICIENCIES.md in node directories
-4. **Action last** — resume work with full context
+4. **`/contextualizing` BEFORE any work** — this is non-negotiable, not one option among many
+
+**⚠️ NEVER propose fixing bugs, writing code, or any implementation work before `/contextualizing` has been invoked on the target node.**
 
 </objective>
 
@@ -172,24 +174,19 @@ Show the `<coordination>` section — cross-cutting context that does not belong
 - Environment or setup requirements
 - Open questions or pending decisions
 
-## Phase 6: Offer next steps
+## Phase 6: Invoke /contextualizing (MANDATORY)
 
-Use `AskUserQuestion`:
+**Do NOT offer the user a choice here. Do NOT propose fixing bugs, writing code, or any other work.**
 
-```json
-{
-  "questions": [{
-    "question": "How would you like to proceed?",
-    "header": "Next step",
-    "multiSelect": false,
-    "options": [
-      { "label": "Load context and continue", "description": "Invoke /contextualizing on the target node, then resume the TDD flow" },
-      { "label": "Review escape hatches first", "description": "Read PLAN.md / DEFICIENCIES.md in detail before deciding" },
-      { "label": "Start fresh", "description": "Use the handoff for context but take a different approach" }
-    ]
-  }]
-}
+The ONLY valid next action after presenting the session is to invoke `/contextualizing` on the target node. This is a BLOCKING REQUIREMENT — the spec-tree methodology forbids all work without loaded context.
+
+If the session references multiple nodes, ask which node to start with. Otherwise, invoke immediately:
+
+```text
+Skill tool → { "skill": "spec-tree:contextualizing", "args": "spx/{node-path}" }
 ```
+
+After context is loaded, THEN ask how to proceed — the loaded context will inform what options make sense.
 
 </workflow>
 
@@ -268,7 +265,7 @@ A successful pickup:
 - [ ] Each anchored node's status presented
 - [ ] PLAN.md / DEFICIENCIES.md checked and read if present
 - [ ] Persisted artifacts acknowledged
-- [ ] Clear next action identified
+- [ ] `/contextualizing` invoked on target node — NOT offered as an option, just done
 - [ ] Agent knows which skills to invoke and which to avoid
 
 </success_criteria>
