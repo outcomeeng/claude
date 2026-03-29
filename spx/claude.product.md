@@ -23,7 +23,7 @@ CONTRIBUTING TO faster iteration cycles and higher confidence in AI-assisted dev
 ### What's included
 
 - Spec Tree methodology (understanding, contextualizing, authoring, decomposing, refactoring, aligning)
-- Testing and review skills (testing, reviewing-tests) as supersets of standalone methodology
+- Testing and audit skills (testing, auditing-tests) as supersets of standalone methodology
 - TDD flow orchestration (coding) with language-specific delegation
 - Commit workflow (committing-changes) with Conventional Commits
 - Language-specific plugins (Python, TypeScript) for architecture, testing, coding, review

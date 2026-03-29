@@ -88,27 +88,27 @@ The core of [Outcome Engineering](https://outcome.engineering). Three phases: sp
 
 </details>
 
-| Type    | Name                  | Phase | Purpose                                         |
-| ------- | --------------------- | ----- | ----------------------------------------------- |
-| Skill   | `/understanding`      | 1     | Foundation skill — loaded before any other      |
-| Skill   | `/contextualizing`    | 1     | Deterministic context loading from tree         |
-| Skill   | `/bootstrapping`      | 1     | Interview user, scaffold new spec tree          |
-| Skill   | `/authoring`          | 1     | Add, define, create specs and nodes             |
-| Skill   | `/decomposing`        | 1     | Break down, split, scope work                   |
-| Skill   | `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers   |
-| Skill   | `/aligning`           | 1     | Review, check consistency, audit, find gaps     |
-| Skill   | `/testing`            | 2     | Write tests driven by spec assertions           |
-| Skill   | `/reviewing-tests`    | 2     | Adversarial review of test evidence             |
-| Skill   | `/coding`             | 2     | TDD flow: architect, test, code + review gates  |
-| Skill   | `/committing-changes` | 3     | Conventional Commits with selective staging     |
-| Command | `/bootstrap`          |       | Set up a new spec tree                          |
-| Command | `/author`             |       | Author a spec tree artifact (auto-detects type) |
-| Command | `/commit`             |       | Git commit with Conventional Commits            |
-| Command | `/realize`            |       | Run TDD flow on a subtree or from `spx/EXCLUDE` |
-| Command | `/rtfm`               |       | Stop ad hoc work, follow methodology            |
-| Command | `/clarify`            |       | Clarify ambiguous requirements                  |
-| Command | `/handoff`            |       | Create timestamped context handoff              |
-| Command | `/pickup`             |       | Load and continue from previous handoff         |
+| Type    | Name                  | Phase | Purpose                                                            |
+| ------- | --------------------- | ----- | ------------------------------------------------------------------ |
+| Skill   | `/understanding`      | 1     | Foundation skill — loaded before any other                         |
+| Skill   | `/contextualizing`    | 1     | Deterministic context loading from tree                            |
+| Skill   | `/bootstrapping`      | 1     | Interview user, scaffold new spec tree                             |
+| Skill   | `/authoring`          | 1     | Add, define, create specs and nodes                                |
+| Skill   | `/decomposing`        | 1     | Break down, split, scope work                                      |
+| Skill   | `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers                      |
+| Skill   | `/aligning`           | 1     | Review, check consistency, audit, find gaps                        |
+| Skill   | `/testing`            | 2     | Write tests driven by spec assertions                              |
+| Skill   | `/auditing-tests`     | 2     | Audit test evidence: coupling, falsifiability, alignment, coverage |
+| Skill   | `/coding`             | 2     | TDD flow: architect, test, code + review gates                     |
+| Skill   | `/committing-changes` | 3     | Conventional Commits with selective staging                        |
+| Command | `/bootstrap`          |       | Set up a new spec tree                                             |
+| Command | `/author`             |       | Author a spec tree artifact (auto-detects type)                    |
+| Command | `/commit`             |       | Git commit with Conventional Commits                               |
+| Command | `/realize`            |       | Run TDD flow on a subtree or from `spx/EXCLUDE`                    |
+| Command | `/rtfm`               |       | Stop ad hoc work, follow methodology                               |
+| Command | `/clarify`            |       | Clarify ambiguous requirements                                     |
+| Command | `/handoff`            |       | Create timestamped context handoff                                 |
+| Command | `/pickup`             |       | Load and continue from previous handoff                            |
 
 ### typescript
 

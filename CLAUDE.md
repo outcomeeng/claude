@@ -241,7 +241,7 @@ Meta-skills for Claude Code plugin development: creating and auditing skills, co
 
 ## Legacy Plugin
 
-Standalone commit workflow and foundational testing for projects without the spx CLI. Spec-tree users should use `spec-tree:testing` and `spec-tree:reviewing-tests` instead, which are supersets.
+Standalone commit workflow and foundational testing for projects without the spx CLI. Spec-tree users should use `spec-tree:testing` and `spec-tree:auditing-tests` instead, which are supersets.
 
 ### Skills
 
@@ -331,19 +331,19 @@ Spec-driven development with the Spec Tree framework. Three phases: spec-tree ma
 
 ### Skills
 
-| Skill                 | Phase | Purpose                                                           |
-| --------------------- | ----- | ----------------------------------------------------------------- |
-| `/understanding`      | 1     | Foundation skill — loaded before any other                        |
-| `/contextualizing`    | 1     | Show status, progress, what exists                                |
-| `/bootstrapping`      | 1     | Interview user, scaffold new spec tree                            |
-| `/authoring`          | 1     | Add, define, create specs, decisions, and nodes                   |
-| `/decomposing`        | 1     | Break down, split, scope work                                     |
-| `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers                     |
-| `/aligning`           | 1     | Review, check consistency, audit, find gaps                       |
-| `/testing`            | 2     | Write tests driven by spec assertions (superset of legacy plugin) |
-| `/reviewing-tests`    | 2     | Adversarial review of test evidence (superset of legacy plugin)   |
-| `/coding`             | 2     | TDD flow: architect, test, code + review gates                    |
-| `/committing-changes` | 3     | Conventional Commits with selective staging                       |
+| Skill                 | Phase | Purpose                                                                    |
+| --------------------- | ----- | -------------------------------------------------------------------------- |
+| `/understanding`      | 1     | Foundation skill — loaded before any other                                 |
+| `/contextualizing`    | 1     | Show status, progress, what exists                                         |
+| `/bootstrapping`      | 1     | Interview user, scaffold new spec tree                                     |
+| `/authoring`          | 1     | Add, define, create specs, decisions, and nodes                            |
+| `/decomposing`        | 1     | Break down, split, scope work                                              |
+| `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers                              |
+| `/aligning`           | 1     | Review, check consistency, audit, find gaps                                |
+| `/testing`            | 2     | Write tests driven by spec assertions (superset of legacy plugin)          |
+| `/auditing-tests`     | 2     | Audit test evidence quality: coupling, falsifiability, alignment, coverage |
+| `/coding`             | 2     | TDD flow: architect, test, code + review gates                             |
+| `/committing-changes` | 3     | Conventional Commits with selective staging                                |
 
 ### Commands
 
@@ -817,7 +817,7 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │   └── skills/
 │   │       ├── committing-changes/
 │   │       ├── testing/
-│   │       └── reviewing-tests/
+│   │       └── auditing-tests/
 │   ├── frontend/
 │   │   └── skills/
 │   │       └── designing-frontend/

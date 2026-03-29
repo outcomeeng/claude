@@ -25,14 +25,14 @@ repos:
   typescript:
     description: "TypeScript engineering skills"
     prerequisites:
-      - "outcomeeng/spec-tree (for /testing and /reviewing-tests)"
+      - "outcomeeng/spec-tree (for /testing and /auditing-tests)"
     plugins:
       - typescript
 
   python:
     description: "Python engineering skills"
     prerequisites:
-      - "outcomeeng/spec-tree (for /testing and /reviewing-tests)"
+      - "outcomeeng/spec-tree (for /testing and /auditing-tests)"
     plugins:
       - python
 

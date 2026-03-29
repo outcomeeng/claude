@@ -901,11 +901,11 @@ def test_verbose_mode_produces_detailed_output() -> None:
 
 ## Potential Node Exclusion
 
-When tests are written before the implementation exists (potential nodes), they import non-existent modules and break type checkers and the test runner. The spec-tree convention uses `spx/POTENTIAL` as the source of truth. A sync script translates this into Python tool configuration.
+When tests are written before the implementation exists (potential nodes), they import non-existent modules and break type checkers and the test runner. The spec-tree convention uses `spx/EXCLUDE` as the source of truth. A sync script translates this into Python tool configuration.
 
 ### Sync Script Pattern
 
-Use `tomlkit` for safe TOML round-tripping (preserves comments, formatting, whitespace). The sync script reads `spx/POTENTIAL` and updates `pyproject.toml`:
+Use `tomlkit` for safe TOML round-tripping (preserves comments, formatting, whitespace). The sync script reads `spx/EXCLUDE` and updates `pyproject.toml`:
 
 | Tool        | Config key                          | Entry format           |
 | ----------- | ----------------------------------- | ---------------------- |
@@ -914,7 +914,7 @@ Use `tomlkit` for safe TOML round-tripping (preserves comments, formatting, whit
 | **pyright** | `[tool.pyright] exclude`            | `spx/{node}/`          |
 | **ruff**    | NOT excluded                        | Style always checked   |
 
-The script detects previously-synced entries by value pattern (paths matching `spx/*.outcome/` or `spx/*.enabler/`) and replaces them with the current `spx/POTENTIAL` contents. No marker comments needed — the values are self-identifying.
+The script detects previously-synced entries by value pattern (paths matching `spx/*.outcome/` or `spx/*.enabler/`) and replaces them with the current `spx/EXCLUDE` contents. No marker comments needed — the values are self-identifying.
 
 ### Ruff Always Checks
 
@@ -927,7 +927,7 @@ sync-potential:
     uv run python scripts/sync_potential.py
 ```
 
-Run after editing `spx/POTENTIAL`. The script is idempotent.
+Run after editing `spx/EXCLUDE`. The script is idempotent.
 
 </potential_node_exclusion>
 

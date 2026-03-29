@@ -6,18 +6,18 @@ description: >-
 ---
 
 <objective>
-TypeScript-specific test review. Extends `/reviewing-tests` with TypeScript testing patterns, property-based testing requirements, and TypeScript code quality checks.
+TypeScript-specific test review. Extends `/auditing-tests` with TypeScript testing patterns, property-based testing requirements, and TypeScript code quality checks.
 
 </objective>
 
 <quick_start>
 **PREREQUISITE**: Read these skills first — they are the law:
 
-- `/reviewing-tests` — Foundational review protocol (Phases 1–4: spec structure, evidentiary integrity, lower-level assumptions, ADR/PDR compliance)
+- `/auditing-tests` — Foundational review protocol (Phases 1–4: spec structure, evidentiary integrity, lower-level assumptions, ADR/PDR compliance)
 - `/testing` — Methodology (5 stages, 5 factors, 7 exceptions)
 - `/standardizing-typescript` — TypeScript code standards
 
-Execute the 4 foundational phases from `/reviewing-tests` first, then continue with the TypeScript-specific phases below.
+Execute the 4 foundational phases from `/auditing-tests` first, then continue with the TypeScript-specific phases below.
 
 **TypeScript-specific grep patterns** for foundational Phase 2 (evidentiary integrity):
 
@@ -39,13 +39,13 @@ grep -rn "vi.mock\|vi.spyOn\|jest.mock\|jest.spyOn\|sinon\.\|stub(" {test_dir}
 
 When reporting findings, cite source skills:
 
-- "Per /reviewing-tests Phase 1.1, assertion type must match test strategy"
+- "Per /auditing-tests Phase 1.1, assertion type must match test strategy"
 - "Per /standardizing-typescript, all functions must have explicit return types"
 
 </quick_start>
 
 <typescript_phases>
-Execute these AFTER completing the 4 foundational phases from `/reviewing-tests`.
+Execute these AFTER completing the 4 foundational phases from `/auditing-tests`.
 
 <phase name="property_based_testing">
 Property-based testing is **MANDATORY** for code types that have algebraic properties:
@@ -190,7 +190,7 @@ If all gates passed (foundational 1–4 + TypeScript 5–6), issue APPROVED. Oth
 
 Reviewing `spx/21-config.enabler/43-parser.outcome/`
 
-Phase 1 checks (from /reviewing-tests):
+Phase 1 checks (from /auditing-tests):
 
 ```bash
 $ grep -A 5 "^### Assertions" parser.outcome.md
@@ -203,7 +203,7 @@ $ ls -la tests/config-parser.unit.test.ts
 ✓ File exists, Level 1 matches .unit.test.ts suffix
 ```
 
-Phase 2 checks (from /reviewing-tests, using TypeScript grep patterns):
+Phase 2 checks (from /auditing-tests, using TypeScript grep patterns):
 
 ```bash
 $ grep -rn "it.skip\|describe.skip\|test.skip" tests/
@@ -259,20 +259,20 @@ Database module is entirely replaced with a fake. Tests verify behavior against 
 </concrete_examples>
 
 <rejection_triggers>
-Quick reference — includes both foundational triggers (from `/reviewing-tests`) and TypeScript-specific triggers:
+Quick reference — includes both foundational triggers (from `/auditing-tests`) and TypeScript-specific triggers:
 
 | Category            | Trigger                                                                   | Verdict | Source             |
 | ------------------- | ------------------------------------------------------------------------- | ------- | ------------------ |
-| **Spec Structure**  | Code examples in spec                                                     | REJECT  | /reviewing-tests   |
-| **Spec Structure**  | Assertion type doesn't match test strategy (Property without `fc.assert`) | REJECT  | /reviewing-tests   |
-| **Spec Structure**  | Missing or broken test file links (inline or table)                       | REJECT  | /reviewing-tests   |
-| **Spec Structure**  | Language about "pending" specs                                            | REJECT  | /reviewing-tests   |
-| **Spec Structure**  | Temporal language ("currently", "the existing", file references)          | REJECT  | /reviewing-tests   |
-| **Level**           | Assertion tested at wrong level                                           | REJECT  | /reviewing-tests   |
-| **Dependencies**    | `it.skip` / `describe.skip` on required dependency                        | REJECT  | /reviewing-tests   |
-| **Dependencies**    | Harness referenced but missing                                            | REJECT  | /reviewing-tests   |
-| **Decision Record** | Test violates ADR/PDR constraint                                          | REJECT  | /reviewing-tests   |
-| **Evidentiary**     | Test can pass with broken impl                                            | REJECT  | /reviewing-tests   |
+| **Spec Structure**  | Code examples in spec                                                     | REJECT  | /auditing-tests    |
+| **Spec Structure**  | Assertion type doesn't match test strategy (Property without `fc.assert`) | REJECT  | /auditing-tests    |
+| **Spec Structure**  | Missing or broken test file links (inline or table)                       | REJECT  | /auditing-tests    |
+| **Spec Structure**  | Language about "pending" specs                                            | REJECT  | /auditing-tests    |
+| **Spec Structure**  | Temporal language ("currently", "the existing", file references)          | REJECT  | /auditing-tests    |
+| **Level**           | Assertion tested at wrong level                                           | REJECT  | /auditing-tests    |
+| **Dependencies**    | `it.skip` / `describe.skip` on required dependency                        | REJECT  | /auditing-tests    |
+| **Dependencies**    | Harness referenced but missing                                            | REJECT  | /auditing-tests    |
+| **Decision Record** | Test violates ADR/PDR constraint                                          | REJECT  | /auditing-tests    |
+| **Evidentiary**     | Test can pass with broken impl                                            | REJECT  | /auditing-tests    |
 | **Property-Based**  | Parser without `fc.assert` roundtrip test                                 | REJECT  | TypeScript Phase 5 |
 | **Property-Based**  | Serializer without `fc.assert` roundtrip test                             | REJECT  | TypeScript Phase 5 |
 | **Property-Based**  | Math operation without property tests                                     | REJECT  | TypeScript Phase 5 |
@@ -285,11 +285,11 @@ Quick reference — includes both foundational triggers (from `/reviewing-tests`
 Task is complete when:
 
 - [ ] Verdict is APPROVED or REJECT (no middle ground)
-- [ ] All 4 foundational phases from `/reviewing-tests` executed
+- [ ] All 4 foundational phases from `/auditing-tests` executed
 - [ ] Both TypeScript-specific phases (5–6) executed
 - [ ] Property-based test coverage verified for parsers/serializers/math/algorithms
 - [ ] Each rejection reason has file:line location
 - [ ] Evidentiary gap explained (how tests could pass while assertion fails)
-- [ ] Output follows format from `/reviewing-tests` (APPROVED or REJECT template)
+- [ ] Output follows format from `/auditing-tests` (APPROVED or REJECT template)
 
 </success_criteria>

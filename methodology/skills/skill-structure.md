@@ -18,7 +18,7 @@ Within these phases:
 - `understanding` is the single shared library: methodology, structure, templates.
 - `contextualizing` handles deterministic context injection from tree structure.
 - Spec-tree action skills check for foundation markers before working; invoke foundations if absent.
-- `testing` and `reviewing-tests` are supersets of their `test` plugin counterparts, adding tree-specific concerns. No cross-plugin dependency at runtime.
+- `testing` and `auditing-tests` are supersets of their `test` plugin counterparts, adding tree-specific concerns. No cross-plugin dependency at runtime.
 - `coding` orchestrates the TDD flow: architecture, tests, code — with review gates at each phase.
 - `committing-changes` enforces Conventional Commits with selective staging and atomic commits.
 - Make conversational flow explicit and consistent across action skills.
@@ -109,7 +109,7 @@ A node's state is derived from what exists and whether tests pass:
 | State         | Condition                                  | What it means                        |
 | ------------- | ------------------------------------------ | ------------------------------------ |
 | **Spec**      | Spec exists, no tests                      | Intent defined, no evidence yet      |
-| **Potential** | Spec + tests exist, implementation doesn't | Tests excluded via `spx/POTENTIAL`   |
+| **Potential** | Spec + tests exist, implementation doesn't | Tests excluded via `spx/EXCLUDE`     |
 | **Failing**   | Spec + tests + implementation, tests fail  | Reality hasn't caught up to the spec |
 | **Realized**  | Spec + tests + implementation, tests pass  | Evidence confirms the spec           |
 
@@ -218,15 +218,15 @@ Action skills do the work. Before starting, they check conversation history for 
 
 Skills for using the spec tree to build software. Each builds on a standalone `test` plugin counterpart, adding tree-specific concerns.
 
-| Skill             | Use case | Scope                                                                | Builds on              | Status      |
-| ----------------- | -------- | -------------------------------------------------------------------- | ---------------------- | ----------- |
-| `testing`         | 7        | Write tests driven by spec assertions, evidence gap analysis         | `test/testing`         | Implemented |
-| `reviewing-tests` | 8        | Adversarial review of test evidence against spec assertions          | `test/reviewing-tests` | Implemented |
-| `coding`          | 9        | TDD flow: architecture → test → code with review gates at each phase | —                      | Implemented |
+| Skill            | Use case | Scope                                                                | Builds on             | Status      |
+| ---------------- | -------- | -------------------------------------------------------------------- | --------------------- | ----------- |
+| `testing`        | 7        | Write tests driven by spec assertions, evidence gap analysis         | `test/testing`        | Implemented |
+| `auditing-tests` | 8        | Adversarial review of test evidence against spec assertions          | `test/auditing-tests` | Implemented |
+| `coding`         | 9        | TDD flow: architecture → test → code with review gates at each phase | —                     | Implemented |
 
 `spec-tree:testing` is a **superset** of `test/testing`. It incorporates the full testing methodology (5 stages, 5 factors, 7 exceptions) and adds spec-tree-specific concerns: assertion extraction from spec nodes, evidence gap analysis across subtrees, test scaffold generation driven by assertion type, and deterministic context loading from the tree. A spec-tree user invokes `spec-tree:testing`; a non-spec-tree user invokes `test/testing`. No cross-plugin dependency at runtime.
 
-`spec-tree:reviewing-tests` is a **superset** of `test/reviewing-tests`. It incorporates the full adversarial review protocol (4 phases, binary verdict) and adds tree-level coverage analysis, cross-cutting assertion review, and decision record compliance from the full ancestor chain.
+`spec-tree:auditing-tests` is a **superset** of `test/auditing-tests`. It incorporates the full adversarial review protocol (4 phases, binary verdict) and adds tree-level coverage analysis, cross-cutting assertion review, and decision record compliance from the full ancestor chain.
 
 `spec-tree:coding` orchestrates the TDD flow. Phases 1–2 load methodology and context via Phase 1 foundation skills. Phases 3–8 delegate to language-specific plugins (Python or TypeScript) for architecture, testing, and implementation — each with a review gate that loops until approved.
 
@@ -277,7 +277,7 @@ Commands provide dynamic context injection and invoke the corresponding skill.
   - Analyzes evidence gaps across subtrees — which assertions lack tests, which links are broken
   - Generates test scaffolds from assertion types (Scenario → example-based, Property → property-based, etc.)
   - Loads deterministic context (ancestor ADRs/PDRs, lower-index siblings) before writing tests
-- **`reviewing-tests`** owns spec-tree test review (superset of `test/reviewing-tests`):
+- **`auditing-tests`** owns spec-tree test review (superset of `test/auditing-tests`):
   - Incorporates full adversarial review protocol (4 phases, binary verdict)
   - Tree-level coverage: are all assertions across a subtree covered? Orphaned test files?
   - Cross-cutting assertion review: evidence at the right place for ancestor-level assertions
@@ -297,7 +297,7 @@ Commands provide dynamic context injection and invoke the corresponding skill.
 
 ## Marker-based state detection
 
-Phase 1 foundation skills emit XML markers into the conversation when loaded. All skills that depend on spec-tree context — Phase 1 action skills and Phase 2 skills (`testing`, `reviewing-tests`, `coding`) — check for these markers before starting work. Phase 3 (`committing-changes`) operates independently and does not check markers. This follows the same pattern as `/pickup` emitting `<PICKUP_ID>` for `/handoff` to find.
+Phase 1 foundation skills emit XML markers into the conversation when loaded. All skills that depend on spec-tree context — Phase 1 action skills and Phase 2 skills (`testing`, `auditing-tests`, `coding`) — check for these markers before starting work. Phase 3 (`committing-changes`) operates independently and does not check markers. This follows the same pattern as `/pickup` emitting `<PICKUP_ID>` for `/handoff` to find.
 
 | Marker                                   | Emitted by        | Checked by                                | Meaning                              |
 | ---------------------------------------- | ----------------- | ----------------------------------------- | ------------------------------------ |
@@ -427,12 +427,12 @@ Superset of `test/testing`. Incorporates the full methodology, adds tree-specifi
 5. For assertions lacking tests, generate scaffolds using assertion type to select test pattern. Delegate methodology decisions (level, doubles) to the 5-stage router. Delegate language patterns to language-specific skills.
 6. Report evidence summary: which assertions have tests, which don't, which are stale.
 
-#### `reviewing-tests`
+#### `auditing-tests`
 
-Superset of `test/reviewing-tests`. Incorporates the full adversarial review protocol, adds tree-specific concerns.
+Superset of `test/auditing-tests`. Incorporates the full adversarial review protocol, adds tree-specific concerns.
 
 1. Load methodology and tree context via foundation skills.
-2. Execute the 4 foundational review phases from `test/reviewing-tests` (spec structure, evidentiary integrity, lower-level assumptions, ADR/PDR compliance).
+2. Execute the 4 foundational review phases from `test/auditing-tests` (spec structure, evidentiary integrity, lower-level assumptions, ADR/PDR compliance).
 3. Tree-level coverage: walk subtree, verify all assertions across all nodes have test evidence.
 4. Cross-cutting assertion review: for assertions at ancestor nodes, verify evidence is provided at the appropriate place.
 5. Orphan detection: identify test files not linked from any assertion.
