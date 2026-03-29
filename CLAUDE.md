@@ -39,6 +39,7 @@ The Outcome Engineering methodology has evolved through three generations. Only 
 - ✅ **Always use `just run test`** - Never bare pytest (just run loads .env automatically)
 - ✅ **When uncertain, ASK STRUCTURED QUESTIONS. Never guess implementation patterns, test methodology or requirements.**
 - ✅ **Use `AskUserQuestion` for structured questions with predefined options.** Do NOT use it for open-ended questions where the user needs to provide free-form context — just ask in plain text instead.
+- ✅ **When you are wrong, KEEP ASKING STRUCTURED QUESTIONS. Never assume that you are bothering the user. You are doing the right thing.**
 
 ## Markdown Formatting Rules
 
