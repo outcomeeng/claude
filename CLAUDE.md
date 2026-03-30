@@ -261,13 +261,14 @@ Standalone commit workflow and foundational testing for projects without the spx
 
 ## HDL Plugin
 
-HDL engineering skills for VHDL code review.
+HDL engineering skills for VHDL and SystemVerilog code review.
 
 ### Skills
 
-| Skill             | Purpose                                                   |
-| ----------------- | --------------------------------------------------------- |
-| `/reviewing-vhdl` | Idiomatic VHDL-2008 review with synthesizability analysis |
+| Skill                      | Purpose                                                              |
+| -------------------------- | -------------------------------------------------------------------- |
+| `/reviewing-vhdl`          | Idiomatic VHDL-2008 review with synthesizability analysis            |
+| `/reviewing-systemverilog` | Idiomatic SystemVerilog IEEE 1800-2017 review for Vivado and Quartus |
 
 ## Frontend Plugin
 
@@ -833,7 +834,8 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │       └── designing-frontend/
 │   ├── hdl/                       # HDL engineering
 │   │   └── skills/
-│   │       └── reviewing-vhdl/
+│   │       ├── reviewing-vhdl/
+│   │       └── reviewing-systemverilog/
 │   ├── prose/
 │   │   └── skills/
 │   │       ├── standardizing-prose/

@@ -170,11 +170,12 @@ Frontend design and styling. No spx CLI required.
 
 ### hdl
 
-HDL engineering skills for VHDL code review. No spx CLI required.
+HDL engineering skills for VHDL and SystemVerilog code review. No spx CLI required.
 
-| Type  | Name              | Purpose                                                   |
-| ----- | ----------------- | --------------------------------------------------------- |
-| Skill | `/reviewing-vhdl` | Idiomatic VHDL-2008 review with synthesizability analysis |
+| Type  | Name                       | Purpose                                                              |
+| ----- | -------------------------- | -------------------------------------------------------------------- |
+| Skill | `/reviewing-vhdl`          | Idiomatic VHDL-2008 review with synthesizability analysis            |
+| Skill | `/reviewing-systemverilog` | Idiomatic SystemVerilog IEEE 1800-2017 review for Vivado and Quartus |
 
 ### legacy
 
