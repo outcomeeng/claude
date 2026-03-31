@@ -897,11 +897,11 @@ def test_verbose_mode_produces_detailed_output() -> None:
 
 </rejection_criteria>
 
-<potential_node_exclusion>
+<specified_node_exclusion>
 
-## Potential Node Exclusion
+## Specified Node Exclusion
 
-When tests are written before the implementation exists (potential nodes), they import non-existent modules and break type checkers and the test runner. The spec-tree convention uses `spx/EXCLUDE` as the source of truth. A sync script translates this into Python tool configuration.
+When tests are written before the implementation exists (specified nodes), they import non-existent modules and break type checkers and the test runner. The spec-tree convention uses `spx/EXCLUDE` as the source of truth. A sync script translates this into Python tool configuration.
 
 ### Sync Script Pattern
 
@@ -918,18 +918,18 @@ The script detects previously-synced entries by value pattern (paths matching `s
 
 ### Ruff Always Checks
 
-Do NOT exclude potential nodes from ruff. Test files are valid Python with correct style. Only type checkers (which resolve imports) and the test runner (which executes imports) need exclusion.
+Do NOT exclude specified nodes from ruff. Test files are valid Python with correct style. Only type checkers (which resolve imports) and the test runner (which executes imports) need exclusion.
 
 ### Justfile Recipe
 
 ```makefile
-sync-potential:
-    uv run python scripts/sync_potential.py
+sync-exclude:
+    uv run python scripts/sync_exclude.py
 ```
 
 Run after editing `spx/EXCLUDE`. The script is idempotent.
 
-</potential_node_exclusion>
+</specified_node_exclusion>
 
 <success_criteria>
 Code follows these standards when:
