@@ -653,6 +653,20 @@ Read: templates/example.md
 Read: ${SKILL_DIR}/templates/example.md
 ```
 
+### Nested Code Fences in Skills (MANDATORY)
+
+**Never nest multiple 3-backtick code blocks inside a single 4-backtick fence in SKILL.md files.** The `markup_fmt` formatter (dprint) prematurely closes the outer fence after the first inner fence, breaking all subsequent content.
+
+**Workaround:** Move examples that need nested code fences into `references/` files. Reference them from SKILL.md:
+
+```markdown
+<example_review>
+Read `${SKILL_DIR}/references/example-review.md` for a complete example.
+</example_review>
+```
+
+A single inner code block inside a 4-backtick fence is fine (e.g., `<output_format>` with one template). The problem occurs with multiple inner blocks across many lines.
+
 ### XML Tag Formatting (MANDATORY)
 
 **Always add a blank line before closing pseudo-XML tags that follow unordered lists.**
