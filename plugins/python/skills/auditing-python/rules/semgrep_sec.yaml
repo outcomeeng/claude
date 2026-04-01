@@ -1,5 +1,5 @@
 # Semgrep Security Rules for High-Assurance Python
-# Used by python-reviewer skill for security pattern detection
+# Used by auditing-python skill for security pattern detection
 
 rules:
   # ============================================
@@ -30,9 +30,7 @@ rules:
   # ============================================
 
   - id: subprocess-shell-true
-    patterns:
-      - pattern: subprocess.$FUNC(..., shell=True, ...)
-      - pattern-not: subprocess.$FUNC(..., shell=True, ...) # with proper input validation
+    pattern: subprocess.$FUNC(..., shell=True, ...)
     message: "subprocess with shell=True is vulnerable to shell injection. Use shell=False with a list of arguments instead."
     languages: [python]
     severity: ERROR

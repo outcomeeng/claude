@@ -1,6 +1,6 @@
 /**
  * ESLint Configuration for High-Assurance TypeScript
- * Used by reviewing-typescript skill when project lacks its own eslint config
+ * Used by auditing-typescript skill when project lacks its own eslint config
  */
 
 import eslint from "@eslint/js";
@@ -72,7 +72,7 @@ export default tseslint.config(
     rules: {
       // Allow assertions in tests
       "@typescript-eslint/no-non-null-assertion": "off",
-      // Allow any in test mocks (DI pattern)
+      // Relax any to warn in test files (DI pattern)
       "@typescript-eslint/no-explicit-any": "warn",
       // Allow console in tests for debugging
       "no-console": "warn",

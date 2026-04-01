@@ -1,239 +1,150 @@
 ---
 name: auditing-typescript
 description: >-
-  ALWAYS invoke this skill when auditing TypeScript code or validating implementations.
-  NEVER audit code without this skill.
-allowed-tools: Read, Bash, Glob, Grep, Write, Edit
+  ALWAYS invoke this skill when auditing code for TypeScript.
+allowed-tools: Read, Bash, Glob, Grep
 ---
 
-<accessing_skill_files>
-When this skill is invoked, Claude Code provides the base directory in the loading message:
-
-```
-Base directory for this skill: {skill_dir}
-```
-
-Use this path to access skill files:
-
-- Templates: `{skill_dir}/templates/`
-
-**IMPORTANT**: Do NOT search the project directory for skill files.
-
-</accessing_skill_files>
-
 <objective>
-Adversarial code review. Find design flaws through code comprehension, not checkbox compliance. Automated tools catch syntax — you catch idiocy.
+
+Adversarial code review through comprehension. Find design flaws that automated tools cannot catch. Produce a structured verdict -- not code changes.
+
+This skill is read-only. It produces verdicts, not commits or fixes.
+
+**Test evidence quality is audited by `/auditing-typescript-tests`.** This skill audits implementation code, not test code. If test files are in scope, delegate to `/auditing-typescript-tests`.
 
 </objective>
 
 <quick_start>
 
-1. Read `/testing` for testing methodology (the law)
-2. Read `/testing-typescript` for TypeScript testing standards
-3. Read `/standardizing-typescript` for code standards
-4. Load project review config if it exists (Phase 0)
-5. Run automated gates — linters and project validation (Phase 1)
-6. Run tests with coverage (Phase 2)
-7. **Comprehend every file** — predict, verify, investigate (Phase 3)
-8. Determine verdict (APPROVED/REJECTED)
-9. If APPROVED: commit
+1. Read `/testing` for methodology + `/testing-typescript` for TypeScript patterns
+2. Load project config: `CLAUDE.md`, `tsconfig.json`, `package.json` (Phase 0)
+3. Run automated gates -- project validation command (Phase 1, blocking)
+4. Run tests -- verify all pass (Phase 2, blocking)
+5. **Comprehend every function** -- predict, verify, investigate (Phase 3)
+6. Check ADR/PDR compliance (Phase 4)
+7. Produce structured verdict: APPROVED or REJECTED
 
 </quick_start>
 
-<success_criteria>
+<essential_principles>
 
-- Automated gates pass (linters, project validation)
-- All tests pass with measured coverage
-- **Every file comprehended** — no unexamined code
-- No mocking detected
-- ADR/PDR constraints followed
+**Trust automated gates, then comprehend.**
 
-</success_criteria>
+Phases 1-2 are mechanical prerequisites. If they fail, stop -- REJECTED. If they pass, do NOT re-check what linters and tests already verified. Your time is for Phase 3.
 
-<policy_override>
-Non-negotiable enforcement for this skill:
+**Comprehension is the core value.**
 
-1. Verdict is binary: `APPROVED` or `REJECTED`.
-2. `APPROVED` output must contain no notes/warnings/caveats sections.
-3. Do NOT manually re-check what linters catch — trust the automated gate. Your time is for comprehension.
+Automated tools catch syntax errors, type mismatches, and lint violations. You catch: functions that do more than their name says, dead parameters required by no interface, IO tangled with logic, and designs that will break under change. The predict/verify protocol (Phase 3) is how you find these.
 
-</policy_override>
+**Test evidence is not your concern.**
 
-<foundational_stance>
+`/auditing-typescript-tests` evaluates whether tests provide genuine evidence using the 4-property model (coupling, falsifiability, alignment, coverage). This skill verifies tests PASS, not whether they have evidentiary value. Do not duplicate that work.
 
-You are an **adversarial code reviewer**. Your job is to **comprehend** code and find design flaws that automated tools cannot catch.
+**Binary verdict, no caveats.**
 
-> **TRUST NO ONE. VERIFY AGAINST TESTING SKILL. REJECT MOCKING. ZERO TOLERANCE.**
+APPROVED means every concern passes. REJECTED means at least one fails. APPROVED output contains no notes, warnings, or suggestions sections.
 
-- If you cannot **verify** something is correct, it is **incorrect**
-- **Consult /testing** to verify tests are at correct levels per Five Factors
-- **REJECT any use of mocking** — only dependency injection is acceptable
-- If code violates ADR/PDR constraints (including test levels), code is **REJECTED**
-- "It works on my machine" is not evidence. Tool output is evidence.
-- **Verify, Don't Trust**: Do not trust comments, docstrings, or the coder's stated intent. Verify behavior against the actual code.
+</essential_principles>
 
-</foundational_stance>
+<process>
 
-<test_verification>
-
-When reviewing tests, you MUST verify:
-
-1. **Check decision records** — ADR testing strategy and PDR behavior constraints
-2. **Verify tests are at correct levels** — Level 1 for unit logic, Level 2 for real dependencies, etc.
-3. **REJECT any mocking** — `vi.mock()`, `jest.mock()` = REJECTED
-4. **Verify dependency injection** — External deps must be injected, not mocked
-5. **Verify behavior testing** — Tests must verify outcomes, not implementation
-
-**Rejection Criteria for Tests**
-
-| Violation                   | Example                                    | Verdict  |
-| --------------------------- | ------------------------------------------ | -------- |
-| Uses mocking                | `vi.mock('execa')`                         | REJECTED |
-| Tests implementation        | `expect(mockFn).toHaveBeenCalledWith(...)` | REJECTED |
-| Wrong level                 | Unit test for Chrome automation            | REJECTED |
-| No escalation justification | Level 3 without explanation                | REJECTED |
-| Arbitrary test data         | `"test@example.com"` hardcoded             | REJECTED |
-| Deep relative import        | `from "../../../../../../tests/helpers"`   | REJECTED |
-
-```typescript
-// ❌ REJECT: Mocking
-vi.mock("execa", () => ({ execa: vi.fn() }));
-
-it("runs command", async () => {
-  await runCommand(args);
-  expect(execa).toHaveBeenCalled(); // Tests implementation
-});
-
-// ✅ ACCEPT: Dependency Injection
-it("GIVEN valid args WHEN running THEN returns success", async () => {
-  const deps: CommandDeps = {
-    execa: vi.fn().mockResolvedValue({ exitCode: 0 }),
-  };
-
-  const result = await runCommand(args, deps);
-
-  expect(result.success).toBe(true); // Tests behavior
-});
-```
-
-</test_verification>
-
-<review_protocol>
-
-Execute these phases IN ORDER. Do not skip phases.
+Execute phases IN ORDER. Do not skip.
 
 **Phase 0: Scope and Project Config**
 
-1. Determine the target files/directories to review
-2. **Load project review config**: Check `CLAUDE.md`/`README.md` for project-specific validation commands, test runners, and infrastructure requirements. If the project defines a review configuration at a known location, load it for project-specific anti-patterns.
-3. Check if the project has its own tool configurations in `tsconfig.json`, `package.json`
+1. Determine target files/directories
+2. Read `CLAUDE.md`/`README.md` for validation commands and test runners
+3. Check `tsconfig.json`, `package.json` for tool configurations
 
-**Phase 1: Automated Gates**
+**Phase 1: Automated Gates** (blocking)
 
-Run the project's validation command. This catches linter-enforced rules from `/standardizing-typescript` — type annotations, naming, magic numbers, unused imports, security rules, etc.
+Run the project's validation command. Catches everything linters handle: type safety, naming, magic numbers, unused imports, security rules.
 
-```bash
-# Use whatever the project defines in CLAUDE.md
-# Common: pnpm validate, npm run check, make check, just validate
-```
+If the project lacks its own linter configs, use the reference configs in `${SKILL_DIR}/rules/`:
 
-**Blocking**: Any non-zero exit code = REJECTED. Do not proceed to manual review.
+| File                   | Purpose                                      |
+| ---------------------- | -------------------------------------------- |
+| `tsconfig.strict.json` | Strict TypeScript compiler options           |
+| `eslint.config.js`     | ESLint strict + security rules               |
+| `semgrep_sec.yaml`     | Semgrep security patterns (CWE-78/89/94/798) |
 
-**Do NOT manually re-check what linters catch.** If the project's linters are properly configured per `/standardizing-typescript`, they handle type safety, naming, magic numbers, unused imports, commented-out code, and security rules. Your time is for Phase 3.
+Non-zero exit = REJECTED. Do not proceed.
 
-**Note**: Some `/standardizing-typescript` rules require manual verification — deep relative imports, unqualified `any`, `@ts-ignore` without justification. These are checked during Phase 3 code comprehension.
+Do NOT manually re-check what linters catch. If the project's linters are properly configured per `/standardizing-typescript`, they handle type annotations, naming, unused imports, commented-out code, and security rules.
 
-**Phase 2: Test Execution**
+**Note**: Some rules require manual verification during Phase 3 -- deep relative imports, unqualified `any`, `@ts-ignore` without justification.
 
-Run the **full** test suite with coverage. Use the project's test runner from `CLAUDE.md`.
+**Phase 2: Test Execution** (blocking)
 
-If tests require infrastructure (databases, VMs, Docker services), attempt to provision it. Do not skip tests because infrastructure "isn't running" — try to start it first. Check for setup scripts, `docker-compose.yml`, or test markers that indicate infrastructure needs.
+Run the full test suite. Use the project's test runner from `CLAUDE.md`.
 
-**Blocking**: ANY test failure = REJECTED.
+If tests require infrastructure (databases, Docker), attempt to provision it. Do not skip tests because infrastructure "isn't running" -- try to start it first.
 
-**Coverage Requirements**
+ANY test failure = REJECTED. Do not proceed.
 
-| Scenario              | Verdict      | Rationale             |
-| --------------------- | ------------ | --------------------- |
-| Coverage ≥80%         | PASS         | Verified              |
-| Coverage <80%         | REJECTED     | Insufficient evidence |
-| Coverage unmeasurable | **REJECTED** | Coverage unverifiable |
-| Test runner fails     | **REJECTED** | Tests unverifiable    |
+**Phase 3: Code Comprehension**
 
-**Crystal Clear**: You cannot approve code with unmeasured coverage. If you cannot prove coverage exists, it does not exist.
-
-**Phase 3: Critical Code Comprehension**
-
-**This is the core of the review.** Read every file. Understand it. Question it.
-
-Do NOT skim. Do NOT sample. Do NOT check boxes. **Read every function.**
+Read every file. Understand it. Question it. Do NOT skim, sample, or check boxes.
 
 **3.1 Per-Function Protocol**
 
-For each function or method in the code under review:
+For each function/method:
 
-1. **Read the name and signature only** — name, parameters, return type
-2. **Predict** what this function does in one sentence
-3. **Read the body** — validate your prediction
-4. **Investigate any surprises:**
+1. **Read name and signature only** -- name, parameters, return type
+2. **Predict** what it does in one sentence
+3. **Read the body** -- validate your prediction
+4. **Investigate surprises:**
 
-| Surprise                               | What it suggests                                     |
-| -------------------------------------- | ---------------------------------------------------- |
-| Parameter never used in the body       | Dead parameter — remove it or explain why it's there |
-| Function does more than its name says  | Violates single responsibility or name is misleading |
-| Function does less than its name says  | Name overpromises, or logic is incomplete            |
-| Variable assigned but never read       | Dead code or unfinished logic                        |
-| Code path that can never execute       | Dead branch given calling context                    |
-| Return value contradicts the type hint | Logic error or wrong return type                     |
+| Surprise                               | What it suggests                                   |
+| -------------------------------------- | -------------------------------------------------- |
+| Parameter never used in body           | Dead parameter -- required by interface, or remove |
+| Does more than name says               | SRP violation or misleading name                   |
+| Does less than name says               | Name overpromises or logic is incomplete           |
+| Variable assigned but never read       | Dead code or unfinished logic                      |
+| Code path that can never execute       | Dead branch given calling context                  |
+| Return value contradicts the type hint | Logic error or wrong return type                   |
 
-**If your prediction matched perfectly**: the function is probably fine. Move on.
+Prediction matched? Move on. Surprise? Document it with `file:line`.
 
-**If anything surprised you**: that's a potential issue. Document it with `file:line`.
+**3.2 Design Evaluation**
 
-**3.2 Per-File Analysis**
+For the codebase as a whole:
 
-After examining all functions individually, look at the file as a whole:
+- **IO vs logic separation** -- Can core logic be tested without IO? Tangled computation and side effects need factoring.
+- **Dependency injection** -- External dependencies injected via parameters, or imported as globals?
+- **Single responsibility** -- Each module/class does one thing? Each function does one thing?
+- **Error quality** -- Errors include what failed and with what input?
+- **Domain exceptions** -- Custom exceptions for domain errors, or everything generic `Error`?
 
-| Pattern                                   | What to look for                                                                                                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Near-duplicate blocks**                 | Two or more blocks that differ by one expression or boolean condition. Could they be unified or parameterized?                                          |
-| **Inconsistent delegation**               | Method A delegates to a helper. Method B inlines the same logic. Why the inconsistency?                                                                 |
-| **Redundant parameter threading**         | Instance attributes (`this.x`) aliased to locals, then passed as parameters to the class's own methods. Pick one approach.                              |
-| **Constants outside their domain**        | A constant named for one concept (e.g., `READ_BIT`) used to mean something unrelated (e.g., "set valid high"). The name lies about the value's purpose. |
-| **Per-call allocation of immutable data** | Objects, arrays, or maps created on every call when the data never changes after init. Compute once, store as property.                                 |
-| **Redundant operations**                  | Doing X immediately before calling a function that also does X as its first action.                                                                     |
-| **Reimplemented stdlib**                  | Code that manually implements what the standard library or framework already provides.                                                                  |
+**3.3 Import Evaluation**
 
-**3.3 Design Questions**
+Evaluate import structure using the same vocabulary as `/auditing-typescript-tests`:
 
-For the codebase as a whole, verify:
+| Import pattern                                   | Classification                  |
+| ------------------------------------------------ | ------------------------------- |
+| `import { describe, expect } from "vitest"`      | Framework -- not reviewed       |
+| `import { z } from "zod"`                        | Library -- not reviewed         |
+| `import type { Config } from "../src/config"`    | Type-only -- erased at runtime  |
+| `import { parseConfig } from "../src/config"`    | Codebase (production) -- review |
+| `import { parseConfig } from "@/config"`         | Codebase (alias) -- review      |
+| `import { TestHarness } from "@testing/helpers"` | Codebase (test infra) -- review |
 
-- **IO vs logic separation** — Can the core logic be tested without IO? If computation and side effects are tangled, the code needs factoring.
-- **Dependency injection** — Are external dependencies injected via parameters, or imported as globals?
-- **Single responsibility** — Does each module/class do one thing? Does each function do one thing?
-- **Error quality** — Do errors include what failed and with what input? Or just "Something went wrong"?
-- **Domain exceptions** — Are there custom exceptions for domain errors, or is everything generic `Error`?
+**Import depth rules:**
+
+| Depth     | Example        | Verdict                          |
+| --------- | -------------- | -------------------------------- |
+| Same dir  | `./utils`      | OK -- module-internal            |
+| 1 level   | `../types`     | Review -- truly module-internal? |
+| 2+ levels | `../../config` | REJECT -- use path alias         |
+
+For stable locations (`lib/`, `tests/helpers/`, `shared/`), path aliases are mandatory regardless of depth.
+
+See `${SKILL_DIR}/references/false-positive-handling.md` for application context when evaluating security and linter suppression comments.
 
 **Phase 4: ADR/PDR Compliance**
 
-> **ADRs/PDRs GOVERN — compliance is verified through code review, not testing.**
-
-Check that implementation follows all applicable ADR/PDR constraints:
-
-- [ ] Code structure conforms to ADR architectural decisions
-- [ ] Implementation approach matches ADR-specified patterns
-- [ ] Dependencies align with ADR technology choices
-- [ ] Test levels match ADR Testing Strategy (Level 1/2/3)
-- [ ] Product behavior matches PDR-defined rules and boundaries
-- [ ] Deviations from ADRs/PDRs are documented or decision records are updated
-
-**How to check**:
-
-1. Find applicable ADRs/PDRs in the spec hierarchy (`*.adr.md`, `*.pdr.md`)
-2. Verify each ADR/PDR decision is followed in the implementation
-3. Flag any undocumented deviations as REJECTED
-
-**Common ADR/PDR violations**:
+Find applicable ADRs/PDRs in the spec hierarchy (`*.adr.md`, `*.pdr.md`). Verify each constraint is followed. Undocumented deviations = REJECTED. If the project has no spec hierarchy, this concern is N/A.
 
 | Decision Record Constraint           | Violation Example                   | Verdict  |
 | ------------------------------------ | ----------------------------------- | -------- |
@@ -242,213 +153,103 @@ Check that implementation follows all applicable ADR/PDR constraints:
 | "No class components" (ADR)          | React class component added         | REJECTED |
 | "Lifecycle is Draft→Published" (PDR) | Added hidden `Archived` state       | REJECTED |
 
-**Phase 5: Determine Verdict**
+</process>
 
-| Verdict      | Criteria                                            | Next Phase       |
-| ------------ | --------------------------------------------------- | ---------------- |
-| **APPROVED** | All checks pass, no issues                          | Phase 6 (Commit) |
-| **REJECTED** | Any issue, failed validation, or unverifiable state | Return to coder  |
+<failure_modes>
 
-**If verdict is APPROVED**: Continue to Phase 6.
-**If verdict is REJECTED**: Skip to "Rejection Feedback" section below.
+These are real failures from past audits. Study them to avoid repeating them.
 
-**Phase 6: Verify Tests Pass (APPROVED Only)**
+**Approved code that passed linters but had a design flaw.** The auditor trusted Phase 1 output and skimmed Phase 3. The code had a function named `validateConfig` that also wrote the config file -- SRP violation hidden behind a reasonable name. The predict/verify protocol would have caught it: "Given the name, I predict this validates. But the body also calls `writeFileSync`. Surprise."
 
-> **Write access is earned by passing review.** This phase only runs on APPROVED.
+**Rejected code for a false positive.** The auditor flagged a parameter as "dead code" because it wasn't used in the function body. The parameter was required by a `CommandHandler` interface contract -- other implementations used it. Before flagging dead parameters, check if the function implements an interface or Protocol.
 
-When all checks pass, verify all tests still pass.
+**Tried to evaluate test evidence instead of delegating.** The auditor found `vi.fn()` in tests and spent time analyzing whether it broke coupling. That's `/auditing-typescript-tests`' job. This auditor should have verified tests PASS (Phase 2) and moved on to comprehending the implementation code.
 
-Test level is indicated by filename suffix:
+**Distracted by style while missing a logic bug.** The auditor spent review time on naming conventions, import ordering, and JSDoc completeness. Meanwhile, a branch condition was inverted -- `if (isValid)` should have been `if (!isValid)`. Comprehension (understanding what the code does) must come before style. Style is the linter's job.
 
-| Test Level | Filename Pattern        | Example                   |
-| ---------- | ----------------------- | ------------------------- |
-| Level 1    | `*.unit.test.ts`        | `parsing.unit.test.ts`    |
-| Level 2    | `*.integration.test.ts` | `cli.integration.test.ts` |
-| Level 3    | `*.e2e.test.ts`         | `workflow.e2e.test.ts`    |
+**Accepted code with tangled IO.** A `processOrders` function both computed order totals AND sent confirmation emails. Tests passed and types were correct. But the function was untestable without an email server -- IO and logic were tangled. The design evaluation (3.2) would have caught it: "Can core logic be tested without IO? No."
 
-**If tests fail**: The verdict becomes REJECTED with reason "Tests don't pass."
-
-**Phase 7: Report and Commit (APPROVED Only)**
-
-**Follow the `committing-changes` skill** for core commit protocol (selective staging, Conventional Commits format).
-
-Stage **only** files from the approved work item. Exclude unrelated files, experimental code, files from other work items.
-
-Report completion:
-
-```markdown
-## Review Complete: {work-item}
-
-### Verdict: APPROVED
-
-### Verification Results
-
-| Check              | Status | Details                      |
-| ------------------ | ------ | ---------------------------- |
-| Automated gates    | PASS   | Linters + validation         |
-| Tests              | PASS   | {X}/{X} tests, {Y}% coverage |
-| Code comprehension | PASS   | {N} files reviewed           |
-| ADR/PDR compliance | PASS   | All constraints verified     |
-```
-
-</review_protocol>
-
-<rejection_feedback>
-
-When verdict is **REJECTED**, provide actionable feedback:
-
-```markdown
-## Review: {target}
-
-### Verdict: REJECTED
-
-### Issues Found
-
-| # | File:Line   | Category       | Issue             | Suggested Fix         |
-| - | ----------- | -------------- | ----------------- | --------------------- |
-| 1 | `foo.ts:42` | Dead parameter | `sda` never used  | Remove from signature |
-| 2 | `bar.ts:17` | Near-duplicate | Differs by 1 line | Extract helper        |
-
-### Required Actions
-
-1. Fix all blocking issues listed above
-2. Run verification tools before resubmitting
-3. Submit for re-review
-```
-
-</rejection_feedback>
-
-<verdict_criteria>
-
-**APPROVED (all must be true)**
-
-1. Automated gates pass (linters, validation)
-2. All tests pass with measured coverage ≥80%
-3. Every file comprehended — no design flaws found
-4. No mocking detected
-5. ADR/PDR constraints followed
-6. Output contains no notes/warnings/caveats sections
-
-**REJECTED (any triggers rejection)**
-
-| Criterion                                        | Source            |
-| ------------------------------------------------ | ----------------- |
-| Automated gates fail                             | Phase 1           |
-| Any test failure                                 | Phase 2           |
-| Coverage < 80% or unmeasured                     | Phase 2           |
-| Dead parameters                                  | Phase 3.1         |
-| Near-duplicate blocks                            | Phase 3.2         |
-| Constants used outside their semantic domain     | Phase 3.2         |
-| Redundant operations                             | Phase 3.2         |
-| IO and logic tangled (not separated)             | Phase 3.3         |
-| External dependencies not injected               | Phase 3.3         |
-| Mocking detected                                 | Test verification |
-| ADR/PDR violation                                | Phase 4           |
-| Infrastructure unavailable (evidence incomplete) | Phase 2           |
-
-</verdict_criteria>
-
-<false_positive_handling>
-
-Not all findings are real issues. Context matters.
-
-**When a Finding is a False Positive**
-
-1. **Context changes the threat model**: Security rule (child_process exec) in a CLI tool where inputs come from the user invoking the tool, not untrusted external sources
-2. **The code is intentionally doing something the rule warns against**: Using `eval` for a REPL implementation with sandboxing
-3. **The calling context guarantees safety**: A parameter that looks dead but is required by an interface/protocol contract
-
-**When a Finding is NOT a False Positive**
-
-- You cannot explain exactly why it's safe in this specific context
-- The "justification" is just "we've always done it this way"
-- The code runs in a web service, API, or multi-tenant environment
-- The surprise in step 3.1 has no good explanation
-
-**Required Disable Comment Format**
-
-When suppressing a rule, the disable comment MUST include justification:
-
-```typescript
-// GOOD - explains why it's safe
-// eslint-disable-next-line security/detect-child-process -- CLI tool, cmd from trusted config
-const result = execSync(cmd);
-
-// BAD - no justification
-// eslint-disable-next-line security/detect-child-process
-const result = execSync(cmd);
-```
-
-**Application Context Guide**
-
-| Application Type        | Trust Boundary        | Security Rules     |
-| ----------------------- | --------------------- | ------------------ |
-| CLI tool (user-invoked) | User is trusted       | Usually relaxed    |
-| Web service             | All input untrusted   | Strict enforcement |
-| Internal script         | Depends on deployment | Case-by-case       |
-| Library/package         | Consumers untrusted   | Strict enforcement |
-
-</false_positive_handling>
+</failure_modes>
 
 <output_format>
 
-Produce output using `templates/review_report.md`.
+````markdown
+# CODE REVIEW
 
-Verdict is binary:
+**Decision:** [APPROVED | REJECTED]
 
-- `APPROVED` when every gate passes
-- `REJECTED` for any issue or unverifiable state
+## Verdict
 
-For `APPROVED`, include no notes/warnings/caveats sections.
+| # | Concern                | Status            | Detail            |
+| - | ---------------------- | ----------------- | ----------------- |
+| 1 | Automated gates        | {PASS/REJECT}     | {one-line detail} |
+| 2 | Test execution         | {PASS/REJECT}     | {one-line detail} |
+| 3 | Function comprehension | {PASS/REJECT}     | {one-line detail} |
+| 4 | Design coherence       | {PASS/REJECT}     | {one-line detail} |
+| 5 | Import structure       | {PASS/REJECT/N/A} | {one-line detail} |
+| 6 | ADR/PDR compliance     | {PASS/REJECT/N/A} | {one-line detail} |
 
-**Conversation Summary Structure**
+---
 
-```markdown
-## Review: {target}
+## Findings (REJECTED only)
 
-### Verdict: [APPROVED / REJECTED]
+### {Finding name}
 
-[One-sentence summary]
+**Where:** {file:line or section}
+**Concern:** {which concern from verdict table}
+**Why this fails:** {direct explanation}
 
-### Automated Gates
+**Correct approach:**
 
-| Check      | Status    | Details                         |
-| ---------- | --------- | ------------------------------- |
-| Linters    | PASS/FAIL | [failure summary if applicable] |
-| Validation | PASS/FAIL | [command used]                  |
-
-### Tests
-
-| Metric   | Value      |
-| -------- | ---------- |
-| Passed   | [count]    |
-| Failed   | [count]    |
-| Coverage | [percent]% |
-
-### Code Comprehension Findings
-
-| File:Line   | Category   | Finding              |
-| ----------- | ---------- | -------------------- |
-| `foo.ts:42` | [category] | [what surprised you] |
-
-### ADR/PDR Compliance
-
-| Decision Record | Status    | Evidence            |
-| --------------- | --------- | ------------------- |
-| `NN-foo.adr.md` | PASS/FAIL | `path/file.ts:line` |
-| `NN-bar.pdr.md` | PASS/FAIL | `path/file.ts:line` |
-
-### Required Actions (REJECTED Only)
-
-1. **[file:line]** - [category] - [issue]
+```typescript
+{What the code should look like}
 ```
+
+---
+
+{Repeat for each finding}
+
+---
+
+## Required Changes (REJECTED only)
+
+{Concise list of what must change}
+
+---
+
+{If REJECTED: "Fix issues and resubmit for review."}
+{If APPROVED: "Code meets standards."}
+````
 
 </output_format>
 
-<skill_resources>
+<what_to_avoid>
 
-- `templates/review_report.md` - Report template
+- Do NOT re-check linter concerns (Phase 1 handles those)
+- Do NOT evaluate test evidence quality (delegate to `/auditing-typescript-tests`)
+- Do NOT commit or modify code (this skill is read-only)
+- Do NOT approve with caveats (binary verdict only)
+- Do NOT reject for code style when comprehension found no design flaws
 
-</skill_resources>
+</what_to_avoid>
 
-*Your job is to protect the codebase from defects. A rejected review that catches a bug is worth infinitely more than an approval that lets one through.*
+<example_review>
+Read `${SKILL_DIR}/references/example-review.md` for complete APPROVED and REJECTED examples showing all concern types.
+
+</example_review>
+
+<success_criteria>
+
+Review is complete when:
+
+- [ ] Project validation command run (Phase 1)
+- [ ] Test suite run (Phase 2)
+- [ ] Every function comprehended via predict/verify protocol (Phase 3)
+- [ ] Design evaluated: IO/logic, DI, SRP, error quality (Phase 3)
+- [ ] Import structure checked (Phase 3)
+- [ ] ADR/PDR compliance verified (Phase 4)
+- [ ] Structured verdict table with per-concern status
+- [ ] For REJECT: findings with concern, explanation, and correct approach
+- [ ] Decision clearly stated (APPROVED/REJECTED)
+
+</success_criteria>

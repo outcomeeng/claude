@@ -4,9 +4,9 @@ Not all tool violations are real issues. Context matters.
 
 <when_false_positive>
 
-1. **Context changes the threat model**: Security rule (child_process exec) in a CLI tool where inputs come from the user invoking the tool, not untrusted external sources
-2. **The code is intentionally doing something the rule warns against**: Using `eval` for a REPL implementation with sandboxing
-3. **The calling context guarantees safety**: A parameter that looks dead but is required by an interface/Protocol contract
+1. **Context changes the threat model**: S603 (subprocess call) in a CLI tool where inputs come from the user invoking the tool, not untrusted external sources
+2. **The code is intentionally doing something the rule warns against**: Using `pickle` for internal caching with no untrusted input
+3. **The calling context guarantees safety**: A parameter that looks dead but is required by a Protocol contract
 
 </when_false_positive>
 
@@ -19,21 +19,19 @@ Not all tool violations are real issues. Context matters.
 
 </when_not_false_positive>
 
-<required_comment_format>
+<required_noqa_format>
 
-When suppressing a rule, the disable comment MUST include justification:
+When suppressing a rule, the noqa comment MUST include justification:
 
-```typescript
-// GOOD - explains why it's safe
-// eslint-disable-next-line security/detect-child-process -- CLI tool, cmd from trusted config
-const result = execSync(cmd);
+```python
+# GOOD - explains why it's safe
+result = subprocess.run(cmd)  # noqa: S603 - CLI tool, cmd built from trusted config
 
-// BAD - no justification
-// eslint-disable-next-line security/detect-child-process
-const result = execSync(cmd);
+# BAD - no justification
+result = subprocess.run(cmd)  # noqa: S603
 ```
 
-</required_comment_format>
+</required_noqa_format>
 
 <application_context>
 
