@@ -2,7 +2,6 @@
 name: auditing-tests
 description: >-
   ALWAYS invoke this skill when auditing test evidence quality or verifying tests cover spec assertions.
-  NEVER audit tests without this skill.
 ---
 
 <objective>

@@ -460,17 +460,32 @@ Research (Seleznov, 650 automated trials, Feb 2026) shows description wording ha
 | Expanded      | ~93%       | `…or any Docker-related task`                   |
 | **Directive** | **~100%**  | `ALWAYS invoke… Do not X directly`              |
 
-**Use directive descriptions with negative constraints.** The recommended template:
+**Use directive descriptions.** The base template:
 
 ```yaml
 description: >-
   ALWAYS invoke this skill when <triggers>.
-  NEVER <alternative action> without this skill.
 ```
 
-The negative constraint is load-bearing. Skills where Claude has strong built-in alternatives (file operations, git, code review) benefit most from this pattern.
+**Add a NEVER constraint only when it disambiguates.** A NEVER line helps when:
 
-**Keep negatives language-agnostic.** Write `NEVER review code without this skill`, not `Do not review Python code directly`. The agent knows which language is in play, and typically only one language-specific skill is installed per project.
+- The skill is the **only one** with that negative (e.g., `NEVER work on the spec tree without loading context` — only contextualizing says this)
+- Claude has a **strong built-in alternative** the negative prevents (e.g., `NEVER run git commit without this skill` — Claude would just run `git commit` directly)
+
+**Omit NEVER when it creates noise:**
+
+- Multiple skills share the same negative (e.g., `NEVER write tests` — if testing-python, testing-typescript, and spec-tree:testing all say this, it doesn't help routing)
+- The ALWAYS trigger is already specific enough (e.g., `ALWAYS invoke when writing ADRs for TypeScript` — the language + artifact already route correctly)
+
+**For language-specific skills, put the language after the artifact** to match user speech:
+
+```yaml
+# ✅ "audit ADRs for Python" — matches what users say
+ALWAYS invoke this skill when auditing ADRs for Python.
+
+# ❌ "audit Python ADRs" — unnatural phrasing
+ALWAYS invoke this skill when auditing Python ADRs.
+```
 
 See [research/skill-invocation.md](research/skill-invocation.md) for the full study and additional strategies.
 
@@ -496,7 +511,7 @@ description: >-
 
 ### Effective examples
 
-**PDF Processing skill:**
+**PDF Processing skill** (unique — NEVER disambiguates):
 
 ```yaml
 description: >-
@@ -504,7 +519,7 @@ description: >-
   NEVER process PDFs without this skill.
 ```
 
-**Git Commit Helper skill:**
+**Git Commit Helper skill** (Claude has a strong built-in alternative):
 
 ```yaml
 description: >-
@@ -514,32 +529,27 @@ description: >-
 
 ### Examples from this marketplace
 
-**Spec Tree skills (differentiating similar skills):**
+**Spec Tree skills (unique negatives that disambiguate):**
 
 ```yaml
-# ✅ Good: directive with negative constraint
+# ✅ NEVER disambiguates — only contextualizing says this
 name: contextualizing
 description: >-
   ALWAYS invoke this skill when asking about status, progress, or what exists in the spec tree.
   NEVER work on any part of the spec tree without loading context through this skill first.
 
+# ✅ NEVER disambiguates — only authoring says this
 name: authoring
 description: >-
   ALWAYS invoke this skill when adding, defining, or creating specs, decisions, or nodes.
   NEVER author spec tree artifacts without this skill.
 
+# ✅ NEVER disambiguates — only decomposing says this
 name: decomposing
 description: >-
   ALWAYS invoke this skill when breaking down, splitting, scoping, or structuring spec tree nodes.
   NEVER decompose specs without this skill.
 ```
-
-**Why these work:**
-
-- `ALWAYS` tells Claude when to activate (specific triggers)
-- `NEVER` tells Claude what NOT to do without the skill (negative constraint)
-- Natural language users actually say ("author a spec" not "spec authoring protocol")
-- Short and direct
 
 ```yaml
 # ❌ Bad: passive style (77% activation)
@@ -553,26 +563,30 @@ description: Systematic spec creation with outcome hypotheses and typed assertio
 # Problem: Nobody says "outcome hypotheses"
 ```
 
-**Testing Plugin skills (language-specific differentiation):**
+**Language-specific skills (NEVER omitted — trigger is enough):**
 
 ```yaml
-# ✅ Good: language in trigger, generic negative
+# ✅ Language after artifact, no NEVER (would clash with testing-typescript)
 name: testing-python
 description: >-
-  ALWAYS invoke this skill when writing Python tests or fixing test failures.
-  NEVER write tests without this skill.
+  ALWAYS invoke this skill when writing or fixing tests for Python.
 
+# ✅ Same pattern — trigger differentiates
 name: testing-typescript
 description: >-
-  ALWAYS invoke this skill when writing TypeScript tests or fixing test failures.
-  NEVER write tests without this skill.
+  ALWAYS invoke this skill when writing or fixing tests for TypeScript.
+
+# ✅ Acronym, not expanded form
+name: auditing-python-architecture
+description: >-
+  ALWAYS invoke this skill when auditing ADRs for Python.
 ```
 
 **Why these work:**
 
-- Language in the trigger differentiates (Python vs TypeScript)
-- Negative is language-agnostic — the agent knows which language is in play
-- Trigger includes both writing AND fixing (covers the full lifecycle)
+- Language after the artifact matches user speech ("tests for Python")
+- No NEVER — multiple skills saying "NEVER write tests" doesn't help routing
+- Acronyms instead of expanded forms ("ADRs" not "architecture decisions")
 
 ---
 

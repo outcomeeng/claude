@@ -1,8 +1,7 @@
 ---
 name: coding-python
 description: >-
-  ALWAYS invoke this skill when writing or fixing Python implementation code.
-  NEVER write implementation code without this skill.
+  ALWAYS invoke this skill when writing or fixing implementation code for Python.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 

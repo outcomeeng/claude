@@ -2,7 +2,6 @@
 name: testing
 description: >-
   ALWAYS invoke this skill before writing tests or when learning the testing approach.
-  NEVER write tests without this skill.
 allowed-tools: Read, Bash, Glob, Grep, Write, Edit
 ---
 

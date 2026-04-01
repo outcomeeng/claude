@@ -1,8 +1,7 @@
 ---
 name: auditing-python-architecture
 description: >-
-  ALWAYS invoke this skill when auditing ADRs or architecture decisions.
-  NEVER audit architecture decisions without this skill.
+  ALWAYS invoke this skill when auditing ADRs for Python.
 allowed-tools: Read, Grep
 ---
 

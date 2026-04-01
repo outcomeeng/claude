@@ -60,6 +60,8 @@ NN-slug.{enabler|outcome}/
 ├── tests/               # Co-located test files
 │   ├── {test files}     # Named by project convention (see below)
 │   └── ...
+├── PLAN.md              # Escape hatch: deferred plan (optional)
+├── ISSUES.md            # Escape hatch: known issues (optional)
 └── NN-child.{enabler|outcome}/   # Nested child nodes (optional)
 ```
 

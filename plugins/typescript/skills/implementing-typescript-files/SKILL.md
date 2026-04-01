@@ -1,8 +1,7 @@
 ---
 name: implementing-typescript-files
 description: >-
-  ALWAYS invoke this skill when given file paths to implement or applying TDD to specific files.
-  NEVER implement specific files without this skill.
+  ALWAYS invoke this skill when implementing specific files for TypeScript.
 argument-hint: file_paths
 ---
 

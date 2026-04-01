@@ -155,7 +155,7 @@ Read the `<common_misplacements>` table from `what-goes-where.md`. For each row,
 | Signal in file                              | Wrong location | Correct location     |
 | ------------------------------------------- | -------------- | -------------------- |
 | Architecture choice or technical approach   | Spec           | ADR                  |
-| Product constraint or user guarantee        | Spec           | PDR                  |
+| Product decision or user guarantee          | Spec           | PDR                  |
 | Outcome hypothesis (WE BELIEVE THAT...)     | ADR or PDR     | Outcome spec         |
 | Implementation detail (code patterns, APIs) | Spec           | Code                 |
 | "How to build it"                           | Spec           | ADR or code          |

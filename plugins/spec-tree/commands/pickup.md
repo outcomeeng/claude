@@ -19,7 +19,7 @@ Load and claim a handoff session to continue work from a previous context. The p
 
 1. **Skills first** — know what to invoke before touching any code
 2. **Nodes second** — understand what was worked on and its current state
-3. **Escape hatches** — check for PLAN.md / DEFICIENCIES.md in node directories
+3. **Escape hatches** — check for PLAN.md / ISSUES.md in node directories
 4. **`/contextualizing` BEFORE any work** — this is non-negotiable, not one option among many
 
 **⚠️ NEVER propose fixing bugs, writing code, or any implementation work before `/contextualizing` has been invoked on the target node.**
@@ -149,7 +149,7 @@ For each node in the `<nodes>` section:
 2. **Check for escape hatches**:
    ```bash
    Glob: "spx/{node-path}/PLAN.md"
-   Glob: "spx/{node-path}/DEFICIENCIES.md"
+   Glob: "spx/{node-path}/ISSUES.md"
    ```
    If found, read and present them — these contain important non-durable context the previous agent persisted as a hedge.
 
@@ -263,7 +263,7 @@ A successful pickup:
 - [ ] `<PICKUP_ID>` marker present in conversation for `/handoff` to find later
 - [ ] Skills checklist presented BEFORE any work starts
 - [ ] Each anchored node's status presented
-- [ ] PLAN.md / DEFICIENCIES.md checked and read if present
+- [ ] PLAN.md / ISSUES.md checked and read if present
 - [ ] Persisted artifacts acknowledged
 - [ ] `/contextualizing` invoked on target node — NOT offered as an option, just done
 - [ ] Agent knows which skills to invoke and which to avoid

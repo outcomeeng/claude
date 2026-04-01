@@ -1,8 +1,7 @@
 ---
 name: coding-typescript
 description: >-
-  ALWAYS invoke this skill when writing or fixing TypeScript implementation code.
-  NEVER write implementation code without this skill.
+  ALWAYS invoke this skill when writing or fixing implementation code for TypeScript.
 allowed-tools: Read, Write, Bash, Glob, Grep, Edit
 ---
 

@@ -1,8 +1,7 @@
 ---
 name: testing-python
 description: >-
-  ALWAYS invoke this skill when writing Python tests or fixing test failures.
-  NEVER write tests without this skill.
+  ALWAYS invoke this skill when writing or fixing tests for Python.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 

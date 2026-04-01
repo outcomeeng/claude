@@ -96,9 +96,8 @@ What would you like to do?
 ```yaml
 ---
 name: skill-name # lowercase-with-hyphens, ≤64 chars
-description: >- # Directive with negative constraint, ≤1024 chars
+description: >- # Directive, ≤1024 chars. Add NEVER only if it disambiguates.
   ALWAYS invoke this skill when <triggers>.
-  NEVER <alternative action> without this skill.
 ---
 ```
 

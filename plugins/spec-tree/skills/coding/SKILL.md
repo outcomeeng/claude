@@ -2,7 +2,6 @@
 name: coding
 description: >-
   ALWAYS invoke this skill before implementing any spec-tree work item.
-  NEVER write implementation code without following this TDD flow.
 ---
 
 <objective>
@@ -69,9 +68,9 @@ Produce the ADR(s) for the work item. The architecture must be complete before r
 
 </phase>
 
-<phase number="4" name="Architecture review" gate="true">
+<phase number="4" name="Architecture audit" gate="true">
 
-Invoke the architecture review skill for the detected language.
+Invoke the architecture audit skill for the detected language.
 
 **REJECT → fix → re-invoke this phase.** Loop until APPROVED.
 

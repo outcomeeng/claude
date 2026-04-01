@@ -68,7 +68,7 @@ Use `/author` to create any spec-tree artifact. It detects what you want from th
 
 ```text
 > /author outcome for search          # create an outcome node
-> /author PDR for auth policy          # create a product constraint
+> /author PDR for auth policy          # create a product decision
 > /author ADR for caching strategy     # create an architecture decision
 > /author enabler for test harness     # create a shared enabler
 ```
@@ -96,7 +96,7 @@ The skill guides you through writing each part and suggests typed assertions (Sc
 
 ### Decision records
 
-ADRs (architecture decisions) and PDRs (product constraints) govern how things are built and what the product does. They use MUST/NEVER compliance rules verified by review.
+ADRs (architecture decisions) and PDRs (product decisions) govern what the product does. They use MUST/NEVER compliance rules verified by audit.
 
 ```text
 > /author ADR for database choice

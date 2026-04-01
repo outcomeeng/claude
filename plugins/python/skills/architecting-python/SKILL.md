@@ -1,8 +1,7 @@
 ---
 name: architecting-python
 description: >-
-  ALWAYS invoke this skill when writing ADRs or making Python architecture decisions.
-  NEVER write ADRs without this skill.
+  ALWAYS invoke this skill when writing ADRs for Python.
 allowed-tools: Read, Write, Glob, Grep
 ---
 

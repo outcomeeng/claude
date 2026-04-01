@@ -2,13 +2,15 @@
 
 Every artifact in the Spec Tree has a specific purpose. Content placed in the wrong artifact creates confusion and duplication.
 
-| Artifact type    | Purpose                    | Contains                         | Verified by         |
-| ---------------- | -------------------------- | -------------------------------- | ------------------- |
-| **ADR**          | GOVERNS how (architecture) | Decisions, rationale, invariants | Architecture review |
-| **PDR**          | GOVERNS what (product)     | Constraints, product invariants  | Product review      |
-| **Enabler spec** | DESCRIBES infrastructure   | What it provides, assertions     | Tests               |
-| **Outcome spec** | DESCRIBES hypothesis       | Outcome belief, assertions       | Tests               |
-| **Test**         | PROVES assertions          | Test code                        | Test runner         |
+| Artifact type    | Purpose                    | Contains                         | Verified by |
+| ---------------- | -------------------------- | -------------------------------- | ----------- |
+| **ADR**          | GOVERNS how (architecture) | Decisions, rationale, invariants | ADR audit   |
+| **PDR**          | GOVERNS what (product)     | Decisions, product invariants    | PDR audit   |
+| **Enabler spec** | DESCRIBES infrastructure   | What it provides, assertions     | Tests       |
+| **Outcome spec** | DESCRIBES hypothesis       | Outcome belief, assertions       | Tests       |
+| **Test**         | PROVES assertions          | Test code                        | Test runner |
+| **PLAN.md**      | DEFERS remaining steps     | Concrete plan for a node         | Next agent  |
+| **ISSUES.md**    | DEFERS known issues        | Gaps, bugs, untestable specs     | Next agent  |
 
 </overview>
 
@@ -34,7 +36,7 @@ Every artifact in the Spec Tree has a specific purpose. Content placed in the wr
 
 <pdr>
 
-**Purpose:** GOVERNS what the product does. Establishes product constraints that must hold across a subtree.
+**Purpose:** GOVERNS what the product does. Establishes product decisions that must hold across a subtree.
 
 **Contains:**
 
@@ -48,7 +50,7 @@ Every artifact in the Spec Tree has a specific purpose. Content placed in the wr
 
 **Does NOT contain:** Outcomes, assertions, test references, or implementation code.
 
-**Verified by:** Product/UX review.
+**Verified by:** PDR audit.
 
 </pdr>
 
@@ -76,7 +78,7 @@ Every artifact in the Spec Tree has a specific purpose. Content placed in the wr
 - Three-part hypothesis: WE BELIEVE THAT [output] WILL [outcome] CONTRIBUTING TO [impact]
 - Assertions specifying the output — locally verifiable by tests or review
 
-**Does NOT contain:** Architecture decisions (→ ADR), product constraints (→ PDR), implementation details.
+**Does NOT contain:** Architecture decisions (→ ADR), product decisions (→ PDR), implementation details.
 
 </outcome_spec>
 
@@ -96,6 +98,20 @@ Every artifact in the Spec Tree has a specific purpose. Content placed in the wr
 
 </test_files>
 
+<escape_hatches>
+
+**Purpose:** Non-durable node-local files left by `/handoff` for the next agent. They are escape hatches, not homes — prefer amending specs or fixing issues directly.
+
+**PLAN.md** — concrete remaining steps for a node. Written when work is interrupted. Remove when all steps are complete.
+
+**ISSUES.md** — known issues that were deferred: spec gaps, implementation bugs, untestable assertions. Remove fixed items, add new ones.
+
+**Verified by:** `/contextualizing` reads them automatically. `/pickup` checks for them.
+
+**Does NOT contain:** Spec content (→ spec file), architecture decisions (→ ADR), product decisions (→ PDR).
+
+</escape_hatches>
+
 <flow>
 
 ```text
@@ -110,15 +126,17 @@ ADR/PDR ──governs──→ Spec ──asserts──→ Test
 
 <common_misplacements>
 
-| Content                  | Wrong location | Correct location |
-| ------------------------ | -------------- | ---------------- |
-| Architecture choice      | Spec           | ADR              |
-| Product constraint       | Spec           | PDR              |
-| Outcome hypothesis       | ADR            | Outcome spec     |
-| Test reference           | ADR/PDR        | Spec assertions  |
-| Implementation detail    | Spec           | Code (not spec)  |
-| "How to build it"        | Spec           | ADR or code      |
-| "What users can rely on" | Spec           | PDR              |
-| Cross-cutting invariant  | Child spec     | Ancestor spec    |
+| Content                  | Wrong location | Correct location  |
+| ------------------------ | -------------- | ----------------- |
+| Architecture choice      | Spec           | ADR               |
+| Product decision         | Spec           | PDR               |
+| Outcome hypothesis       | ADR            | Outcome spec      |
+| Test reference           | ADR/PDR        | Spec assertions   |
+| Implementation detail    | Spec           | Code (not spec)   |
+| "How to build it"        | Spec           | ADR or code       |
+| "What users can rely on" | Spec           | PDR               |
+| Cross-cutting invariant  | Child spec     | Ancestor spec     |
+| Remaining work steps     | Session file   | PLAN.md in node   |
+| Known deferred issues    | Session file   | ISSUES.md in node |
 
 </common_misplacements>

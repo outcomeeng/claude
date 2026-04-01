@@ -1,8 +1,7 @@
 ---
 name: architecting-typescript
 description: >-
-  ALWAYS invoke this skill when writing ADRs or making TypeScript architecture decisions.
-  NEVER write ADRs without this skill.
+  ALWAYS invoke this skill when writing ADRs for TypeScript.
 allowed-tools: Read, Write, Glob, Grep
 ---
 

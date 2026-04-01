@@ -33,7 +33,7 @@ allowed-tools:
 
 Handoff is **proper session closure**, not note-taking. The agent must reflect deeply on what it learned before persisting anything — five structured perspectives force introspection that produces the right persistence decisions. The session file is a thin coordination envelope — the last resort for information that can't live anywhere else.
 
-**Reflect, then persist, then hand off.** The reflection (Phase 2) is the most important phase. Without it, the agent will dump a narrative instead of making durable persistence decisions. Stale PLAN.md and DEFICIENCIES.md files are worse than none — the reflection phase catches and fixes them.
+**Reflect, then persist, then hand off.** The reflection (Phase 2) is the most important phase. Without it, the agent will dump a narrative instead of making durable persistence decisions. Stale PLAN.md and ISSUES.md files are worse than none — the reflection phase catches and fixes them.
 
 </objective>
 
@@ -45,10 +45,10 @@ All information discovered during a session falls into one of four tiers. Persis
 | ---- | --------------------------------------- | ------------ | --------------------------------------------------------------------------------- |
 | 1    | Spec tree (`spx/`)                      | Durable      | Spec amendments, test files, assertion updates                                    |
 | 2    | Methodology (skills, CLAUDE.md, memory) | Durable      | Reusable patterns, user preferences, coding gotchas                               |
-| 3    | Node-local (PLAN.md, DEFICIENCIES.md)   | Escape hatch | Remaining steps, known gaps — non-durable but discoverable via `/contextualizing` |
+| 3    | Node-local (PLAN.md, ISSUES.md)         | Escape hatch | Remaining steps, known gaps — non-durable but discoverable via `/contextualizing` |
 | 4    | Session file (`.spx/sessions/todo/`)    | Ephemeral    | Coordination only: node list, skill checklist, cross-cutting context              |
 
-**Tier 3 is an escape hatch, not a home.** The agent MUST use `AskUserQuestion` before writing PLAN.md or DEFICIENCIES.md.
+**Tier 3 is an escape hatch, not a home.** The agent MUST use `AskUserQuestion` before writing PLAN.md or ISSUES.md.
 
 </persistence_hierarchy>
 
@@ -145,7 +145,7 @@ If "Create a node now" → invoke `/authoring` to create the node, then return t
 
 **Work through all five perspectives internally before presenting anything to the user.** This is the most important phase — it produces the input for everything that follows. Do not rush. Do not skip perspectives.
 
-For each perspective, think about what you learned, what changed, and what the next agent needs. Check existing escape hatches (PLAN.md, DEFICIENCIES.md) against current reality — stale escape hatches are worse than none.
+For each perspective, think about what you learned, what changed, and what the next agent needs. Check existing escape hatches (PLAN.md, ISSUES.md) against current reality — stale escape hatches are worse than none.
 
 ### Perspective 1: Lessons learned
 
@@ -173,9 +173,9 @@ What is broken, missing, or wrong that you did not fix?
 For each deficiency, determine persistence target:
 
 - Fix the spec directly (if an assertion is wrong — this is a durable fix)
-- Write or update DEFICIENCIES.md in the node directory (if the fix is deferred)
+- Write or update ISSUES.md in the node directory (if the fix is deferred)
 
-**Critical**: Read any existing DEFICIENCIES.md for each anchored node. Check every item — are items listed as open now fixed? Are there new deficiencies not yet listed? A stale DEFICIENCIES.md will mislead the next agent.
+**Critical**: Read any existing ISSUES.md for each anchored node. Check every item — are items listed as open now fixed? Are there new deficiencies not yet listed? A stale ISSUES.md will mislead the next agent.
 
 ### Perspective 3: Insights about the path forward
 
@@ -222,7 +222,7 @@ Present the combined output of all five perspectives as a single `AskUserQuestio
     "multiSelect": true,
     "options": [
       { "label": "[Lesson] summary", "description": "→ target: CLAUDE.md / spec / skill (with reason)" },
-      { "label": "[Deficiency] summary", "description": "→ target: fix spec / DEFICIENCIES.md in spx/{node}" },
+      { "label": "[Issue] summary", "description": "→ target: fix spec / ISSUES.md in spx/{node}" },
       { "label": "[Insight] summary", "description": "→ target: amend spec / PLAN.md in spx/{node} / remove stale PLAN.md" },
       { "label": "[Skip] N items", "description": "→ session file only (coordination context)" }
     ]
@@ -242,7 +242,7 @@ For each approved item from Phase 3:
 
 - **Spec amendments**: Edit the spec file directly
 - **CLAUDE.md / memory / skill updates**: Write the insight
-- **DEFICIENCIES.md**: Write or update in the node directory. Remove fixed items, add new ones.
+- **ISSUES.md**: Write or update in the node directory. Remove fixed items, add new ones.
 - **PLAN.md**: Write, update, or remove in the node directory. Never leave a stale plan.
 
 ### Step 2: Record committed vs uncommitted state
@@ -304,7 +304,7 @@ Spec-tree nodes worked on. The receiving agent should invoke
   - Status: [tests passing | partially implemented | spec only | architected | etc.]
   - Done: [What was accomplished on this node]
   - Remaining: [What's left — omit if captured in PLAN.md]
-  - Escape hatches: [PLAN.md written | DEFICIENCIES.md written | none]
+  - Escape hatches: [PLAN.md written | ISSUES.md written | none]
 
 </nodes>
 
@@ -329,7 +329,7 @@ What was captured durably during session closure.
 - Committed: [files committed during this session]
 - Uncommitted: [files modified but not yet committed — may need `/commit`]
 - Insights: [what was written to CLAUDE.md, memory, or skills]
-- Escape hatches: [PLAN.md / DEFICIENCIES.md written and in which nodes]
+- Escape hatches: [PLAN.md / ISSUES.md written and in which nodes]
 
 </persisted>
 
@@ -361,7 +361,7 @@ Nodes worked on:
 Agent works through all five perspectives internally:
 
 1. **Lessons**: User corrected import pattern twice — relative imports where absolute were required. Rule: "always use absolute imports from the package root." Also: `tempfile.NamedTemporaryFile` needs `delete=False` on Windows — a coding pattern worth codifying.
-2. **Deficiencies**: No existing DEFICIENCIES.md. The `43-fixtures.enabler` spec has 5 assertions but 2 are untestable without the implementation — not a deficiency, just the TDD sequence.
+2. **Deficiencies**: No existing ISSUES.md. The `43-fixtures.enabler` spec has 5 assertions but 2 are untestable without the implementation — not a deficiency, just the TDD sequence.
 3. **Insights**: Existing PLAN.md in `43-fixtures.enabler` is stale — steps 1-3 are complete, only steps 4-5 remain. The approach (context managers over explicit cleanup) was validated and should stay.
 4. **Skills**: Used `/testing-python`, skipped `/coding-python` on first attempt which caused import violations. Next agent must invoke `/coding-python` before writing implementation.
 5. **Starting point**: `43-fixtures.enabler`, TDD phase 7 (implement), invoke `/coding-python`.
@@ -486,7 +486,7 @@ This command works with `/pickup` to create a self-organizing handoff system:
 
 - Spec amendments and test files in the spec tree (tier 1)
 - Insights persisted to skills/CLAUDE.md/memory (tier 2)
-- PLAN.md / DEFICIENCIES.md in nodes, discoverable via `/contextualizing` (tier 3)
+- PLAN.md / ISSUES.md in nodes, discoverable via `/contextualizing` (tier 3)
 
 </system_description>
 
@@ -496,7 +496,7 @@ A successful handoff:
 
 - [ ] All anchored nodes identified with status and TDD position
 - [ ] All five reflection perspectives worked through (lessons, deficiencies, insights, skills, starting point)
-- [ ] Existing PLAN.md and DEFICIENCIES.md checked for staleness — updated or removed if stale
+- [ ] Existing PLAN.md and ISSUES.md checked for staleness — updated or removed if stale
 - [ ] Combined persistence proposal presented to user and approved items written
 - [ ] Committed vs uncommitted state recorded for each node
 - [ ] Session file created via `spx session handoff`

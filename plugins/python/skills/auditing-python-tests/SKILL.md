@@ -1,8 +1,7 @@
 ---
 name: auditing-python-tests
 description: >-
-  ALWAYS invoke this skill when auditing Python tests for evidentiary value and spec compliance.
-  NEVER audit tests without this skill.
+  ALWAYS invoke this skill when auditing tests for Python.
 ---
 
 <objective>

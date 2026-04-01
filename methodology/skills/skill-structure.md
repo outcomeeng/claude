@@ -78,7 +78,7 @@ The root of every tree is `{product-name}.product.md`, capturing why the product
 
 ### Decision records
 
-PDRs (product constraints) and ADRs (architecture choices) are co-located at any directory level. Their numeric prefix encodes dependency scope within that directory:
+PDRs (product decisions) and ADRs (architecture decisions) are co-located at any directory level. Their numeric prefix encodes dependency scope within that directory:
 
 ```text
 spx/

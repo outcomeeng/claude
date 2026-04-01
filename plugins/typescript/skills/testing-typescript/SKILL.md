@@ -1,8 +1,7 @@
 ---
 name: testing-typescript
 description: >-
-  ALWAYS invoke this skill when writing TypeScript tests or fixing test failures.
-  NEVER write tests without this skill.
+  ALWAYS invoke this skill when writing or fixing tests for TypeScript.
 allowed-tools: Read, Bash, Glob, Grep, Write, Edit
 ---
 

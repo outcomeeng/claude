@@ -1,8 +1,7 @@
 ---
 name: auditing-typescript-tests
 description: >-
-  ALWAYS invoke this skill when auditing TypeScript tests for evidentiary value and spec compliance.
-  NEVER audit tests without this skill.
+  ALWAYS invoke this skill when auditing tests for TypeScript.
 ---
 
 <objective>

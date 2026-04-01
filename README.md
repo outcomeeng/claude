@@ -47,7 +47,7 @@ claude plugin install typescript@outcomeeng
 
 ```text
 > /author outcome for search       # author a new outcome node
-> /author PDR for auth policy      # author a product constraint
+> /author PDR for auth policy      # author a product decision
 > /author ADR for caching strategy # author an architecture decision
 > /realize                         # start the TDD flow
 > /commit                          # commit with Conventional Commits

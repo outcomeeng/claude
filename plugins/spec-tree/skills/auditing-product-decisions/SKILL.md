@@ -1,13 +1,13 @@
 ---
 name: auditing-product-decisions
 description: >-
-  ALWAYS invoke this skill when auditing PDRs or product constraint documents.
-  NEVER audit product decisions without this skill.
+  ALWAYS invoke this skill when auditing PDRs.
+  NEVER audit PDRs without this skill.
 ---
 
 <objective>
 
-Audit whether a PDR establishes enforceable product constraints that flow into spec assertions. Six properties must hold — content classification, invariant quality, compliance quality, atemporal voice, consistency, downstream flow — checked in strict order. A PDR missing any property is a declaration that nothing enforces.
+Audit whether a PDR establishes enforceable product decisions that flow into spec assertions. Six properties must hold — content classification, invariant quality, compliance quality, atemporal voice, consistency, downstream flow — checked in strict order. A PDR missing any property is a declaration that nothing enforces.
 
 Read the evidence model before auditing: `${SKILL_DIR}/references/pdr-evidence-model.md`
 
@@ -235,7 +235,7 @@ Unenforced declarations:
 
 **Failure 1: Approved a PDR full of architecture decisions**
 
-Reviewer saw a well-structured PDR with Purpose, Decision, Compliance sections. Approved. The Decision section said "The system uses PostgreSQL with row-level locking for concurrent session management." That's an architecture decision, not a product constraint. Users don't care about PostgreSQL or row-level locking — they care that concurrent sessions work.
+Reviewer saw a well-structured PDR with Purpose, Decision, Compliance sections. Approved. The Decision section said "The system uses PostgreSQL with row-level locking for concurrent session management." That's an architecture decision, not a product decision. Users don't care about PostgreSQL or row-level locking — they care that concurrent sessions work.
 
 How to avoid: Step 3a classifies every statement. "Would a user care?" is the test.
 

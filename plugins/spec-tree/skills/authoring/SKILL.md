@@ -41,7 +41,7 @@ Ask or infer from context:
 | ---------------- | ------------------------------------- | ------------------------------------------- |
 | **Product spec** | Bootstrapping a new tree              | `templates/product/product-name.product.md` |
 | **ADR**          | Architecture decision needs recording | `templates/decisions/decision-name.adr.md`  |
-| **PDR**          | Product constraint needs recording    | `templates/decisions/decision-name.pdr.md`  |
+| **PDR**          | Product decision needs recording      | `templates/decisions/decision-name.pdr.md`  |
 | **Enabler node** | Shared infrastructure for 2+ siblings | `templates/nodes/enabler-name.md`           |
 | **Outcome node** | User-facing behavior with hypothesis  | `templates/nodes/outcome-name.md`           |
 

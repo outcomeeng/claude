@@ -159,7 +159,13 @@ Glob: "spx/{target-path}/*-*.{enabler,outcome}/"
 
 # Check for tests directory
 Glob: "spx/{target-path}/tests/*"
+
+# Check for escape hatches
+Glob: "spx/{target-path}/PLAN.md"
+Glob: "spx/{target-path}/ISSUES.md"
 ```
+
+**If PLAN.md or ISSUES.md exist, read them.** These are non-durable escape hatches left by previous agents via `/handoff`. They contain deferred plans or known issues that the next agent must be aware of.
 
 </phase>
 
@@ -190,6 +196,7 @@ Hierarchy:
 
 Children: {count} ({list if any})
 Tests: {exists|missing}
+Escape hatches: {PLAN.md | ISSUES.md | none}
 Lower-index siblings read: {list}
 Same-index siblings (independent): {list}
 Higher-index siblings (depend on target): {list}
@@ -247,6 +254,7 @@ Context loading is complete when:
 - [ ] Target ADRs/PDRs read
 - [ ] Children enumerated
 - [ ] Test directory status checked
+- [ ] Escape hatches (PLAN.md, ISSUES.md) checked and read if present
 - [ ] `<SPEC_TREE_CONTEXT target="...">` marker emitted with full manifest
 - [ ] No ABORT conditions triggered (or appropriate error shown with remediation)
 
